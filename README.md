@@ -1,5 +1,5 @@
 # study-posture-correction
-웹캠을 이용한 자세교정 프로그램
+카메라를 이용한 자세교정 프로그램
 
 ## License
 
