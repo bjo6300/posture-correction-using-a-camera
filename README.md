@@ -1,4 +1,5 @@
-# study-posture-correction
+# posture-correction-using-a-camera
+
 카메라를 이용한 자세교정 프로그램
 
 ## License
