@@ -12,6 +12,7 @@
 ![Python](https://img.shields.io/badge/-Python-000000?style=flat&logo=python)  
 ![Django](https://img.shields.io/badge/-Django-000000?style=flat&logo=django)  
 ![Keras](https://img.shields.io/badge/-Keras-000000?style=flat&logo=keras)  
+![OpenCV](https://img.shields.io/badge/-Opencv-000000?style=flat&logo=opencv)  
 ![AWS EC2](https://img.shields.io/badge/-EC2-000000?style=flat&logo=amazon-aws)  
 ![Jira](https://img.shields.io/badge/-Jira-000000?style=flat&logo=jira)  
 <!-- ![Mediapipe](https://img.shields.io/badge/-Mediapipe-000000?style=flat&logo=mediapipe)   -->
