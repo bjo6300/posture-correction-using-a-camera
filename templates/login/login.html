@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'css/login.css' %}">
+
+<div id="div-title-container">
+    <h1 id="h1-title"> 로그인 </h1>
+</div>
+
+<!-- 로그인 창 -->
+{% include 'login/login_window.html' %}
+
+{% endblock %}
