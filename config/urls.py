@@ -20,5 +20,6 @@ from posture import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('home/', include('posture.urls')), # main 페이지
-    
+    path('common/', include('common.urls')), # login 페이지
+    path('', views.index, name='index'),  # '/' 에 해당되는 path
 ]
