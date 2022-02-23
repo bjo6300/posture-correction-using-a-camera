@@ -174,3 +174,15 @@ a:link, a:visited, a:active {
     padding-bottom: 150px;
     position: relative;
 }
+
+.footer {
+    position: relative;
+    bottom: 0;
+    height: 80px;
+    width: 100%;
+    text-align: center;
+    color: rgb(104, 104, 104);
+    background-color: rgb(255, 255, 255);
+    border-top: #c9c9c9 1px solid;
+    padding-top: 10px;
+}
