@@ -1,0 +1,16 @@
+<!-- 로그인 실패시 이유 알려주는 페이지 -->
+{% if form.errors %}
+    {% for field in form %}
+        {% for error in field.errors %}  <!-- 필드 오류를 출력한다. / 값 누락 및 필드 형식 불일치 -->
+            <div class="alert alert-danger">
+                <strong>{{ field.label }}</strong>
+                {{ error }}
+            </div>
+        {% endfor %}
+    {% endfor %}
+    {% for error in form.non_field_errors %}   <!-- 넌필드 오류를 출력한다. / 필드오류빼고 나머지-->
+        <div class="alert alert-danger">
+            <strong>{{ error }}</strong>
+        </div>
+    {% endfor %}
+{% endif %}

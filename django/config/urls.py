@@ -14,8 +14,12 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
+from posture import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('home/', include('posture.urls')), # main 페이지
+    path('common/', include('common.urls')), # login 페이지
+    path('', views.index, name='index'),  # '/' 에 해당되는 path
 ]
