@@ -1,4 +1,4 @@
-# posture-correction-using-a-camera
+# Posture-Correction-using-a-camera-Program
 
 카메라를 이용한 자세교정 프로그램
 
