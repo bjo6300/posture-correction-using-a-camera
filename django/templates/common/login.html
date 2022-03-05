@@ -1,6 +1,10 @@
 {% extends "base.html" %}
+{% load static %} 
 {% block content %}
-<div class="container my-3">
+
+<link rel="stylesheet" type="text/css" href="{% static 'css/login.css' %}">
+
+<div id="div-login">
     <form method="post" class="post-form" action="{% url 'common:login' %}">
         {% csrf_token %}
         {% include "form_errors.html" %}

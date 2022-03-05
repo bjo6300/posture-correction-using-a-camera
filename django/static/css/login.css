@@ -22,13 +22,16 @@
 /* 로그인 요소 */
 #div-login {
     text-align: center;
-    width: 25%;
-    height: 300px;
+    position:absolute;
     margin: auto;
+    height:300px;
+    width:400px;
+    margin:-150px 0px 0px -200px;
+    top: 50%;
+    left: 50%;
     padding-top: 50px;
-    box-shadow: 3px 3px 5px lightgray;
-    border-bottom-left-radius: 150%;
-    border-bottom-right-radius: 150%;
+    border: solid 1px;
+
 }
 
 /* 비밀번호 컨테이너 */
