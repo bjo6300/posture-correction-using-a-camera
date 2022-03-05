@@ -180,7 +180,7 @@ a:link, a:visited, a:active {
     bottom: 0;
     height: 80px;
     width: 100%;
-    text-align: center;
+    text-align: left;
     color: rgb(104, 104, 104);
     background-color: rgb(255, 255, 255);
     border-top: #c9c9c9 1px solid;
