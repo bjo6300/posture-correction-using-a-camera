@@ -7,5 +7,11 @@ app_name = 'posture'
 
 
 urlpatterns = [
-    path('', views.index, name='main'), # 메인페이지 "{% url 'posture:main' %}"
+    # 메인페이지 "{% url 'posture:main' %}"
+    path('', views.index, name='main'), 
+
+    # 마이페이지 "{% url 'posture:mypage' %}"
+    path('mypage/', views.mypage, name='mypage'),
+
+    
 ]
