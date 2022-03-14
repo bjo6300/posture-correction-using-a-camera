@@ -1,0 +1,33 @@
+/* 마이페이지 수정하기 버튼 */
+#btn-fix {
+    text-align: center;
+    font-weight: bold;
+    font-size: 1.3em;
+    background-color: rgb(65,116,77);
+    letter-spacing: 0.05em;
+    color: white;
+    border: 1.4px solid #131E3E;
+    border-radius: 15px;
+    height: 33px;
+    width: 170px;
+    height: 50px;
+    cursor: pointer;
+    transition: .4s;
+    margin-bottom: 20px;
+    font-weight: 400;
+}
+
+/* 수정하기 버튼 마우스오버 */
+#btn-fix:hover {
+    color: #131E3E;
+    background-color: white;
+}
+
+/* input 자동완성 텍스트 배경색 설정 */
+input:-webkit-autofill,
+    input:-webkit-autofill:hover,
+    input:-webkit-autofill:focus,
+    input:-webkit-autofill:active {
+	 transition: background-color 5000s ease-in-out 0s;
+	 -webkit-transition: background-color 9999s ease-out;
+}

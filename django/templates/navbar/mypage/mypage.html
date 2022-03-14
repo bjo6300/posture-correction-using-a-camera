@@ -1,0 +1,123 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'css/mypage.css' %}">
+
+<div align="center">
+    
+    <div style="width: 800px; height: 100%;">
+        <div style="padding:50px 0 0 30px; margin-top: 30px;">
+             <!-- 마이페이지 -->
+                <div align="left">
+                    <h2>마이페이지</h2>
+                
+                </div>
+                <!-- 개인정보 -->
+                <div>
+                    <table style="position: relative; margin-top: 3%; border-spacing: 0;
+                            border-collapse: collapse; width: 100%;">
+                        <tr>
+                            <td style="border-bottom: 1px solid rgb(236, 236, 236);
+                            background-color: rgb(209, 231, 206);
+                            height: 70px;
+                            width: 120px;
+                            text-align: left; padding-left: 3%;">
+                                아이디
+                            </td>
+                            <td style="border-bottom: 1px solid rgb(236, 236, 236);
+                            border-left: 2px solid rgb(180, 179, 179);
+                            background-color: white; padding-left: 3%; width: 700px;">
+                                <!-- {% if user.is_authenticated %}
+                                    {{ user.username }}
+                                {% else %}
+                                    홍길동
+                                {% endif %} -->
+                                admin
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td style="border-bottom: 1px solid rgb(236, 236, 236);
+                            background-color: rgb(209, 231, 206);
+                            height: 70px;
+                            width: 120px;
+                            text-align: left; padding-left: 3%;">
+                                비밀번호 
+                                <!-- 이건 보안 상 빼야할거 같아 -->
+                            </td>
+                            <td style="border-bottom: 1px solid rgb(236, 236, 236);
+                            border-left: 2px solid rgb(180, 179, 179);
+                            background-color: white; padding-left: 3%;">
+                                123456
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td style="border-bottom: 1px solid rgb(236, 236, 236);
+                            background-color: rgb(209, 231, 206);
+                            height: 70px;
+                            width: 120px;
+                            text-align: left; padding-left: 3%;">
+                                성별
+                            </td>
+                            <td style="border-bottom: 1px solid rgb(236, 236, 236);
+                            border-left: 2px solid rgb(180, 179, 179);
+                            background-color: white; padding-left: 3%;">
+                                남자
+                                <select name="select_sex" onChange="selectsex(this)" hidden>
+                                    <option value="male" selected>남자</option>
+                                    <option value="female">여자</option>
+                                </select>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td style="border-bottom: 1px solid rgb(236, 236, 236);
+                            background-color: rgb(209, 231, 206);
+                            height: 70px;
+                            width: 120px;
+                            text-align: left; padding-left: 3%;">
+                                생년월일
+                            </td>
+                            <td style="border-bottom: 1px solid rgb(236, 236, 236);
+                            border-left: 2px solid rgb(180, 179, 179);
+                            background-color: white; padding-left: 3%;">
+                                
+                                <!-- 마이페이지말고 회원가입에서 select 쓸 예정
+                                <select name="yy" id="year"></select>년 
+                                <select name="mm" id="month"></select>월 
+                                <select name="dd" id="day"></select>일 -->
+                                1998년 3월 15일
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td style="border-bottom: 1px solid rgb(236, 236, 236);
+                            background-color: rgb(209, 231, 206);
+                            height: 70px;
+                            width: 120px;
+                            text-align: left; padding-left: 3%;">
+                                이메일
+                            </td>
+                            <td style="border-bottom: 1px solid rgb(236, 236, 236);
+                            border-left: 2px solid rgb(180, 179, 179);
+                            background-color: white; padding-left: 3%;">
+                                admin@gmail.com
+                            </td>
+                        </tr>
+
+                        
+                    </table>
+                </div>
+
+                <div align = "center" style="margin-top: 20px;">
+                    <a href="{% url 'posture:mypage_modify' %}"><button id="btn-fix" >수정하기</button></a>
+                    
+                </div>
+            
+        </div>
+    </div>
+</div>
+
+{% endblock %}
