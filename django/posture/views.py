@@ -12,3 +12,7 @@ def mypage(request):
 # 마이페이지 수정하기
 def mypage_modify(request):
     return render(request, 'navbar/mypage/mypage_modify.html')
+
+# 회원가입
+def signup(request):
+    return render(request, 'navbar/signup.html')

@@ -147,9 +147,10 @@ input:-webkit-autofill,
     font-weight: 400;
 }
 
-/* #btn-login:hover {
-    color: #74BAD8;
-} */
+#btn-login:hover {
+    color: #131E3E;
+    background-color: white;
+}
 
 /* 아이디, 비밀번호 찾기 & 회원가입 버튼 */
 #a-find-btn {
