@@ -163,7 +163,6 @@ input:-webkit-autofill,
 #a-register-btn {
     text-align: center;
     font-size: 0.7em;
-    margin: 0 0 100px 28px;
     transition: .2s;
 }
 
