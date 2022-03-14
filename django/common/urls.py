@@ -16,4 +16,7 @@ urlpatterns = [
 
     # 아이디 찾기 "{% url 'common:find_id' %}"
     path('find_id/', views.find_id, name='find_id'),
+
+    # 아이디 찾기 체크완료 "{% url 'common:find_id_checked' %}"
+    path('find_id/checked', views.find_id_checked, name='find_id_checked'),
 ]

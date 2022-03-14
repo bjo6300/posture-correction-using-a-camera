@@ -1,0 +1,69 @@
+/* 배경 컨테이너 */
+#div-container {
+    margin: 60px auto auto auto;
+    text-align: center;
+}
+
+/* 배경 그림자 */
+#div-wrapper {
+    text-align: center;
+    width: 500px;
+    height: 100%;
+    margin: auto;
+    padding: 25px 50px;
+    box-shadow: 3px 3px 5px lightgray;
+    border-radius: 15px;
+}
+
+/* 테이블 */
+#table-id-list-02 {
+    text-align: left;
+    margin: auto; 
+    margin-top: -10px;
+    margin-bottom: 20px;
+}
+
+tr, td {
+    padding: 10px;
+}
+
+.p-id-list-txt-02 {
+    letter-spacing: 0.1em;
+    font-size: 0.8em;
+    margin: 0 5px;
+}
+
+/* 가입일 텍스트 */
+.p-id-list-txt-03 {
+    letter-spacing: 0.1em;
+    font-size: 0.5em;
+    color: gray;
+    margin: 0 5px;
+}
+
+
+
+/* 버튼 */
+#btn-fix {
+    text-align: center;
+    font-weight: bold;
+    font-size: 0.7em;
+    background-color: rgb(65,116,77);
+    letter-spacing: 0.05em;
+    color: white;
+    border: 1.4px solid #131E3E;
+    border-radius: 15px;
+    height: 33px;
+    width: 140px;
+    height: 40px;
+    cursor: pointer;
+    transition: .4s;
+    
+    font-weight: 400;
+}
+
+#btn-fix:hover {
+    color: #131E3E;
+    background-color: white;
+}
+
