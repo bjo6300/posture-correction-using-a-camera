@@ -11,7 +11,7 @@
     text-decoration: none;
     color: inherit;
   }        
-  .register{
+  .find_id{
               width: 550px;
               margin: 70px auto 0;
               padding: 15px 20px;
@@ -23,13 +23,13 @@
               border-radius: 15px;
           }
           /* 회원가입 글자 */
-          .register h3{
+          .find_id h3{
               font-size: 20px;
               margin-bottom: 20px;
               text-align: left;
               margin-left: 10px;
           }
-          .register input{
+          .find_id input{
               width: 100%;
               height: 40px;
               outline: none;
@@ -37,29 +37,29 @@
               border: 1px solid #707070;
               transition: 0.3s;
           }
-          .register input:valid, .register input:focus{
+          .find_id input:valid, .find_id input:focus{
               border: 1px solid #2b2e4a;
           }
-          .register .center{
+          .find_id .center{
               display: flex;
               align-items: center;
           }
-          .register .flex{
+          .find_id .flex{
               display: flex;
               flex-direction: column;
           }
-          .register .flex .container{
+          .find_id .flex .container{
               display: grid;
               grid-template-columns: 1fr 3fr 1fr;
               margin-bottom: 10px;
           }
-          .register .flex .container .item:first-child{
+          .find_id .flex .container .item:first-child{
              margin-right: 10px;
           }
-          .register .flex .container .item .idcheck{
+          .find_id .flex .container .item .idcheck{
               height: 100%;
               margin-left: 10px;
-              padding: 5px 15px;
+              padding: 8px;
               background-color: rgb(65,116,77);
               border: 1px solid #2b2e4a;
               color: white;
@@ -67,17 +67,17 @@
               transition: 0.3s;
           }
           /* 중복확인 버튼 */
-          .register .flex .container .item .idcheck:hover{
+          .find_id .flex .container .item .idcheck:hover{
               background: white;
               color: #2b2e4a;
           }
-          .register .flex .container .item select{
+          .find_id .flex .container .item select{
               height: 40px;
               padding: 10px;
               border: 1px solid #2b2e4a;
           }
           /* 가입하기 버튼 */
-          .register .submit{
+          .find_id .submit{
               width: 100%;
               height: 40px;
               color: white;
@@ -88,11 +88,11 @@
               margin-bottom: 15px;
               transition: 0.3s;
           }
-          .register .flex .container:last-child{
+          .find_id .flex .container:last-child{
               margin: 0;
           }
           /* 가입하기 마우스오버 */
-          .register .submit:hover{
+          .find_id .submit:hover{
               width: 100%;
               height: 40px;
               border: none;

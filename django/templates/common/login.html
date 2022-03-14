@@ -29,7 +29,8 @@
         <button type="submit" id="btn-login" >로그인</button>
         <br>
 
-        <a id="a-find-btn" href="#"> 아이디/비밀번호 찾기 </a>
+        <a id="a-find-btn" href="{% url 'common:find_id' %}"> 아이디 찾기 </a>
+        <a id="a-find-btn" href="#"> 비밀번호 찾기 </a>
         <a id="a-register-btn" href="{% url 'posture:signup' %}"> 회원가입 </a>
     </form>
 </div>
