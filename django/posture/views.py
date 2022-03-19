@@ -20,3 +20,7 @@ def signup(request):
 # 전체 통계
 def stats_all(request):
     return render(request, 'navbar/statistics/stats_all.html')
+
+# 거북목 통계
+def stats_turtle(request):
+    return render(request, 'navbar/statistics/stats_turtle.html')

@@ -12,24 +12,35 @@
 
             var chart = new CanvasJS.Chart("chartContainer", {
                 animationEnabled: true,
+                theme: "light2", // "light1", "light2", "dark1", "dark2"
                 title: {
                     text: "월간통계"
                 },
+                // axisY: {
+                //     title: "횟수"
+                // },
                 data: [{
-                    type: "pie",
-                    startAngle: 240,
-                    yValueFormatString: "##0.00\"%\"",
-                    indexLabel: "{label} {y}",
+                    type: "column",
+                    showInLegend: true,
+                    legendMarkerColor: "grey",
+                    legendText: "거북목 측정 횟수",
                     dataPoints: [
-                        { y: 79.45, label: "거북목" },
-                        { y: 7.31, label: "어깨비대칭" },
-                        { y: 7.06, label: "턱 괴기" },
-
+                        { y: 3, label: "1" },
+                        { y: 2, label: "2" },
+                        { y: 5, label: "3" },
+                        { y: 6, label: "4" },
+                        { y: 3, label: "5" },
+                        { y: 1, label: "6" },
+                        { y: 2, label: "7" },
+                        { y: 6, label: "8" },
+                        { y: 2, label: "9" },
+                        { y: 5, label: "10" },
+                        { y: 4, label: "11" },
+                        { y: 7, label: "12" },
                     ]
                 }]
             });
             chart.render();
-
         }
     </script>
 </head>
@@ -45,18 +56,18 @@
                 <div style="left: 250px; width: 1000px; height: 100%; position: absolute;">
                     <!-- 타이틀 -->
                     <div style="margin-top:50px; text-align:left;">
-                        <h2>전체통계</h2>
+                        <h2>거북목 통계</h2>
                     </div>
                     <hr>
                     <!-- canvasjs 글자 가리는 div-->
                     <div
-                        style="background-color: white; width: 100px; height: 20px; position: relative; top: 20px; z-index: 3;">
+                        style="background-color: white; width: 100px; height: 20px; position: relative; top: 60px; z-index: 3;">
                     </div>
-                    
+                    <!-- 타이틀 밑에 밑줄 -->
                     <div style="line-height:30px;">
 
-                        <!-- 원형그래프 -->
-                        <div id="chartContainer" style="height: 300px; width: 100%; position: relative; ">
+                        <!-- 막대그래프 -->
+                        <div id="chartContainer" style="height: 300px; width: 100%; position: relative; margin-top: 50px;">
 
                         </div>
                         <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
@@ -71,7 +82,7 @@
                     <!-- 통계 설명 div -->
                     <div align="center">
                         설명 작성
-                        
+
                     </div>
                 </div>
             </div>
