@@ -19,5 +19,8 @@ urlpatterns = [
     # 회원가입 "{% url 'posture:signup' %}"
     path('signup/', views.signup, name='signup'),
 
+    # 전체통계 "{% url 'posture:stats_all' %}"
+    path('stats_all/', views.stats_all, name='stats_all'),
+
     
 ]

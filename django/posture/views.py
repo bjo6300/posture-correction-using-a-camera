@@ -16,3 +16,7 @@ def mypage_modify(request):
 # 회원가입
 def signup(request):
     return render(request, 'navbar/signup.html')
+
+# 전체 통계
+def stats_all(request):
+    return render(request, 'statistics/stats_all.html')
