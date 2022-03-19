@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <script>
+        window.onload = function () {
+
+            var chart = new CanvasJS.Chart("chartContainer", {
+                animationEnabled: true,
+                title: {
+                    text: "전체통계"
+                },
+                data: [{
+                    type: "pie",
+                    startAngle: 240,
+                    yValueFormatString: "##0.00\"%\"",
+                    indexLabel: "{label} {y}",
+                    dataPoints: [
+                        { y: 79.45, label: "거북목" },
+                        { y: 7.31, label: "어깨비대칭" },
+                        { y: 7.06, label: "턱 괴기" },
+
+                    ]
+                }]
+            });
+            chart.render();
+
+        }
+    </script>
+</head>
+
+<body>
+
+    <div style="width:100%; height:1000px;">
+        <div style="width:80%; position:absolute; left:5%;">
+            <div style="float:left; width: 200px; height:100%; text-align:right; line-height: 60px;">
+                <!-- 사이드바 -->
+                {% include 'navbar/statistics/sidebar.html' %}
+                <!-- body -->
+                <div style="left: 250px; width: 1000px; height: 100%; position: absolute;">
+                    <!-- 타이틀 -->
+                    <div style="margin-top:50px; text-align:left;">
+                        <h2>인사말</h2>
+                    </div>
+                    <hr>
+                    <div style="margin-top:50px; line-height:30px;">
+                        <div id="chartContainer" style="height: 300px; width: 100%;"></div>
+                        <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
+
+{% endblock %}

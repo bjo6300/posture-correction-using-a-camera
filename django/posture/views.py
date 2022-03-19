@@ -19,4 +19,4 @@ def signup(request):
 
 # 전체 통계
 def stats_all(request):
-    return render(request, 'statistics/stats_all.html')
+    return render(request, 'navbar/statistics/stats_all.html')
