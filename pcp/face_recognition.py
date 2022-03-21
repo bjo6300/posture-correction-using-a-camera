@@ -8,6 +8,7 @@ import math
 sensitivity = 8
 ###################################################
 
+
 #fps = 1초당 프레임의 수
 # privious time for fps
 pTime = 0
@@ -41,6 +42,13 @@ while True:
     # 468개의 얼굴 점 리스트
     face_lmList = detector.findFaceLandmark(img, draw=True)
 
+    # fps 계산 로직
+    cTime = time.time()
+    fps = 1 / (cTime - pTime)
+    pTime = cTime
+
+    my_computer_fps = fps + 1
+
     # 인체가 감지가 되었는지 확인하는 구문
     if len(pose_lmList) != 0 and len(face_lmList) != 0:
 
@@ -59,21 +67,16 @@ while True:
             jaw_bone_count = 0
 
         # 100번 턱 괴기가 인식되면 알림을 제공한다.
-        if jaw_bone_count > 100: # 3.3초
+        if jaw_bone_count > my_computer_fps * 3:
             print("WARNING - Please hands down")
             # win10toast 알림 제공
-            toaster.show_toast("jaw_bone WARNING",
-                                f"Please hands down.\n\n")
+            toaster.show_toast("jaw_bone WARNING", f"Please hands down.\n\n")
+
             # 알림 제공 후 카운트를 다시 0으로 만든다.
             jaw_bone_count = 0
 
             real_jaw_bone_count += 1
         print("Length1 : {:.3f},   Length2 : {:.3f}".format(left_hand_len, right_hand_len))
-
-    # fps 계산 로직
-    cTime = time.time()
-    fps = 1 / (cTime - pTime)
-    pTime = cTime
 
     # fps를 이미지 상단에 입력하는 로직
     cv2.putText(img, str(int(fps)), (10, 70), cv2.FONT_HERSHEY_PLAIN, 3, (255, 0, 255), 3)
