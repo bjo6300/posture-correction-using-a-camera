@@ -19,16 +19,22 @@ urlpatterns = [
     # 회원가입 "{% url 'posture:signup' %}"
     path('signup/', views.signup, name='signup'),
 
-    # 전체통계 "{% url 'posture:stats_all_year' %}"
-    path('stats_all_year/', views.stats_all_year, name='stats_all_year'),
+    # 전체통계 "{% url 'posture:stats_all_month' %}"
+    path('stats_all_month/', views.stats_all_month, name='stats_all_month'),
 
-    # 거북목 통계 "{% url 'posture:stats_turtle_year' %}"
-    path('stats_turtle_year/', views.stats_turtle_year, name='stats_turtle_year'),
+    # 거북목 월간통계 "{% url 'posture:stats_turtle_month' %}"
+    path('stats_turtle_month/', views.stats_turtle_month, name='stats_turtle_month'),
 
-    # 어깨비대칭 통계 "{% url 'posture:stats_shoulder_year' %}"
-    path('stats_shoulder_year/', views.stats_shoulder_year, name='stats_shoulder_year'),
+    # 거북목 주간통계 "{% url 'posture:stats_turtle_week' %}"
+    path('stats_turtle_week/', views.stats_turtle_week, name='stats_turtle_week'),
 
-    # 턱괴기 통계 "{% url 'posture:stats_jaw_year' %}"
-    path('stats_jaw_year/', views.stats_jaw_year, name='stats_jaw_year'),
+    # 거북목 일간통계 "{% url 'posture:stats_turtle_day' %}"
+    path('stats_turtle_day/', views.stats_turtle_day, name='stats_turtle_day'),
+
+    # 어깨비대칭 월간통계 "{% url 'posture:stats_shoulder_month' %}"
+    path('stats_shoulder_month/', views.stats_shoulder_month, name='stats_shoulder_month'),
+
+    # 턱괴기 월간통계 "{% url 'posture:stats_jaw_month' %}"
+    path('stats_jaw_month/', views.stats_jaw_month, name='stats_jaw_month'),
     
 ]

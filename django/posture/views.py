@@ -17,18 +17,26 @@ def mypage_modify(request):
 def signup(request):
     return render(request, 'navbar/signup.html')
 
-# 전체 통계
-def stats_all_year(request):
-    return render(request, 'navbar/statistics/stats_all_year.html')
+# 전체 월간 통계
+def stats_all_month(request):
+    return render(request, 'navbar/statistics/stats_all_month.html')
 
-# 거북목 통계
-def stats_turtle_year(request):
-    return render(request, 'navbar/statistics/stats_turtle_year.html')
+# 거북목 월간 통계
+def stats_turtle_month(request):
+    return render(request, 'navbar/statistics/stats_turtle_month.html')
 
-# 거북목 통계
-def stats_shoulder_year(request):
-    return render(request, 'navbar/statistics/stats_shoulder_year.html')
+# 거북목 주간 통계
+def stats_turtle_week(request):
+    return render(request, 'navbar/statistics/stats_turtle_week.html')
 
-# 턱괴기 통계
-def stats_jaw_year(request):
-    return render(request, 'navbar/statistics/stats_jaw_year.html')
+# 거북목 일간 통계
+def stats_turtle_day(request):
+    return render(request, 'navbar/statistics/stats_turtle_day.html')
+
+# 어깨비대칭 월간 통계
+def stats_shoulder_month(request):
+    return render(request, 'navbar/statistics/stats_shoulder_month.html')
+
+# 턱괴기 월간 통계
+def stats_jaw_month(request):
+    return render(request, 'navbar/statistics/stats_jaw_month.html')
