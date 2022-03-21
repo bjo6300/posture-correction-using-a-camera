@@ -1,0 +1,41 @@
+
+tr, td{
+    width: 200px;
+    
+}
+
+
+/* 평소 버튼색 */
+#btn-month, #btn-week, #btn-day {
+    background-color: rgb(95, 160, 130);
+    border: white;
+    width: 90px;
+    height: 50px;
+    color: white;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    position: relative;
+    flex: 1 1 auto;
+    cursor: pointer;
+    font-weight: 400;
+    line-height: 1.5;
+    text-align: center;
+    text-decoration: none;
+    vertical-align: middle;
+    transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+
+}
+
+/* 버튼 마우스오버 */
+#btn-month:hover, #btn-week:hover, #btn-day:hover{
+    color: rgb(95, 160, 130);
+    background-color: white;
+    border: rgb(124, 124, 124) solid 1.4px;
+}
+
+/* 버튼 클릭할때 색 변경 */
+#btn-month:focus, #btn-week:focus, #btn-day:focus{
+    color: rgb(95, 160, 130);
+    background-color: white;
+    border: rgb(95, 160, 130) solid 1.4px;
+}

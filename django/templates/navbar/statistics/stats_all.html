@@ -2,6 +2,8 @@
 {% load static %}
 {% block content %}
 
+<link rel="stylesheet" type="text/css" href="{% static 'css/stats.css' %}">
+
 <!DOCTYPE HTML>
 <html>
 
@@ -44,8 +46,32 @@
                 <!-- body -->
                 <div style="left: 250px; width: 1000px; height: 100%; position: absolute;">
                     <!-- 타이틀 -->
-                    <div style="margin-top:50px; text-align:left;">
-                        <h2>전체통계</h2>
+                    <div style="margin-top:50px; text-align:left; ">
+                        <table>
+                            <tr>
+                                <td>
+                                    <h2 style="float: left;">전체통계</h2>
+                                </td>
+                                <td>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;
+                                </td>
+                                <td>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;
+                                </td>
+                                <td>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;
+                                </td>
+                                <td>
+                                    <div class="btn-group" role="group" aria-label="Basic example" >
+                            <button type="button"  id="btn-month">월간통계</button>
+                            <button type="button" id="btn-week">주간통계</button>
+                            <button type="button" id="btn-day">일별통계</button>
+                          </div>
+                                </td>
+                            </tr>
+                        </table>
+                        
+                        
                     </div>
                     <hr>
                     <!-- canvasjs 글자 가리는 div-->
