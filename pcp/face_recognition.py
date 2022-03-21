@@ -37,6 +37,9 @@ while True:
     # mediapipe를 거친 이미지 생성 -> img
     img = detector.findHolistic(img, draw=True)
 
+    # 웹캠 이미지 반전
+    img = cv2.flip(img, 1)
+
     # output -> list ( id, x, y, z) 32 개 좌표인데 예를 들면, (11, x, y, z)
     pose_lmList = detector.findPoseLandmark(img, draw=True)
     # 468개의 얼굴 점 리스트
