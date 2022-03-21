@@ -18,8 +18,8 @@ def signup(request):
     return render(request, 'navbar/signup.html')
 
 # 전체 통계
-def stats_all(request):
-    return render(request, 'navbar/statistics/stats_all.html')
+def stats_all_year(request):
+    return render(request, 'navbar/statistics/stats_all_year.html')
 
 # 거북목 통계
 def stats_turtle_year(request):
@@ -28,3 +28,7 @@ def stats_turtle_year(request):
 # 거북목 통계
 def stats_shoulder_year(request):
     return render(request, 'navbar/statistics/stats_shoulder_year.html')
+
+# 턱괴기 통계
+def stats_jaw_year(request):
+    return render(request, 'navbar/statistics/stats_jaw_year.html')
