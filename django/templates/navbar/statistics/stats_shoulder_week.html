@@ -12,9 +12,9 @@
 <head>
     
     <script type="text/javascript"> var barChartData = {
-            labels: ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"],
+            labels: ["월요일", "화요일", "수요일", "목요일", "금요일", "토요일", "일요일"],
             datasets: [{
-                label: '어깨비대칭',
+                label: '거북목',
                 backgroundColor: "#1E90FF",
                 data: [
                     Math.random() * 10,
@@ -23,12 +23,7 @@
                     Math.random() * 10,
                     Math.random() * 10,
                     Math.random() * 10,
-                    Math.random() * 10,
-                    Math.random() * 10,
-                    Math.random() * 10,
-                    Math.random() * 10,
-                    Math.random() * 10,
-                    Math.random() * 10,
+                    Math.random() * 10
                 ]
             }
         ],
@@ -73,12 +68,9 @@
                                 </td>
                                 <td>
                                     <div class="btn-group" role="group" aria-label="Basic example" >
-                                        <button type="button" id="btn-selected-month"
-                                        onclick="location.href='{% url 'posture:stats_shoulder_month' %}'">월간통계</button>
-                                    <button type="button" id="btn-week"
-                                        onclick="location.href='{% url 'posture:stats_shoulder_week' %}'">주간통계</button>
-                                    <button type="button" id="btn-day"
-                                        onclick="location.href='{% url 'posture:stats_shoulder_day' %}'">일별통계</button>
+                                        <button type="button"  id="btn-month" onclick="location.href='{% url 'posture:stats_shoulder_month' %}'">월간통계</button>
+                                        <button type="button" id="btn-selected-week" onclick="location.href='{% url 'posture:stats_shoulder_week' %}'">주간통계</button>
+                                        <button type="button" id="btn-day" onclick="location.href='{% url 'posture:stats_shoulder_day' %}'">일별통계</button>
                           </div>
                                 </td>
                             </tr>

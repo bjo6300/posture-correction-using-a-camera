@@ -34,6 +34,12 @@ urlpatterns = [
     # 어깨비대칭 월간통계 "{% url 'posture:stats_shoulder_month' %}"
     path('stats_shoulder_month/', views.stats_shoulder_month, name='stats_shoulder_month'),
 
+    # 어깨비대칭 주간통계 "{% url 'posture:stats_shoulder_week' %}"
+    path('stats_shoulder_week/', views.stats_shoulder_week, name='stats_shoulder_week'),
+
+    # 어깨비대칭 일별통계 "{% url 'posture:stats_shoulder_day' %}"
+    path('stats_shoulder_day/', views.stats_shoulder_day, name='stats_shoulder_day'),
+
     # 턱괴기 월간통계 "{% url 'posture:stats_jaw_month' %}"
     path('stats_jaw_month/', views.stats_jaw_month, name='stats_jaw_month'),
     

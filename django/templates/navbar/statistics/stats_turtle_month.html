@@ -10,7 +10,7 @@
 <html>
 
 <head>
-    
+
     <script type="text/javascript"> var barChartData = {
             labels: ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"],
             datasets: [{
@@ -31,14 +31,14 @@
                     Math.random() * 10,
                 ]
             }
-        ],
-            
+            ],
+
         };
         window.onload = function () {
             var ctx = $('#chart').get(0).getContext("2d");
             window.theChart = new Chart(ctx, {
-                type: 'bar', 
-                data: barChartData, 
+                type: 'bar',
+                data: barChartData,
                 options: {}
             });
         } 
@@ -72,29 +72,34 @@
                                     &nbsp;&nbsp;&nbsp;&nbsp;
                                 </td>
                                 <td>
-                                    <div class="btn-group" role="group" aria-label="Basic example" >
-                                        <button type="button"  id="btn-selected-month" onclick="location.href='{% url 'posture:stats_turtle_month' %}'">월간통계</button>
-                                        <button type="button" id="btn-week" onclick="location.href='{% url 'posture:stats_turtle_week' %}'">주간통계</button>
-                                        <button type="button" id="btn-day" onclick="location.href='{% url 'posture:stats_turtle_day' %}'">일별통계</button>
-                          </div>
+                                    <div class="btn-group" role="group" aria-label="Basic example">
+                                        <button type="button" id="btn-selected-month"
+                                            onclick="location.href='{% url 'posture:stats_turtle_month' %}'">월간통계</button>
+                                        <button type="button" id="btn-week"
+                                            onclick="location.href='{% url 'posture:stats_turtle_week' %}'">주간통계</button>
+                                        <button type="button" id="btn-day"
+                                            onclick="location.href='{% url 'posture:stats_turtle_day' %}'">일별통계</button>
+                                    </div>
                                 </td>
                             </tr>
                         </table>
                     </div>
                     <hr>
-                    
+
                     <!-- 타이틀 밑에 밑줄 -->
                     <div style="line-height:30px;">
 
                         <!-- 막대그래프 -->
-                        <div id="chartContainer" style="height: 300px; width: 100%; position: relative; margin-top: 50px;">
-                            <canvas id="chart" style="height: 300px; width: 100%; position: relative; margin-top: 50px;"></canvas> 
+                        <div id="chartContainer"
+                            style="height: 300px; width: 100%; position: relative; margin-top: 50px;">
+                            <canvas id="chart"
+                                style="height: 300px; width: 100%; position: relative; margin-top: 50px;"></canvas>
                         </div>
-                        
+
 
 
                     </div>
-                    
+
                     <hr>
                     <!-- 통계 설명 div -->
                     <div align="center">

@@ -37,6 +37,14 @@ def stats_turtle_day(request):
 def stats_shoulder_month(request):
     return render(request, 'navbar/statistics/stats_shoulder_month.html')
 
+# 어깨비대칭 주간 통계
+def stats_shoulder_week(request):
+    return render(request, 'navbar/statistics/stats_shoulder_week.html')
+
+# 어깨비대칭 일별 통계
+def stats_shoulder_day(request):
+    return render(request, 'navbar/statistics/stats_shoulder_day.html')
+
 # 턱괴기 월간 통계
 def stats_jaw_month(request):
     return render(request, 'navbar/statistics/stats_jaw_month.html')
