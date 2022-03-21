@@ -15,7 +15,7 @@
             var chart = new CanvasJS.Chart("chartContainer", {
                 animationEnabled: true,
                 title: {
-                    text: "월간통계"
+                    text: "주간통계"
                 },
                 data: [{
                     type: "pie",
@@ -63,12 +63,9 @@
                                 </td>
                                 <td>
                                     <div class="btn-group" role="group" aria-label="Basic example" >
-                                    <button type="button" id="btn-selected-month"
-                                        onclick="location.href='{% url 'posture:stats_all_month' %}'">월간통계</button>
-                                    <button type="button" id="btn-week"
-                                        onclick="location.href='{% url 'posture:stats_all_week' %}'">주간통계</button>
-                                    <button type="button" id="btn-day"
-                                        onclick="location.href='{% url 'posture:stats_all_day' %}'">일별통계</button>
+                                        <button type="button"  id="btn-month" onclick="location.href='{% url 'posture:stats_all_month' %}'">월간통계</button>
+                                        <button type="button" id="btn-selected-week" onclick="location.href='{% url 'posture:stats_all_week' %}'">주간통계</button>
+                                        <button type="button" id="btn-day" onclick="location.href='{% url 'posture:stats_all_day' %}'">일별통계</button>
                           </div>
                                 </td>
                             </tr>

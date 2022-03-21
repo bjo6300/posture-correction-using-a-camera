@@ -21,6 +21,14 @@ def signup(request):
 def stats_all_month(request):
     return render(request, 'navbar/statistics/stats_all_month.html')
 
+# 전체 주간 통계
+def stats_all_week(request):
+    return render(request, 'navbar/statistics/stats_all_week.html')
+
+# 전체 일별 통계
+def stats_all_day(request):
+    return render(request, 'navbar/statistics/stats_all_day.html')
+
 # 거북목 월간 통계
 def stats_turtle_month(request):
     return render(request, 'navbar/statistics/stats_turtle_month.html')
