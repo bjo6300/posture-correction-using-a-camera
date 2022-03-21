@@ -22,5 +22,9 @@ def stats_all(request):
     return render(request, 'navbar/statistics/stats_all.html')
 
 # 거북목 통계
-def stats_turtle(request):
-    return render(request, 'navbar/statistics/stats_turtle.html')
+def stats_turtle_year(request):
+    return render(request, 'navbar/statistics/stats_turtle_year.html')
+
+# 거북목 통계
+def stats_shoulder_year(request):
+    return render(request, 'navbar/statistics/stats_shoulder_year.html')

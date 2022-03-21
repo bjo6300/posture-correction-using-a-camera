@@ -1,0 +1,112 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'css/stats.css' %}">
+<script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.8.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js"></script>
+
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    
+    <script type="text/javascript"> var barChartData = {
+            labels: ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"],
+            datasets: [{
+                label: '어깨비대칭',
+                backgroundColor: "#1E90FF",
+                data: [
+                    Math.random() * 10,
+                    Math.random() * 10,
+                    Math.random() * 10,
+                    Math.random() * 10,
+                    Math.random() * 10,
+                    Math.random() * 10,
+                    Math.random() * 10,
+                    Math.random() * 10,
+                    Math.random() * 10,
+                    Math.random() * 10,
+                    Math.random() * 10,
+                    Math.random() * 10,
+                ]
+            }
+        ],
+            
+        };
+        window.onload = function () {
+            var ctx = $('#chart').get(0).getContext("2d");
+            window.theChart = new Chart(ctx, {
+                type: 'bar', 
+                data: barChartData, 
+                options: {}
+            });
+        } 
+    </script>
+
+</head>
+
+<body>
+
+    <div style="width:100%; height:100%;">
+        <div style="width:80%; position:absolute; left:5%;">
+            <div style="float:left; width: 200px; height:100%; text-align:right; line-height: 60px;">
+                <!-- 사이드바 -->
+                {% include 'navbar/statistics/sidebar.html' %}
+                <!-- body -->
+                <div style="left: 250px; width: 1000px; height: 100%; position: absolute;">
+                    <!-- 타이틀 -->
+                    <div style="margin-top:50px; text-align:left;">
+                        <table>
+                            <tr>
+                                <td style="width: 250px;">
+                                    <h2 style="float: left;">어깨비대칭 통계</h2>
+                                </td>
+                                <td>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;
+                                </td>
+                                <td>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;
+                                </td>
+                                <td>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;
+                                </td>
+                                <td>
+                                    <div class="btn-group" role="group" aria-label="Basic example" >
+                            <button type="button"  id="btn-month">월간통계</button>
+                            <button type="button" id="btn-week">주간통계</button>
+                            <button type="button" id="btn-day">일별통계</button>
+                          </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <hr>
+                   
+                    <!-- 타이틀 밑에 밑줄 -->
+                    <div style="line-height:30px;">
+
+                        <!-- 막대그래프 -->
+                        <div id="chartContainer" style="height: 300px; width: 100%; position: relative; margin-top: 50px;">
+                            <canvas id="chart" style="height: 300px; width: 100%; position: relative; margin-top: 50px;"></canvas> 
+                        </div>
+                        
+
+
+                    </div>
+                    
+                    <hr>
+                    <!-- 통계 설명 div -->
+                    <div align="center">
+                        설명 작성
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
+
+{% endblock %}
