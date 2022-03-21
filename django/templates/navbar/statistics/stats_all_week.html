@@ -1,0 +1,110 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'css/stats.css' %}">
+
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <script>
+        // 원형그래프 데이터
+        window.onload = function () {
+
+            var chart = new CanvasJS.Chart("chartContainer", {
+                animationEnabled: true,
+                title: {
+                    text: "주간통계"
+                },
+                data: [{
+                    type: "pie",
+                    startAngle: 240,
+                    yValueFormatString: "##0.00\"%\"",
+                    indexLabel: "{label} {y}",
+                    dataPoints: [
+                        { y: 79.45, label: "거북목" },
+                        { y: 7.31, label: "어깨비대칭" },
+                        { y: 7.06, label: "턱 괴기" },
+
+                    ]
+                }]
+            });
+            chart.render();
+
+        }
+    </script>
+</head>
+
+<body>
+
+    <div style="width:100%; height:100%;">
+        <div style="width:80%; position:absolute; left:5%;">
+            <div style="float:left; width: 200px; height:100%; text-align:right; line-height: 60px;">
+                <!-- 사이드바 -->
+                {% include 'navbar/statistics/sidebar.html' %}
+                <!-- body -->
+                <div style="left: 250px; width: 1000px; height: 100%; position: absolute;">
+                    <!-- 타이틀 -->
+                    <div style="margin-top:50px; text-align:left; ">
+                        <table>
+                            <tr>
+                                <td>
+                                    <h2 style="float: left;">전체통계</h2>
+                                </td>
+                                <td>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;
+                                </td>
+                                <td>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;
+                                </td>
+                                <td>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;
+                                </td>
+                                <td>
+                                    <div class="btn-group" role="group" aria-label="Basic example" >
+                                        <button type="button"  id="btn-month" onclick="location.href='{% url 'posture:stats_all_month' %}'">월간통계</button>
+                                        <button type="button" id="btn-selected-week" onclick="location.href='{% url 'posture:stats_all_week' %}'">주간통계</button>
+                                        <button type="button" id="btn-day" onclick="location.href='{% url 'posture:stats_all_day' %}'">일별통계</button>
+                          </div>
+                                </td>
+                            </tr>
+                        </table>
+                        
+                        
+                    </div>
+                    <hr>
+                    <!-- canvasjs 글자 가리는 div-->
+                    <div
+                        style="background-color: white; width: 100px; height: 20px; position: relative; top: 20px; z-index: 3;">
+                    </div>
+                    
+                    <div style="line-height:30px;">
+
+                        <!-- 원형그래프 -->
+                        <div id="chartContainer" style="height: 300px; width: 100%; position: relative; ">
+
+                        </div>
+                        <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+
+
+                    </div>
+                    <!-- canvasjs 하이퍼링크 가리는 div -->
+                    <div
+                        style="background-color: white; width: 100px; height: 20px; position: relative; top: -10px; left: 90%; z-index: 3;">
+                    </div>
+                    <hr>
+                    <!-- 통계 설명 div -->
+                    <div align="center">
+                        설명 작성
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
+
+{% endblock %}
