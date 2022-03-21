@@ -48,3 +48,11 @@ def stats_shoulder_day(request):
 # 턱괴기 월간 통계
 def stats_jaw_month(request):
     return render(request, 'navbar/statistics/stats_jaw_month.html')
+
+# 턱괴기 주간 통계
+def stats_jaw_week(request):
+    return render(request, 'navbar/statistics/stats_jaw_week.html')
+
+# 턱괴기 일별 통계
+def stats_jaw_day(request):
+    return render(request, 'navbar/statistics/stats_jaw_day.html')

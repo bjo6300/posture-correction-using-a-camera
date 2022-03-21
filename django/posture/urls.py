@@ -42,5 +42,11 @@ urlpatterns = [
 
     # 턱괴기 월간통계 "{% url 'posture:stats_jaw_month' %}"
     path('stats_jaw_month/', views.stats_jaw_month, name='stats_jaw_month'),
+
+    # 턱괴기 주간통계 "{% url 'posture:stats_jaw_week' %}"
+    path('stats_jaw_week/', views.stats_jaw_week, name='stats_jaw_week'),
+
+    # 턱괴기 일별통계 "{% url 'posture:stats_jaw_day' %}"
+    path('stats_jaw_day/', views.stats_jaw_day, name='stats_jaw_day'),
     
 ]
