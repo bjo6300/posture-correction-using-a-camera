@@ -21,11 +21,10 @@ toaster = ToastNotifier()
 sholder_count = 0
 sholder_hd = 0
 
-# 출력 속도 제한
-printTime = 0
 
 def printSholder(t):
     print("Sholder Height Difference : {}".format(t))
+
 
 while True:
     # defalut BGR img
@@ -38,6 +37,13 @@ while True:
     pose_lmList = detector.findPoseLandmark(img, draw=True)
     # 468개의 얼굴 점 리스트
     face_lmList = detector.findFaceLandmark(img, draw=True)
+
+    # fps 계산 로직
+    cTime = time.time()
+    fps = 1 / (cTime - pTime)
+    pTime = cTime
+
+    my_computer_fps = fps + 1
 
     # 인체가 감지가 되었는지 확인하는 구문
     if len(pose_lmList) != 0 and len(face_lmList) != 0:
@@ -54,19 +60,13 @@ while True:
             sholder_count = 0
 
         # 100번 어깨 비대칭으로 인식되면 알림을 제공
-        if sholder_count > 100:
+        if sholder_count > my_computer_fps * 3:
             print("WARNING - Keep your posture straight.")
             toaster.show_toast("Asymmetric shoulders WARNING",
                                f"Keep your posture straight.")
             # 알림 제공 후 카운트를 다시 0으로 만듬
             sholder_count = 0
         printSholder(sholder_hd)
-
-
-    # fps 계산 로직
-    cTime = time.time()
-    fps = 1 / (cTime - pTime)
-    pTime = cTime
 
     # fps를 이미지 상단에 입력하는 로직
     cv2.putText(img, str(int(fps)), (10, 70), cv2.FONT_HERSHEY_PLAIN, 3, (255, 0, 255), 3)
