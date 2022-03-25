@@ -273,7 +273,7 @@ class HolisticDetector():
 
     # 추가된 함수
     # 어깨의 두 점 11, 12의 점과 사이 라인 표시
-    def drawSholder(self, p1, p2, img, draw=True, r=15, t=3):
+    def drawShoulder(self, p1, p2, img, draw=True, r=15, t=3):
         x1, y1 = self.pose_lmList[p1][1:3]
         x2, y2 = self.pose_lmList[p2][1:3]
 
@@ -286,7 +286,7 @@ class HolisticDetector():
 
     # 추가된 함수
     # 11, 12번 점의 y 값의 차 구하기
-    def findSholder(self, p1, p2):
+    def findShoulder(self, p1, p2):
         x1, y1 = self.pose_lmList[p1][1:3]
         x2, y2 = self.pose_lmList[p2][1:3]
 
