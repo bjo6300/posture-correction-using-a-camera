@@ -19,6 +19,9 @@ urlpatterns = [
     # 회원가입 "{% url 'posture:signup' %}"
     path('signup/', views.signup, name='signup'),
 
+    # 회원가입완료 "{% url 'posture:signup_completed' %}"
+    path('signup_completed/', views.signup_completed, name='signup_completed'),
+
     # 전체 월간 통계 "{% url 'posture:stats_all_month' %}"
     path('stats_all_month/', views.stats_all_month, name='stats_all_month'),
 
