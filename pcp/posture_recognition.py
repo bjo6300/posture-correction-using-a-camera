@@ -1,7 +1,14 @@
 import cv2
 import time
+import numpy as np
 import modules.HolisticModule as hm
 from win10toast import ToastNotifier
+import tensorflow as tf
+import keras.models
+from keras.utils import np_utils
+from keras.models import Sequential
+from keras.preprocessing.image import img_to_array
+from PIL import Image
 
 
 # fps = 1초당 프레임의 수
@@ -9,6 +16,9 @@ from win10toast import ToastNotifier
 pTime = 0
 # cerrent time for fps
 cTime = 0
+
+# 모델 불러오기
+model = tf.keras.models.load_model('saved_model')
 
 # video input
 cap = cv2.VideoCapture(0, cv2.CAP_DSHOW)
@@ -34,17 +44,23 @@ real_shoulder_count = 0
 # 양 어깨 높이 차이 변수
 shoulder_hd = 0
 
+# 거북목 변수 초기 세팅
+text_neck_count = 0
+
+# 실제 거북목 변수 초기 세팅
+real_text_neck_count = 0
+
 while True:
     # default BGR img
-    success, img = cap.read()
+    success, frame = cap.read()
 
     # 웹캠 이미지 반전
-    img = detector.findHolistic(cv2.flip(img, 1), draw=True)
+    frame = detector.findHolistic(frame, draw=True)
 
     # output -> list ( id, x, y, z) 32 개 좌표인데 예를 들면, (11, x, y, z)
-    pose_lmList = detector.findPoseLandmark(img, draw=True)
+    pose_lmList = detector.findPoseLandmark(frame, draw=True)
     # 468개의 얼굴 점 리스트
-    face_lmList = detector.findFaceLandmark(img, draw=True)
+    face_lmList = detector.findFaceLandmark(frame, draw=True)
 
     # fps 계산 로직
     cTime = time.time()
@@ -53,8 +69,21 @@ while True:
 
     my_computer_fps = fps + 1
 
+    turtleNeck_frame = cv2.imwrite('frame.jpg', frame)
+
+    file_link = "frame.jpg"
+
     # 인체가 감지가 되었는지 확인하는 구문
     if len(pose_lmList) != 0 and len(face_lmList) != 0:
+
+        img = Image.open(file_link)
+        img = img.convert("RGB")
+        img = img.resize((64, 64))
+
+        turtleNeck_region = img_to_array(img)
+        turtleNeck_region = np.expand_dims(turtleNeck_region, axis=0)
+
+        single_test = model.predict(turtleNeck_region)
 
         # Holistic_module에 있는 findDistance의 p2값을 수정하여 사용
         # 왼쪽 center_left_hand 좌표와 얼굴 152번(턱) 좌표를 사용하여 길이를 구하는 부분
@@ -63,13 +92,18 @@ while True:
         right_hand_len = detector.findPointDistance(152, 17)
 
         # 양 어깨의 관절점 사이의 거리를 이미지로 변경
-        shoulder_img = detector.drawShoulder(11,12,img,draw=True)
+        shoulder_img = detector.drawShoulder(11,12,frame,draw=True)
 
         # 어깨의 y값 비교하여 양 쪽 어깨의 높이가 다르면 어깨 비대칭으로 인식
         shoulder_hd = detector.findShoulder(11, 12)
 
-        left_hand_img = detector.drawPointDistance(152, 20, img, draw=True)
-        right_hand_img = detector.drawPointDistance(152, 17, img, draw=True)
+        left_hand_img = detector.drawPointDistance(152, 20, frame, draw=True)
+        right_hand_img = detector.drawPointDistance(152, 17, frame, draw=True)
+
+        if single_test == 1:
+            text_neck_count += 1
+        else:
+            text_neck_count = 0
 
         if left_hand_len < 105 or right_hand_len < 105:
             jaw_bone_count += 1
@@ -100,13 +134,25 @@ while True:
             shoulder_count = 0
 
             real_shoulder_count += 1
-        print("왼쪽 손 : {:.3f},   오른쪽 손 : {:.3f},    어깨 높이 차 : {:.1f}".format(left_hand_len, right_hand_len, shoulder_hd))
+
+        if text_neck_count > my_computer_fps * 3:
+            print("거북목 동작이 감지되었습니다!")
+            # win10toast 알림 제공
+            toaster.show_toast("거북목 발생!", f"바른 자세를 취해주세요!.\n\n")
+
+            # 알림 제공 후 카운트를 다시 0으로 만든다.
+            text_neck_count = 0
+
+            real_text_neck_count += 1
+
+        print("왼쪽 손 : {:.3f}, 오른쪽 손 : {:.3f}, 어깨 높이 차 : {:.1f}, 거북목 정확도 : {:.1f}".format(left_hand_len, right_hand_len, shoulder_hd, single_test[0][0]))
+
 
     # fps를 이미지 상단에 입력하는 로직
-    cv2.putText(img, str(int(fps)), (10, 70), cv2.FONT_HERSHEY_PLAIN, 3, (255, 0, 255), 3)
+    cv2.putText(frame, str(int(fps)), (10, 70), cv2.FONT_HERSHEY_PLAIN, 3, (255, 0, 255), 3)
 
     # img를 우리에게 보여주는 부분
-    cv2.imshow("Image", img)
+    cv2.imshow("Image", frame)
 
     # ESC 키를 눌렀을 때 창을 모두 종료하는 부분
     if cv2.waitKey(1) & 0xFF == 27:
