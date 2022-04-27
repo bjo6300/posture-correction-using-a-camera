@@ -250,15 +250,15 @@ class HolisticDetector():
     # 추가된 함수
     # 얼굴 관절점과 포즈 관절점을 시각화하여 보여주고    
     # 둘의 거리차만큼 선으로 연결하여 그것을 시각화하여 보여줌
-    def drawPointDistance(self, p1, p2, img, draw=True, r=15, t=3):
+    def drawPointDistance(self, p1, p2, img, draw=True, r=5, t=1):
         x1, y1 = self.face_lmList[p1][1:3]
         x2, y2 = self.pose_lmList[p2][1:3]
         # x2, y2 = p2[0],p2[1]
 
         if draw:
-            cv2.line(img, (x1, y1), (x2, y2), (255, 0, 255), t)
-            cv2.circle(img, (x1, y1), r, (255, 0, 255), cv2.FILLED)
-            cv2.circle(img, (x2, y2), r, (255, 0, 255), cv2.FILLED)
+            cv2.line(img, (x1, y1), (x2, y2), (171, 242, 0), t)
+            cv2.circle(img, (x1, y1), r, (171, 242, 0), cv2.FILLED)
+            cv2.circle(img, (x2, y2), r, (171, 242, 0), cv2.FILLED)
 
         return img
     # 추가된 함수
@@ -273,7 +273,7 @@ class HolisticDetector():
 
     # 추가된 함수
     # 어깨의 두 점 11, 12의 점과 사이 라인 표시
-    def drawShoulder(self, p1, p2, img, draw=True, r=15, t=3):
+    def drawShoulder(self, p1, p2, img, draw=True, r=5, t=1):
         x1, y1 = self.pose_lmList[p1][1:3]
         x2, y2 = self.pose_lmList[p2][1:3]
 
