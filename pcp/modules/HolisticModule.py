@@ -3,13 +3,14 @@ import mediapipe as mp
 import time
 import math
 
+
 class HolisticDetector():
     def __init__(self,
-               static_image_mode=False,
-               model_complexity=1,
-               smooth_landmarks=True,
-               min_detection_confidence=0.5,
-               min_tracking_confidence=0.5):
+                 static_image_mode=False,
+                 model_complexity=1,
+                 smooth_landmarks=True,
+                 min_detection_confidence=0.5,
+                 min_tracking_confidence=0.5):
         self.static_image_mode = static_image_mode
         self.model_complexity = model_complexity
         self.smooth_landmarks = smooth_landmarks
@@ -19,19 +20,20 @@ class HolisticDetector():
         self.mpHolistic = mp.solutions.holistic
         self.mpPose = mp.solutions.pose
         self.mpFace = mp.solutions.face_mesh
-        self.holistics = self.mpHolistic.Holistic(self.static_image_mode, self.model_complexity, self.smooth_landmarks, self.min_detection_confidence, self.min_tracking_confidence)
+        self.holistics = self.mpHolistic.Holistic(self.static_image_mode, self.model_complexity, self.smooth_landmarks,
+                                                  self.min_detection_confidence, self.min_tracking_confidence)
         self.mpDraw = mp.solutions.drawing_utils
 
         self.tipIds = [4, 8, 12, 16, 20]
 
-    def findHolistic(self, img, draw = True):
-        imgRGB = cv2.cvtColor(img, cv2.COLOR_BGR2RGB )
+    def findHolistic(self, img, draw=True):
+        imgRGB = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
         self.results = self.holistics.process(imgRGB)
 
         if self.results.pose_landmarks:
-            
+
             if draw:
-                 # Draw pose, left and right hands, and face landmarks on the image.
+                # Draw pose, left and right hands, and face landmarks on the image.
                 annotated_image = img.copy()
 
                 # self.mpDraw.draw_landmarks(
@@ -47,7 +49,7 @@ class HolisticDetector():
                 # self.mpDraw.plot_landmarks(
                 #     self.results.pose_world_landmarks, self.mpHolistic.POSE_CONNECTIONS)
                 return annotated_image
-            
+
         return img
 
     def findPoseLandmark(self, img, draw=True):
@@ -62,7 +64,7 @@ class HolisticDetector():
             for id, lm in enumerate(myHolistic.landmark):
                 # print(id,lm)
                 h, w, c = img.shape
-                cx, cy, cz = int(lm.x*w), int(lm.y*h), int(lm.z*(w+h)/2)
+                cx, cy, cz = int(lm.x * w), int(lm.y * h), int(lm.z * (w + h) / 2)
                 # print(id, cx, cy)
                 # print(cz)
                 xList.append(cx)
@@ -82,7 +84,7 @@ class HolisticDetector():
             for id, lm in enumerate(myHolistic.landmark):
                 # print(id,lm)
                 h, w, c = img.shape
-                cx, cy, cz = int(lm.x*w), int(lm.y*h), int(lm.z*(w+h)/2)
+                cx, cy, cz = int(lm.x * w), int(lm.y * h), int(lm.z * (w + h) / 2)
                 # print(id, cx, cy)
                 xList.append(cx)
                 yList.append(cy)
@@ -102,7 +104,7 @@ class HolisticDetector():
             for id, lm in enumerate(myHolistic.landmark):
                 # print(id,lm)
                 h, w, c = img.shape
-                cx, cy, cz = int(lm.x*w), int(lm.y*h), int(lm.z*(w+h)/2)
+                cx, cy, cz = int(lm.x * w), int(lm.y * h), int(lm.z * (w + h) / 2)
                 # print(id, cx, cy)
                 # print(cz)
                 xList.append(cx)
@@ -123,7 +125,7 @@ class HolisticDetector():
             for id, lm in enumerate(myHolistic.landmark):
                 # print(id,lm)
                 h, w, c = img.shape
-                cx, cy, cz = int(lm.x*w), int(lm.y*h), int(lm.z*(w+h)/2)
+                cx, cy, cz = int(lm.x * w), int(lm.y * h), int(lm.z * (w + h) / 2)
                 # print(id, cx, cy)
                 # print(cz)
                 xList.append(cx)
@@ -134,7 +136,7 @@ class HolisticDetector():
 
     def left_hand_fingersUp(self, axis=False):
         fingers = []
-        
+
         if axis == False:
             # Thumb
             if self.left_hand_lmList[self.tipIds[0]][1] < self.left_hand_lmList[self.tipIds[4]][1]:
@@ -150,7 +152,7 @@ class HolisticDetector():
 
             # Fingers except Thumb
             for id in range(1, 5):
-                if self.left_hand_lmList[self.tipIds[id]][2] < self.left_hand_lmList[self.tipIds[id]-2][2]:
+                if self.left_hand_lmList[self.tipIds[id]][2] < self.left_hand_lmList[self.tipIds[id] - 2][2]:
                     fingers.append(1)
                 else:
                     fingers.append(0)
@@ -166,17 +168,16 @@ class HolisticDetector():
             # Fingers except Thumb
             if self.left_hand_lmList[self.tipIds[0]][1] < self.left_hand_lmList[self.tipIds[4]][1]:
                 for id in range(1, 5):
-                    if self.left_hand_lmList[self.tipIds[id]][1] > self.left_hand_lmList[self.tipIds[id]-2][1]:
+                    if self.left_hand_lmList[self.tipIds[id]][1] > self.left_hand_lmList[self.tipIds[id] - 2][1]:
                         fingers.append(1)
                     else:
                         fingers.append(0)
             else:
                 for id in range(1, 5):
-                    if self.left_hand_lmList[self.tipIds[id]][1] < self.left_hand_lmList[self.tipIds[id]-2][1]:
+                    if self.left_hand_lmList[self.tipIds[id]][1] < self.left_hand_lmList[self.tipIds[id] - 2][1]:
                         fingers.append(1)
                     else:
                         fingers.append(0)
-
 
         return fingers
 
@@ -198,7 +199,7 @@ class HolisticDetector():
 
             # Fingers except Thumb
             for id in range(1, 5):
-                if self.right_hand_lmList[self.tipIds[id]][2] < self.right_hand_lmList[self.tipIds[id]-2][2]:
+                if self.right_hand_lmList[self.tipIds[id]][2] < self.right_hand_lmList[self.tipIds[id] - 2][2]:
                     fingers.append(1)
                 else:
                     fingers.append(0)
@@ -214,13 +215,13 @@ class HolisticDetector():
             # Fingers except Thumb
             if self.right_hand_lmList[self.tipIds[0]][1] < self.right_hand_lmList[self.tipIds[4]][1]:
                 for id in range(1, 5):
-                    if self.right_hand_lmList[self.tipIds[id]][1] > self.right_hand_lmList[self.tipIds[id]-2][1]:
+                    if self.right_hand_lmList[self.tipIds[id]][1] > self.right_hand_lmList[self.tipIds[id] - 2][1]:
                         fingers.append(1)
                     else:
                         fingers.append(0)
             else:
                 for id in range(1, 5):
-                    if self.right_hand_lmList[self.tipIds[id]][1] < self.right_hand_lmList[self.tipIds[id]-2][1]:
+                    if self.right_hand_lmList[self.tipIds[id]][1] < self.right_hand_lmList[self.tipIds[id] - 2][1]:
                         fingers.append(1)
                     else:
                         fingers.append(0)
@@ -236,34 +237,35 @@ class HolisticDetector():
 
     def findDistance(self, p1, p2, img, draw=True, r=15, t=3):
         x1, y1 = self.face_lmList[p1][1:3]
-        #x2, y2 = self.pose_lmList[p2][1:3]
-        x2, y2 = p2[0],p2[1]
-
-        if draw:
-            cv2.line(img, (x1, y1), (x2, y2), (255,0,255), t)
-            cv2.circle(img, (x1, y1), r, (255,0,255), cv2.FILLED)
-            cv2.circle(img, (x2, y2), r, (255,0,255), cv2.FILLED)
-        length = math.hypot(x2-x1, y2-y1)
-
-        return length, img
-
-    # 추가된 함수
-    # 얼굴 관절점과 포즈 관절점을 시각화하여 보여주고    
-    # 둘의 거리차만큼 선으로 연결하여 그것을 시각화하여 보여줌
-    def drawPointDistance(self, p1, p2, img, draw=True, r=15, t=3):
-        x1, y1 = self.face_lmList[p1][1:3]
-        x2, y2 = self.pose_lmList[p2][1:3]
-        # x2, y2 = p2[0],p2[1]
+        # x2, y2 = self.pose_lmList[p2][1:3]
+        x2, y2 = p2[0], p2[1]
 
         if draw:
             cv2.line(img, (x1, y1), (x2, y2), (255, 0, 255), t)
             cv2.circle(img, (x1, y1), r, (255, 0, 255), cv2.FILLED)
             cv2.circle(img, (x2, y2), r, (255, 0, 255), cv2.FILLED)
+        length = math.hypot(x2 - x1, y2 - y1)
+
+        return length, img
+
+    # 추가된 함수
+    # 얼굴 관절점과 포즈 관절점을 시각화하여 보여주고
+    # 둘의 거리차만큼 선으로 연결하여 그것을 시각화하여 보여줌
+    def drawPointDistance(self, p1, p2, img, draw=True, r=5, t=1):
+        x1, y1 = self.face_lmList[p1][1:3]
+        x2, y2 = self.pose_lmList[p2][1:3]
+        # x2, y2 = p2[0],p2[1]
+
+        if draw:
+            cv2.line(img, (x1, y1), (x2, y2), (171, 242, 0), t)
+            cv2.circle(img, (x1, y1), r, (171, 242, 0), cv2.FILLED)
+            cv2.circle(img, (x2, y2), r, (171, 242, 0), cv2.FILLED)
 
         return img
+
     # 추가된 함수
     # 얼굴 관절점과 포즈 관절점의 거리 차 구하기
-    def findPointDistance(self,p1,p2):
+    def findPointDistance(self, p1, p2):
         x1, y1 = self.face_lmList[p1][1:3]
         x2, y2 = self.pose_lmList[p2][1:3]
 
@@ -273,7 +275,7 @@ class HolisticDetector():
 
     # 추가된 함수
     # 어깨의 두 점 11, 12의 점과 사이 라인 표시
-    def drawShoulder(self, p1, p2, img, draw=True, r=15, t=3):
+    def drawShoulder(self, p1, p2, img, draw=True, r=5, t=1):
         x1, y1 = self.pose_lmList[p1][1:3]
         x2, y2 = self.pose_lmList[p2][1:3]
 
@@ -291,7 +293,7 @@ class HolisticDetector():
         x2, y2 = self.pose_lmList[p2][1:3]
 
         if y1 > y2:
-             return y1 - y2
+            return y1 - y2
         elif y1 < y2:
             return y2 - y1
         elif y1 == y2:
@@ -308,10 +310,10 @@ class HolisticDetector():
         x2, y2 = self.face_lmList[p2][1:3]
 
         if draw:
-            cv2.line(img, (x1, y1), (x2, y2), (255,0,255), t)
-            cv2.circle(img, (x1, y1), r, (255,0,255), cv2.FILLED)
-            cv2.circle(img, (x2, y2), r, (255,0,255), cv2.FILLED)
-        length = math.hypot(x2-x1, y2-y1)
+            cv2.line(img, (x1, y1), (x2, y2), (255, 0, 255), t)
+            cv2.circle(img, (x1, y1), r, (255, 0, 255), cv2.FILLED)
+            cv2.circle(img, (x2, y2), r, (255, 0, 255), cv2.FILLED)
+        length = math.hypot(x2 - x1, y2 - y1)
 
         return length, img
 
@@ -323,34 +325,34 @@ class HolisticDetector():
         x1, y1 = self.face_lmList[p1][1:3]
         x2, y2 = self.face_lmList[p2][1:3]
 
-        cv2.line(img, (x1, y1), (x2, y2), (255,255,255), t)
+        cv2.line(img, (x1, y1), (x2, y2), (255, 255, 255), t)
 
     def findLength_lh_rh(self, p1, p2):
         x1, y1 = self.left_hand_lmList[p2][1:3]
         x2, y2 = self.right_hand_lmList[p1][1:3]
 
-        length = math.hypot(abs(x2-x1), abs(y2-y1))
+        length = math.hypot(abs(x2 - x1), abs(y2 - y1))
         return length
 
     def findLength_lh_lh(self, p1, p2):
         x1, y1 = self.left_hand_lmList[p2][1:3]
         x2, y2 = self.left_hand_lmList[p1][1:3]
 
-        length = math.hypot(abs(x2-x1), abs(y2-y1))
+        length = math.hypot(abs(x2 - x1), abs(y2 - y1))
         return length
 
     def findLength_rh_rh(self, p1, p2):
         x1, y1 = self.right_hand_lmList[p2][1:3]
         x2, y2 = self.right_hand_lmList[p1][1:3]
 
-        length = math.hypot(abs(x2-x1), abs(y2-y1))
+        length = math.hypot(abs(x2 - x1), abs(y2 - y1))
         return length
 
     def findLength_pose(self, p1, p2):
         x1, y1 = self.pose_lmList[p2][1:3]
         x2, y2 = self.pose_lmList[p1][1:3]
 
-        length = math.hypot(abs(x2-x1), abs(y2-y1))
+        length = math.hypot(abs(x2 - x1), abs(y2 - y1))
         return length
 
     def findAngle(self, img, p1, p2, p3, draw=True):
@@ -361,25 +363,25 @@ class HolisticDetector():
         x3, y3 = self.pose_lmList[p3][1:3]
 
         # 각도 계산
-        radian = math.atan2(y3-y2,x3-x2)-math.atan2(y1-y2,x1-x2)
+        radian = math.atan2(y3 - y2, x3 - x2) - math.atan2(y1 - y2, x1 - x2)
         angle = math.degrees(radian)
 
         if angle < 0:
             angle += 360
 
-        #print(angle)
+        # print(angle)
         # 점, 선 그리기
         if draw:
-            cv2.line(img, (x1,y1), (x2,y2), (255,255,255), 3)
-            cv2.line(img, (x2,y2), (x3,y3), (255,255,255), 3)            
-            cv2.circle(img, (x1,y1), 10, (0,0,255), cv2.FILLED)
-            cv2.circle(img, (x1,y1), 15, (0,0,255), 2)
-            cv2.circle(img, (x2,y2), 10, (0,0,255), cv2.FILLED)
-            cv2.circle(img, (x2,y2), 15, (0,0,255), 2)
-            cv2.circle(img, (x3,y3), 10, (0,0,255), cv2.FILLED)
-            cv2.circle(img, (x3,y3), 15, (0,0,255), 2)
-            cv2.putText(img, str(int(angle)), (x2-50,y2+50), cv2.FONT_HERSHEY_PLAIN, 2, (0,0,255), 2) 
-            
+            cv2.line(img, (x1, y1), (x2, y2), (255, 255, 255), 3)
+            cv2.line(img, (x2, y2), (x3, y3), (255, 255, 255), 3)
+            cv2.circle(img, (x1, y1), 10, (0, 0, 255), cv2.FILLED)
+            cv2.circle(img, (x1, y1), 15, (0, 0, 255), 2)
+            cv2.circle(img, (x2, y2), 10, (0, 0, 255), cv2.FILLED)
+            cv2.circle(img, (x2, y2), 15, (0, 0, 255), 2)
+            cv2.circle(img, (x3, y3), 10, (0, 0, 255), cv2.FILLED)
+            cv2.circle(img, (x3, y3), 15, (0, 0, 255), 2)
+            cv2.putText(img, str(int(angle)), (x2 - 50, y2 + 50), cv2.FONT_HERSHEY_PLAIN, 2, (0, 0, 255), 2)
+
         return angle
 
     def findHandAngle(self, img, p1, p2, p3, draw=True):
@@ -390,23 +392,23 @@ class HolisticDetector():
         x3, y3 = self.right_hand_lmList[p3][1:3]
 
         # 각도 계산
-        radian = math.atan2(y3-y2,x3-x2)-math.atan2(y1-y2,x1-x2)
+        radian = math.atan2(y3 - y2, x3 - x2) - math.atan2(y1 - y2, x1 - x2)
         angle = math.degrees(radian)
 
         if angle < 0:
             angle += 360
 
-        #print(angle)
+        # print(angle)
         # 점, 선 그리기
         if draw:
-            cv2.line(img, (x1,y1), (x2,y2), (255,255,255), 3)
-            cv2.line(img, (x2,y2), (x3,y3), (255,255,255), 3)            
-            cv2.circle(img, (x1,y1), 10, (0,0,255), cv2.FILLED)
-            cv2.circle(img, (x1,y1), 15, (0,0,255), 2)
-            cv2.circle(img, (x2,y2), 10, (0,0,255), cv2.FILLED)
-            cv2.circle(img, (x2,y2), 15, (0,0,255), 2)
-            cv2.circle(img, (x3,y3), 10, (0,0,255), cv2.FILLED)
-            cv2.circle(img, (x3,y3), 15, (0,0,255), 2)
-            cv2.putText(img, str(int(angle)), (x2-50,y2+50), cv2.FONT_HERSHEY_PLAIN, 2, (0,0,255), 2) 
-            
+            cv2.line(img, (x1, y1), (x2, y2), (255, 255, 255), 3)
+            cv2.line(img, (x2, y2), (x3, y3), (255, 255, 255), 3)
+            cv2.circle(img, (x1, y1), 10, (0, 0, 255), cv2.FILLED)
+            cv2.circle(img, (x1, y1), 15, (0, 0, 255), 2)
+            cv2.circle(img, (x2, y2), 10, (0, 0, 255), cv2.FILLED)
+            cv2.circle(img, (x2, y2), 15, (0, 0, 255), 2)
+            cv2.circle(img, (x3, y3), 10, (0, 0, 255), cv2.FILLED)
+            cv2.circle(img, (x3, y3), 15, (0, 0, 255), 2)
+            cv2.putText(img, str(int(angle)), (x2 - 50, y2 + 50), cv2.FONT_HERSHEY_PLAIN, 2, (0, 0, 255), 2)
+
         return angle
