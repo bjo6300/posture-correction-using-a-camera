@@ -1,15 +1,11 @@
 import cv2
 import time
 import numpy as np
-import modules.HolisticModule as hm
+import pcp.modules.HolisticModule as hm
 from win10toast import ToastNotifier
 import tensorflow as tf
-import keras.models
-from keras.utils import np_utils
-from keras.models import Sequential
 from keras.preprocessing.image import img_to_array
 from PIL import Image
-
 
 # fps = 1초당 프레임의 수
 # privious time for fps
@@ -108,15 +104,11 @@ while True:
         left_hand_img = detector.drawPointDistance(152, 20, frame, draw=True)
         right_hand_img = detector.drawPointDistance(152, 17, frame, draw=True)
 
-        # 거북목이 감지되면 count가 1증가
-        if single_test == 1:
-            turtleNeck_count += 1
-        else:
-            turtleNeck_count = 0
-
         # 턱 괴기 자세가 감지되면 턱 괴기 count 1증가
-        if left_hand_len < 85 or right_hand_len < 85:
+        if left_hand_len < 130 or right_hand_len < 130:
             jaw_bone_count += 1
+            shoulder_count = 0
+            turtleNeck_count = 0
         elif left_hand_len < 25 or right_hand_len < 25:
             jaw_bone_count = 0
         else:
@@ -128,11 +120,19 @@ while True:
         else:
             shoulder_count = 0
 
+        # 거북목이 감지되면 count가 1증가
+        if single_test == 1:
+            turtleNeck_count += 1
+        else:
+            turtleNeck_count = 0
+
+
         # 3초동안 턱 괴기 자세가 인식되면 알림을 제공한다.
         if jaw_bone_count > my_computer_fps * 3:
             print("턱괴기 자세가 감지되었습니다!")
             # win10toast 알림 제공
-            toaster.show_toast("턱 괴기 발생!", f"바른 자세를 취해주세요!.\n\n")
+
+            toaster.show_toast("턱 괴기 발생!", f"바른 자세를 취해주세요!.\n\n",threaded=True)
 
             # 알림 제공 후 카운트를 다시 0으로 만든다.
             jaw_bone_count = 0
@@ -141,7 +141,9 @@ while True:
 
         if shoulder_count > my_computer_fps * 3:
             print("어깨 비대칭 동작이 감지되었습니다!")
-            toaster.show_toast("어깨 비대칭 발생!",f"바른 자세를 취해주세요!")
+
+            toaster.show_toast("어깨 비대칭 발생!",f"바른 자세를 취해주세요!",threaded=True)
+
             # 알림 제공 후 카운트를 다시 0으로 만듬
             shoulder_count = 0
 
@@ -150,7 +152,7 @@ while True:
         if turtleNeck_count > my_computer_fps * 3:
             print("거북목 동작이 감지되었습니다!")
             # win10toast 알림 제공
-            toaster.show_toast("거북목 발생!", f"바른 자세를 취해주세요!.\n\n")
+            toaster.show_toast("거북목 발생!", f"바른 자세를 취해주세요!.\n\n",threaded=True)
 
             # 알림 제공 후 카운트를 다시 0으로 만든다.
             turtleNeck_count = 0
