@@ -3,6 +3,7 @@ from django.urls import path
 from unicodedata import name
 from django.contrib.auth import views as auth_views
 from . import views
+from .views import SignUpView
 
 app_name = 'common'
 
@@ -19,4 +20,10 @@ urlpatterns = [
 
     # 아이디 찾기 체크완료 "{% url 'common:find_id_checked' %}"
     path('find_id/checked', views.find_id_checked, name='find_id_checked'),
+
+    # 회원가입 페이지
+    path('signup/', SignUpView.as_view(), name='signup'),
+    
+    # 회원가입 완료 페이지
+    path('signup/completed', views.signup_completed, name='signup_completed'),  
 ]
