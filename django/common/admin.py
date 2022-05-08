@@ -6,7 +6,7 @@ class UserAdmin(admin.ModelAdmin) :
     list_filter = ('is_admin',)
 
     fieldsets = (
-        (None, {'fields': ('user_id', 'user_password')}),
+        (None, {'fields': ('user_id', 'password')}),
         ('Personal info', {'fields': ('gender', 'user_email','birth')}),
         ('Permissions', {'fields': ('is_admin',)}),
     )
@@ -15,6 +15,6 @@ class UserAdmin(admin.ModelAdmin) :
     ordering = ('user_id',)
 
     filter_horizontal = ()
-
+    
 
 admin.site.register(User, UserAdmin) #site에 등록
