@@ -9,8 +9,9 @@ app_name = 'common'
 
 urlpatterns = [
     
-    # 로그인 "{% url 'common:login' %}"
-    path('login/', auth_views.LoginView.as_view(template_name='common/login.html'), name='login'),
+    # 로그인 "{% url 'common:login_main' %}"
+    # path('login/', auth_views.LoginView.as_view(template_name='common/login.html'), name='login_main'), # 이건 관리자만 가능
+    path('login/', views.login_main, name='login_main'),
 
     # 로그아웃 "{% url 'common:logout' %}"
     path('logout/', auth_views.LogoutView.as_view(), name='logout'),

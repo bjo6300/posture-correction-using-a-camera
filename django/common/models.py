@@ -37,7 +37,7 @@ class UserManager(BaseUserManager):
         return user
 
 class User(AbstractBaseUser):
-    user_id = models.CharField(default='', max_length=100, null=False, blank=False)
+    user_id = models.CharField(max_length=100, null=False, blank=False,unique=True)
     user_email = models.EmailField(default='', max_length=100, null=False, blank=False, unique=True)
     gender = models.CharField(default='', max_length=100, null=False, blank=False)
     birth = models.CharField(default='', max_length=100, null=False, blank=False)
@@ -49,10 +49,10 @@ class User(AbstractBaseUser):
     # 헬퍼 클래스 사용
     objects = UserManager()
 
-    # 사용자의 username field는 nickname으로 설정
+    # 사용자의 user_id field는 user_id 설정
     USERNAME_FIELD = 'user_id'
     # 필수로 작성해야하는 field
-    REQUIRED_FIELDS = ['email', 'user_id']
+    REQUIRED_FIELDS = ['email']
 
     def __str__(self):
         return self.user_id

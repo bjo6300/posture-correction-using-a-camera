@@ -12,15 +12,17 @@ app_name = 'common'
 # 로그인 함수
 def login_main(request):
     if request.method == 'POST':
-        user_id = request.POST['user_id']
-        user_password = request.POST['user_password']
+        user_id = request.POST['username']
+        user_password = request.POST['password']
         user = auth.authenticate(request, user_id=user_id, user_password=user_password)
 
+        print(user)
+        
         if user is None:
-            return render(request, 'common/login.html', {'error': 'username or password가 틀렸습니다.'})
+            return render(request, 'common/login.html', {'error': 'user_id or password가 틀렸습니다.'})
         else:
             auth.login(request, user)
-            return redirect('/')
+            return redirect('/home/')
     elif request.method == 'GET':
         return render(request, 'common/login.html')
 
