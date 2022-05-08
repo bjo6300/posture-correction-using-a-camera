@@ -12,7 +12,7 @@ class UserAdmin(admin.ModelAdmin) :
     )
 
     search_fields =  ('user_id',)
-    ordering = ('user_id','user_email')
+    ordering = ('user_id',)
 
     filter_horizontal = ()
 

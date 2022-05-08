@@ -25,7 +25,7 @@ class UserManager(BaseUserManager):
 
     # 관리자 user 생성
     def create_superuser(self, user_id, gender, user_email, birth, user_password=None):
-        user = self.model(
+        user = self.create_superuser(
             user_id,
             user_email = self.normalize_email(user_email),
             user_password = user_password,
@@ -37,7 +37,7 @@ class UserManager(BaseUserManager):
         return user
 
 class User(AbstractBaseUser):
-    user_id = models.CharField(max_length=100, null=False, blank=False,unique=True)
+    user_id = models.CharField(max_length=100,primary_key=True, null=False, blank=False,unique=True)
     user_email = models.EmailField(default='', max_length=100, null=False, blank=False, unique=True)
     gender = models.CharField(default='', max_length=100, null=False, blank=False)
     birth = models.CharField(default='', max_length=100, null=False, blank=False)
@@ -52,7 +52,7 @@ class User(AbstractBaseUser):
     # 사용자의 user_id field는 user_id 설정
     USERNAME_FIELD = 'user_id'
     # 필수로 작성해야하는 field
-    REQUIRED_FIELDS = ['email']
+    REQUIRED_FIELDS = ['user_email']
 
     def __str__(self):
         return self.user_id

@@ -14,9 +14,9 @@ def login_main(request):
     if request.method == 'POST':
         user_id = request.POST['username']
         user_password = request.POST['password']
-        user = auth.authenticate(request, user_id=user_id, user_password=user_password)
+        user = auth.authenticate(request, username=user_id, password=user_password)
 
-        print(user)
+        print(user) # 이거 왜 none이야 계속 ㅡㅡ 
         
         if user is None:
             return render(request, 'common/login.html', {'error': 'user_id or password가 틀렸습니다.'})
