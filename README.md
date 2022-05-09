@@ -25,7 +25,8 @@
 </br>
 
 ## Basic Layout
-<img width="610" alt="image" src="https://user-images.githubusercontent.com/70627982/155875361-53b8db65-1592-46d4-8f54-697c48e54a17.png">
+![image](https://user-images.githubusercontent.com/70627982/167334072-b9d11633-bb85-4bb4-8679-1246c9e4ffcc.png)
+
 
 ## FlowChart
 ![시스템흐름도 drawio](https://user-images.githubusercontent.com/70627982/155875456-19f3a6bd-2df6-4886-8600-064f882afd32.png)
