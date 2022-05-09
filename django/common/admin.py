@@ -2,17 +2,17 @@ from django.contrib import admin
 from .models import User
 
 class UserAdmin(admin.ModelAdmin) :
-    list_display = ('user_id','gender','user_email','birth')
+    list_display = ('username','gender','email','birth')
     list_filter = ('is_admin',)
 
     fieldsets = (
-        (None, {'fields': ('user_id', 'password')}),
-        ('Personal info', {'fields': ('gender', 'user_email','birth')}),
+        (None, {'fields': ('username', 'password')}),
+        ('Personal info', {'fields': ('gender', 'email','birth')}),
         ('Permissions', {'fields': ('is_admin',)}),
     )
 
-    search_fields =  ('user_id',)
-    ordering = ('user_id',)
+    search_fields =  ('username',)
+    ordering = ('username',)
 
     filter_horizontal = ()
     

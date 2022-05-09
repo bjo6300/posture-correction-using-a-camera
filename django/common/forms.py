@@ -16,7 +16,7 @@ class UserCreationForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ('user_id', 'gender', 'user_email', 'birth')
+        fields = ('username', 'gender', 'email', 'birth')
 
     # 패스워드 검증
     def clean_password2(self):
@@ -37,11 +37,11 @@ class UserCreationForm(forms.ModelForm):
 # 사용자 수정 Form
 class UserChangeForm(forms.ModelForm):
     # 사용자의 패스워드를 read 권한으로 설정하여 수정하지 못하도록 함
-    user_password = ReadOnlyPasswordHashField()
+    password = ReadOnlyPasswordHashField()
 
     class Meta:
         model = User
-        fields = ('user_id', 'gender', 'user_email', 'birth', 'user_password')
+        fields = ('username', 'gender', 'email', 'birth', 'password')
 
     def clean_password(self):
-        return self.initial["user_password"]
+        return self.initial["password"]

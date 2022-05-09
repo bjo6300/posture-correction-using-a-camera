@@ -17,7 +17,7 @@
                     아이디
                 </li>
                 <li class="item">
-                    <input type="text" name="user_id" id="user_id" placeholder="아이디를 입력하세요." required  value="{{ form.user_id.value|default_if_none:'' }}">
+                    <input type="text" name="username" id="username" placeholder="아이디를 입력하세요." required  value="{{ form.username.value|default_if_none:'' }}">
                 </li>
                 <li class="item">
                     <button class="idcheck">중복확인</button>
@@ -77,7 +77,7 @@
                     이메일
                 </li>
                 <li class="item">
-                    <input type="text" placeholder="이메일"  name="user_email" id="user_email" required value="{{ form.user_email.value|default_if_none:'' }}">
+                    <input type="text" placeholder="이메일"  name="email" id="email" required value="{{ form.email.value|default_if_none:'' }}">
                 </li>
                 <li class="item">
                     
