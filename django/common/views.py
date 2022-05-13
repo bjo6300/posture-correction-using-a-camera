@@ -55,6 +55,7 @@ class SignUpView(View):
         if password1 != password2:
             res_data['error'] = '비밀번호가 일치하지 않습니다.'
 
+        messages.warning(request, '사용 가능한 아이디입니다!')
         # DB에 사용자 계정 생성
         user = User.objects.create_user(username=username, gender=gender,
                                         email=email, birth=birth,
