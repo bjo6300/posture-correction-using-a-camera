@@ -17,7 +17,7 @@ def login_main(request):
         user = auth.authenticate(request, username=username, password=password) # 여기서 username, password는 고정 (django 특)
         
         if user is None:
-            return render(request, 'common/login.html', {'error': 'username or password가 틀렸습니다.'})
+            return render(request, 'common/login.html', {'error': '아이디 또는 비밀번호를 확인해주세요.'})
         else:
             auth.login(request, user)
             return redirect('/home/')
