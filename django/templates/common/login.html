@@ -5,9 +5,10 @@
 <link rel="stylesheet" type="text/css" href="{% static 'css/login.css' %}">
 
 <div id="div-login">
-    <form method="post" class="post-form" action="{% url 'common:login' %}">
+    <form method="post" action="{% url 'common:login_main' %}">
         {% csrf_token %}
         {% include "form_errors.html" %}
+        {{error}}
         <div class="form-group">
             <!-- 로그인 글자 -->
             <h1 style="text-align: left; margin-left: 50px; font-size: 30px; margin-bottom: 20px;">
@@ -16,22 +17,22 @@
             
             <!-- 아이디 -->
             <input type="text" name="username" id="username" placeholder="아이디"
-                   value="{{ form.username.value|default_if_none:'' }}">
+                   >
         </div>
 
         <div class="form-group">
             
             <!-- 비밀번호 -->
             <input type="password" name="password" placeholder="비밀번호" id="password"
-                   value="{{ form.password.value|default_if_none:'' }}">
+                   >
         </div>
         <!-- 로그인 버튼 -->
-        <button type="submit" id="btn-login" >로그인</button>
+        <button type="submit" id="btn-login" onclick="location.href='{% url 'common:login_main' %}'">로그인</button>
         <br>
 
         <a id="a-find-btn" href="{% url 'common:find_id' %}"> 아이디 찾기 </a>
         <a id="a-find-btn" href="#"> 비밀번호 찾기 </a>
-        <a id="a-register-btn" href="{% url 'posture:signup' %}"> 회원가입 </a>
+        <a id="a-register-btn" href="{% url 'common:signup' %}"> 회원가입 </a>
     </form>
 </div>
 {% endblock %}
