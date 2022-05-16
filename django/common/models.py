@@ -5,14 +5,14 @@ from django.contrib.auth.models import (BaseUserManager, AbstractBaseUser)
 class UserManager(BaseUserManager):
     # 일반 user 생성
     def create_user(self, username, gender, email, birth, password=None):
-        if not email:
-            raise ValueError('must have user email')
-        if not username:
-            raise ValueError('must have user username')
-        if not gender:
-            raise ValueError('must have user gender')
-        if not birth:
-            raise ValueError('must have user birth')
+        # if not email:
+        #     raise ValueError('must have user email')
+        # if not username:
+        #     raise ValueError('must have user username')
+        # if not gender:
+        #     raise ValueError('must have user gender')
+        # if not birth:
+        #     raise ValueError('must have user birth')
 
         user = self.model(
             email = self.normalize_email(email),

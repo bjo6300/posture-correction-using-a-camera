@@ -35,33 +35,37 @@ class SignUpView(View):
         birth = request.POST.get('birth', None)  # 생일
         gender = request.POST.get('gender', None) # 성별
         
-        res_data = {}
-
-        # 빈 칸 확인
-        if not (username and gender and password1 and password2 and email and birth):
-            res_data['error'] = "입력하지 않은 칸이 있습니다."
-
         # 아이디가 5자 미만이면
         if len(username) < 5:
             messages.warning(request, '아이디를 5글자 이상 입력해주세요.')
             return render(request, 'navbar/signup.html')
 
         # 아이디 중복 확인
-        if User.objects.filter(username=username).exists():  # 아이디 중복 체크
+        elif User.objects.filter(username=username).exists():  # 아이디 중복 체크
             messages.warning(request, '이미 존재하는 아이디입니다!')
             return render(request, 'navbar/signup.html')
 
         # 비밀번호 일치 여부 확인
-        if password1 != password2:
-            res_data['error'] = '비밀번호가 일치하지 않습니다.'
+        elif password1 != password2:
+            messages.warning(request, '비밀번호가 일치하지 않습니다.')
+            return render(request, 'navbar/signup.html')
 
-        messages.warning(request, '사용 가능한 아이디입니다!')
+        # 이메일 형식 확인
+        elif email.find('@') | email.find('.') == -1:
+            messages.warning(request, '올바른 이메일 형식을 입력해주세요.')
+            return render(request, 'navbar/signup.html')
+
+        # 빈 칸 확인
+        if not (username and gender and password1 and password2 and email and birth):
+            messages.warning(request, '사용 가능한 아이디입니다. 나머지 정보를 입력해주세요.')
+            return render(request, 'navbar/signup.html')
+
         # DB에 사용자 계정 생성
         user = User.objects.create_user(username=username, gender=gender,
                                         email=email, birth=birth,
                                         password=password1)
         user.save()
-        return render(request, 'navbar/signup_completed.html', res_data)
+        return render(request, 'navbar/signup_completed.html')
 
     # GET 요청 시(회원가입 버튼 클릭 등)
     def get(self, request):

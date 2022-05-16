@@ -5,15 +5,6 @@
 <script src="{% static 'js/birth.js' %}"></script>
 <link rel="stylesheet" type="text/css" href="{% static 'css/signup.css' %}">
 
-<script
-    type="text/javascript"> window.addEventListener('beforeunload', (event) => { 
-        event.preventDefault(); 
-        $('#id_check_text').hide();
-        }); </script>
-
-
-<body>
-
     <div class="register">
         <h3 style="font-size: 30px;">회원가입</h3>
         <form method="post" action="{% url 'common:signup' %}" autocomplete="off">
@@ -31,19 +22,9 @@
                     </li>
 
                     <li class="item">
-                        <button class="idcheck" onclick="" id="id_check" name="id_check">중복확인</button>
+                        <button class="idcheck"  id="id_check" name="id_check">중복확인</button>
 
                     </li>
-                    <li>
-
-                    </li>
-                    <li id="id_check_text" name="id_check_text" check_result="fail">
-                        {% for message in messages %}
-                        {{ message.tag }}
-                        {{ message }}
-                        {% endfor %}
-                    </li>
-
 
                 </ul>
                 <ul class="container">
@@ -63,7 +44,7 @@
                         비밀번호 확인
                     </li>
                     <li class="item">
-                        <input type="password" name="password2" id="password2" placeholder="비밀번호를 입력하세요.">
+                        <input type="password" name="password2" id="password2" placeholder="비밀번호를 입력하세요." value="{{ form.password2.value|default_if_none:'' }}">
                     </li>
                     <li class="item">
 
@@ -77,7 +58,7 @@
 
                         <input type="date" name="birth" id="birth" value="{{ form.birth.value|default_if_none:'' }}>
                 </li>
-                <li class=" item">
+                <li class="item">
 
                     </li>
                 </ul>
@@ -107,7 +88,17 @@
                     <li class="item">
 
                     </li>
+                    <li>
+
+                    </li>
+                    <li id="id_check_text" name="id_check_text" check_result="fail" style="color: red;font-size: small; text-align: center;">
+                        {% for message in messages %}
+                        {{ message.tag }}
+                        {{ message }}
+                        {% endfor %}
+                    </li>
                 </ul>
+
                 <ul class="container">
                     <li class="item center">
 
