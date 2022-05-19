@@ -47,7 +47,8 @@
                             border-left: 2px solid rgb(180, 179, 179);
                             background-color: white; padding-left: 3%;">
                                 비공개
-                                <button id="btn-fix" style="width: 50px; height: 25px; font-size: 12px; position: absolute; margin-left: 15px;" >수정</button>
+                                <a href="{% url 'common:modify_password' %}"><button id="btn-fix" style="width: 50px; height: 25px; font-size: 12px; position: absolute; margin-left: 15px;" >수정</button></a>
+                                
                             </td>
                         </tr>
 
@@ -116,10 +117,10 @@
                     </table>
                 </div>
 
-                <div align = "center" style="margin-top: 20px;">
+                <!-- <div align = "center" style="margin-top: 20px;">
                     <button id="btn-fix" >수정완료</button>
                     
-                </div>
+                </div> -->
             
         </div>
     </div>

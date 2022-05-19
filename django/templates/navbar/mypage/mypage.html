@@ -116,7 +116,7 @@
             </div>
 
             <div align="center" style="margin-top: 20px;">
-                <a href="{% url 'posture:mypage_modify' %}"><button id="btn-fix">수정하기</button></a>
+                <a href="{% url 'posture:mypage_modify' %}"><button id="btn-fix">{% if user.is_authenticated %}수정하기{% endif %}</button></a>
 
             </div>
 
