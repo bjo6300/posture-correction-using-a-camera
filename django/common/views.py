@@ -83,6 +83,14 @@ def modify_password(request):
 def modify_password_completed(request):
     return render(request, 'navbar/mypage/modify_password_completed.html') 
 
+# 비밀번호 수정 완료
+def modify_email(request):
+    return render(request, 'navbar/mypage/modify_email.html') 
+
+# 비밀번호 수정 완료
+def modify_email_completed(request):
+    return render(request, 'navbar/mypage/modify_email_completed.html') 
+
 # 아이디찾기
 def find_id(request):
     return render(request, 'common/find_id.html')

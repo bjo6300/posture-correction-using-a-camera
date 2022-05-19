@@ -33,4 +33,10 @@ urlpatterns = [
 
     # 비밀번호 수정 "{% url 'common:modify_password_completed' %}"
     path('modify_password_completed/', views.modify_password_completed, name='modify_password_completed'),
+
+    # 이메일 수정 "{% url 'common:modify_email' %}"
+    path('modify_email/', views.modify_email, name='modify_email'),
+
+    # 이메일 수정 "{% url 'common:modify_email_completed' %}"
+    path('modify_email_completed/', views.modify_email_completed, name='modify_email_completed'),
 ]
