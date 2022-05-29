@@ -3,7 +3,9 @@ from common import views
 from django.contrib import auth, messages
 from django.shortcuts import render, redirect
 from .models import User
-
+from django.contrib.auth.forms import PasswordChangeForm # 비밀번호 변경 폼
+from django.contrib.auth.hashers import check_password
+from django.contrib.auth import update_session_auth_hash # 비밀번호 변경 후 자동로그인
 import ctypes
 from django.views import View
 
@@ -71,13 +73,69 @@ class SignUpView(View):
     def get(self, request):
         return render(request, 'navbar/signup.html')
 
+
+# def change_password(request):
+#     if request.method == 'POST':
+#         form = PasswordChangeForm(request.user, request.POST)
+#         if form.is_valid():
+#             user = form.save()
+#             update_session_auth_hash(request, user)  # 비밀번호 변경 후 자동로그인
+#             messages.success(request, '비밀번호가 변경되었습니다!')
+#             return redirect("{% url 'common:modify_password_completed' %}")
+#         else:
+#             messages.error(request, 'Please correct the error below.')
+#             return redirect("{% url 'common:modify_password' %}")
+#     else:
+#         form = PasswordChangeForm(request.user)
+#     return render(request, "{% url 'common:modify_password_completed' %}", {
+#         'form': form
+#     })
+
+# def change_password(request):
+#   if request.method == "POST":
+#     user = request.user
+#     origin_password = request.POST["origin_password"]
+#     if check_password(origin_password, user.password):
+#       new_password = request.POST["new_password"]
+#       confirm_password = request.POST["confirm_password"]
+#       if new_password == confirm_password:
+#         user.set_password(new_password)
+#         user.save()
+#         auth.login(request, user)
+#         messages.error(request, '성공')
+#         return redirect("{% url 'common:change_password' %}")
+#       else:
+#         messages.error(request, 'Password not same')
+#     else:
+#       messages.error(request, 'Password not correct')
+#     return render(request, "{% url 'common:change_password' %}")
+#   else:
+#     return render(request, "{% url 'common:change_password' %}")
+
+from .forms import CustomPasswordChangeForm
+from django.contrib.auth import update_session_auth_hash
+
+def change_password(request):
+    if request.method == 'POST':
+        password_change_form = CustomPasswordChangeForm(request.user, request.POST)
+        if password_change_form.is_valid():
+            user = password_change_form.save()
+            update_session_auth_hash(request, user)
+            messages.success(request, "비밀번호를 성공적으로 변경하였습니다.")
+            return render(request,"{% url 'common:modify_password_completed' %}")
+    else:
+        password_change_form = CustomPasswordChangeForm(request.user)
+
+    return render(request, "{% url 'common:change_password' %}", {'password_change_form':password_change_form})
+
+
 def signup_completed(request):
     """ 회원가입 완료 페이지 """
     return render(request, 'navbar/signup_completed.html')
 
 # 비밀번호 수정
-def modify_password(request):
-    return render(request, 'navbar/mypage/modify_password.html')
+def change_password(request):
+    return render(request, 'navbar/mypage/change_password.html')
 
 # 비밀번호 수정 완료
 def modify_password_completed(request):

@@ -28,10 +28,10 @@ urlpatterns = [
     # 회원가입 완료 페이지 "{% url 'common:signup_completed' %}"
     path('signup/completed', views.signup_completed, name='signup_completed'),  
 
-    # 비밀번호 수정 "{% url 'common:modify_password' %}"
-    path('modify_password/', views.modify_password, name='modify_password'),
+    # 비밀번호 수정 "{% url 'common:change_password' %}"
+    path('change_password/', views.change_password, name='change_password'),
 
-    # 비밀번호 수정 "{% url 'common:modify_password_completed' %}"
+    # 비밀번호 수정 완료 "{% url 'common:modify_password_completed' %}"
     path('modify_password_completed/', views.modify_password_completed, name='modify_password_completed'),
 
     # 이메일 수정 "{% url 'common:modify_email' %}"
