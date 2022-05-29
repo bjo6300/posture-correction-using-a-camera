@@ -113,29 +113,28 @@ class SignUpView(View):
 #     return render(request, "{% url 'common:change_password' %}")
 
 from .forms import CustomPasswordChangeForm
-from django.contrib.auth import update_session_auth_hash
 
 def change_password(request):
     if request.method == 'POST':
+        print('비밀번호 변경 POST')
         password_change_form = CustomPasswordChangeForm(request.user, request.POST)
         if password_change_form.is_valid():
             user = password_change_form.save()
             update_session_auth_hash(request, user)
-            messages.success(request, "비밀번호를 성공적으로 변경하였습니다.")
-            return render(request,"{% url 'common:modify_password_completed' %}")
-    else:
+            messages.success(request, " ")
+            return render(request, 'navbar/mypage/modify_password_completed.html')
+        else: # 사용자가 기존비밀번호를 제대로 입력 안했을 때
+            # messages.error(request, "기존 비밀번호가 일치하지 않습니다.")
+            return render(request, "navbar/mypage/change_password.html",{'form': password_change_form})
+    elif request.method == 'GET':
+        print('비밀번호 변경 GET')
         password_change_form = CustomPasswordChangeForm(request.user)
-
-    return render(request, "{% url 'common:change_password' %}", {'password_change_form':password_change_form})
+        return render(request, "navbar/mypage/change_password.html", {'form': password_change_form})
 
 
 def signup_completed(request):
     """ 회원가입 완료 페이지 """
     return render(request, 'navbar/signup_completed.html')
-
-# 비밀번호 수정
-def change_password(request):
-    return render(request, 'navbar/mypage/change_password.html')
 
 # 비밀번호 수정 완료
 def modify_password_completed(request):
