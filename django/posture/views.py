@@ -13,14 +13,6 @@ def mypage(request):
 def mypage_modify(request):
     return render(request, 'navbar/mypage/mypage_modify.html')
 
-# # 회원가입
-# def signup(request):
-#     return render(request, 'navbar/signup.html')
-
-# # 회원가입 완료
-# def signup_completed(request):
-#     return render(request, 'navbar/signup_completed.html')
-
 # 전체 월간 통계
 def stats_all_month(request):
     return render(request, 'navbar/statistics/stats_all_month.html')

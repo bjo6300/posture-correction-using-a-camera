@@ -28,12 +28,9 @@
                             <td style="border-bottom: 1px solid rgb(236, 236, 236);
                             border-left: 2px solid rgb(180, 179, 179);
                             background-color: white; padding-left: 3%; width: 700px;">
-                                <!-- {% if user.is_authenticated %}
-                                    {{ user.username }}
-                                {% else %}
-                                    홍길동
-                                {% endif %} -->
-                                admin
+                                {% if user.is_authenticated %}
+                                {{ user.username }}
+                                {% endif %}
                             </td>
                         </tr>
 
@@ -49,8 +46,9 @@
                             <td style="border-bottom: 1px solid rgb(236, 236, 236);
                             border-left: 2px solid rgb(180, 179, 179);
                             background-color: white; padding-left: 3%;">
-                                123456
-                                <button id="btn-fix" style="width: 50px; height: 25px; font-size: 12px; position: absolute; margin-left: 15px;" >수정</button>
+                                비공개
+                                <a href="{% url 'common:change_password' %}"><button id="btn-fix" style="width: 50px; height: 25px; font-size: 12px; position: absolute; margin-left: 15px;" >수정</button></a>
+                                
                             </td>
                         </tr>
 
@@ -65,7 +63,9 @@
                             <td style="border-bottom: 1px solid rgb(236, 236, 236);
                             border-left: 2px solid rgb(180, 179, 179);
                             background-color: white; padding-left: 3%;">
-                                남자
+                                {% if user.is_authenticated %}
+                                {{ user.gender }}
+                                {% endif %}
                                 <!-- <select name="select_sex" onChange="selectsex(this)" hidden>
                                     <option value="male" selected>남자</option>
                                     <option value="female">여자</option>
@@ -89,7 +89,9 @@
                                 <select name="yy" id="year"></select>년 
                                 <select name="mm" id="month"></select>월 
                                 <select name="dd" id="day"></select>일 -->
-                                1998년 3월 15일
+                                {% if user.is_authenticated %}
+                            {{ user.birth }}
+                            {% endif %}
                             </td>
                         </tr>
 
@@ -104,8 +106,10 @@
                             <td style="border-bottom: 1px solid rgb(236, 236, 236);
                             border-left: 2px solid rgb(180, 179, 179);
                             background-color: white; padding-left: 3%;">
-                                admin@gmail.com
-                                <button id="btn-fix" style="width: 50px; height: 25px; font-size: 12px; position: absolute; margin-left: 15px;" >수정</button>
+                                {% if user.is_authenticated %}
+                                {{ user.email }}
+                                {% endif %}
+                                <a href="{% url 'common:modify_email' %}"><button id="btn-fix" style="width: 50px; height: 25px; font-size: 12px; position: absolute; margin-left: 15px;" >수정</button></a>
                             </td>
                         </tr>
 
@@ -113,10 +117,10 @@
                     </table>
                 </div>
 
-                <div align = "center" style="margin-top: 20px;">
+                <!-- <div align = "center" style="margin-top: 20px;">
                     <button id="btn-fix" >수정완료</button>
                     
-                </div>
+                </div> -->
             
         </div>
     </div>
