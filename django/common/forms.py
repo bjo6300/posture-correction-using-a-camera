@@ -35,13 +35,52 @@ class UserCreationForm(forms.ModelForm):
         return user
 
 # 사용자 수정 Form
-class UserChangeForm(forms.ModelForm):
-    # 사용자의 패스워드를 read 권한으로 설정하여 수정하지 못하도록 함
-    password = ReadOnlyPasswordHashField()
+# class UserChangeForm(forms.ModelForm):
+#     # 사용자의 패스워드를 read 권한으로 설정하여 수정하지 못하도록 함
+#     password = ReadOnlyPasswordHashField()
+#
+#     class Meta:
+#         model = User
+#         fields = ('username', 'gender', 'email', 'birth', 'password')
+#
+#     def clean_password(self):
+#         return self.initial["password"]
 
+    # class Meta:
+    #     model = User
+    #     fields = ('username', 'gender', 'email', 'birth', 'password')
+    #
+    # def clean_password(self):
+    #     return self.initial["password"]
+
+from django.contrib.auth.forms import PasswordChangeForm, UserChangeForm
+
+class CustomPasswordChangeForm(PasswordChangeForm):
+    def __init__(self, *args, **kwargs):
+        super(CustomPasswordChangeForm, self).__init__(*args, **kwargs)
+        self.fields['old_password'].label = '기존 비밀번호'
+        self.fields['old_password'].widget.attrs.update({
+            'class': 'form-control',
+            'autofocus': False,
+        })
+        self.fields['new_password1'].label = '새 비밀번호'
+        self.fields['new_password1'].widget.attrs.update({
+            'class': 'form-control',
+        })
+        self.fields['new_password2'].label = '새 비밀번호 확인'
+        self.fields['new_password2'].widget.attrs.update({
+            'class': 'form-control',
+        })
+
+# class CustomEmailChangeForm(UserChangeForm):
+#     def __init__(self, *args, **kwargs):
+#         super(CustomEmailChangeForm, self).__init__(*args, **kwargs)
+#         self.fields['modify_email'].label = '새 이메일'
+#         self.fields['modify_email'].widget.attrs.update({
+#             'class': 'form-control',
+#         })
+
+class CustomEmailChangeForm(UserChangeForm):
     class Meta:
         model = User
-        fields = ('username', 'gender', 'email', 'birth', 'password')
-
-    def clean_password(self):
-        return self.initial["password"]
+        fields = ('email',)
