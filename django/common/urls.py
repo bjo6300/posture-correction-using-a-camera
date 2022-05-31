@@ -4,11 +4,11 @@ from unicodedata import name
 from django.contrib.auth import views as auth_views
 from . import views
 from .views import SignUpView
+from django.conf.urls import url
 
 app_name = 'common'
 
 urlpatterns = [
-    
     # 로그인 "{% url 'common:login_main' %}"
     # path('login/', auth_views.LoginView.as_view(template_name='common/login.html'), name='login_main'), # 이건 관리자만 가능
     path('login/', views.login_main, name='login_main'),

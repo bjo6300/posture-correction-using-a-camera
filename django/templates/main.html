@@ -8,9 +8,9 @@
         <a href="{% url 'common:logout' %}">{{ user.username }} (로그아웃)</a>
         <img src="{% url 'stream2' %}" width="640" height="480">
         {% else %}
-<!--        <img src="{% url 'stream2' %}" width="640" height="480">-->
+<!--        <a href="{% url 'common:login_main' %}">로그인</a>-->
+        <img src="{% url 'stream2' %}" width="640" height="480">
 <!--        <a href="{% url 'common:login' %}">로그인</a>-->
-        <a href="{% url 'common:login_main' %}">로그인</a>
         {% endif %}
     </div>
 </body>

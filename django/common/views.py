@@ -124,7 +124,8 @@ class VideoCamera(object):
             turtleNeck_region = img_to_array(img)
             turtleNeck_region = np.expand_dims(turtleNeck_region, axis=0)
 
-            single_test = model.predict(turtleNeck_region)
+            # single_test = model.predict(turtleNeck_region)
+            single_test = 0
 
             # Holistic_module에 있는 findDistance의 p2값을 수정하여 사용
             # 왼쪽 center_left_hand 좌표와 얼굴 152번(턱) 좌표를 사용하여 길이를 구하는 부분
@@ -311,7 +312,7 @@ def login_main(request):
         username = request.POST['username']
         password = request.POST['password']
         user = auth.authenticate(request, username=username, password=password) # 여기서 username, password는 고정 (django 특)
-        
+
         if user is None:
             return render(request, 'common/login.html', {'error': '아이디 또는 비밀번호를 확인해주세요.'})
         else:
@@ -330,7 +331,7 @@ class SignUpView(View):
         email = request.POST.get('email', None)  # 이메일
         birth = request.POST.get('birth', None)  # 생일
         gender = request.POST.get('gender', None) # 성별
-        
+
         # 아이디가 5자 미만이면
         if len(username) < 5:
             messages.warning(request, '아이디를 5글자 이상 입력해주세요.')
@@ -432,15 +433,15 @@ def signup_completed(request):
 
 # 비밀번호 수정 완료
 def modify_password_completed(request):
-    return render(request, 'navbar/mypage/modify_password_completed.html') 
+    return render(request, 'navbar/mypage/modify_password_completed.html')
 
 # 비밀번호 수정 완료
 def modify_email(request):
-    return render(request, 'navbar/mypage/modify_email.html') 
+    return render(request, 'navbar/mypage/modify_email.html')
 
 # 비밀번호 수정 완료
 def modify_email_completed(request):
-    return render(request, 'navbar/mypage/modify_email_completed.html') 
+    return render(request, 'navbar/mypage/modify_email_completed.html')
 
 # 아이디찾기
 def find_id(request):
