@@ -1,0 +1,132 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'css/recommended.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'css/modal.css' %}">
+
+<body>
+    <div style="width:100%; height:100%;">
+        <div style="width:80%; position:absolute; left:5%;">
+            <div style="float:left; width: 200px; height:100%; text-align:right; line-height: 60px;">
+                <!-- 사이드바 -->
+                {% include 'navbar/recommended/sidebar_recommended.html' %}
+                <!-- body -->
+                <div style="left: 250px; width: 1000px; height: 100%; position: absolute;">
+                    <!-- 타이틀 -->
+                    <div style="margin-top:50px; text-align:left; ">
+                        <!-- 소제목 -->
+                        <table>
+                            <tr>
+                                <td>
+                                    <h2 style="float: left;">거북목 영상</h2>
+                                </td>
+                            </tr>
+                        </table>
+
+                    </div>
+                    
+                    <hr>
+  
+                    <!-- <div id="div-container-01">
+                        
+                        <a href="#" id="a-btn-01">
+                            <img class="img-btn" alt="제품 디자인" src="{% static 'images/pcp_logo.png' %}" data-img="{% static 'images/pcp_logo.png' %}" >
+                            
+                        </a>
+                        <a href="#"  id="a-btn-02">
+                            <img class="img-btn" alt="기계시스템 설계" src="{% static 'images/pcp_logo.png' %}">
+                        </a>
+                        <a href="#"  id="a-btn-03">
+                            <img class="img-btn" alt="H/W 기구설계" src="{% static 'images/pcp_logo.png' %}">
+                        </a>
+
+                        <a href="#"  id="a-btn-04">
+                            <img class="img-btn" alt="H/W 기구설계" src="{% static 'images/pcp_logo.png' %}">
+                        </a>
+
+                    </div>
+
+                    <div id="div-container-02">
+                        
+                        <a href="#" id="a-btn-01">
+                            <img class="img-btn" alt="제품 디자인" src="{% static 'images/pcp_logo.png' %}" >
+                            
+                        </a>
+                        <a href="#"  id="a-btn-02">
+                            <img class="img-btn" alt="기계시스템 설계" src="{% static 'images/pcp_logo.png' %}">
+                        </a>
+                        <a href="#"  id="a-btn-03">
+                            <img class="img-btn" alt="H/W 기구설계" src="{% static 'images/pcp_logo.png' %}">
+                        </a>
+
+                        <a href="#"  id="a-btn-04">
+                            <img class="img-btn" alt="H/W 기구설계" src="{% static 'images/pcp_logo.png' %}">
+                        </a>
+
+                    </div> -->
+
+                    <table id="table-container">
+                        <tr>
+                            
+                            <td>
+                                <div class="div-images">
+                                    <img class="trigger" src="{% static 'images/pcp_logo.png' %}" data-img="{% static 'images/pcp_logo.png' %}" width="170px" height="170px">
+                                </div>
+                            </td>
+                            
+                        </tr>
+                        
+                    </table>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <!-- 닫기 버튼 -->
+            <span id="close-button" class="close-button">&times;</span>
+                <!-- 이미지 왼쪽 div -->
+                <div style="float: left;">
+                    <img id="modal-image" class="modal-image" src="/static/images/pcp_logo.png" width="250px" height="250px" style="margin: 10px;">
+                </div>
+                
+            </div>
+        </div>
+    </div>
+    
+
+    <script type="text/javascript">
+        var modal = document.getElementById("modal");
+        var trigger = document.getElementsByClassName("trigger");
+        var closeButton = document.getElementById("close-button");
+        var cancelButton = document.getElementById("cancel");
+    
+        // 이전 페이지에 있던 이미지 가져오기
+        function toggleModal() {
+            var imgId = $(this).data("img");
+            document.getElementById("modal-image").src = imgId;
+            console.log(imgId);
+            modal.classList.toggle("show-modal");
+        }
+    
+        function windowOnClick(event) {
+            if (event.target === modal) {
+                toggleModal();
+            }
+        }
+    
+        // 이미지 클릭시 팝업창에 이미지 가져오는 이벤트 모든 이미지에 적용
+        for(var i = 0; i < trigger.length; i++){
+            trigger[i].addEventListener("click", toggleModal);
+        }
+    
+        closeButton.addEventListener("click", toggleModal);
+        cancel.addEventListener("click", toggleModal);
+        window.addEventListener("click", windowOnClick); 
+    </script>
+</body>
+
+{% endblock %}

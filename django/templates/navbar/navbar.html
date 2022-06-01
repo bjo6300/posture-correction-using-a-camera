@@ -46,9 +46,9 @@
                         올바른 자세 추천
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown" style="text-align: center;">
-                        <li><a class="dropdown-item" href="#">거북목</a></li>
-                        <li><a class="dropdown-item" href="#">어깨 비대칭</a></li>
-                        <li><a class="dropdown-item" href="#">안면 비대칭</a></li>
+                        <li><a class="dropdown-item" href="{% url 'posture:recommended_turtle' %}">거북목</a></li>
+                        <li><a class="dropdown-item" href="{% url 'posture:recommended_shoulder' %}">어깨 비대칭</a></li>
+                        <li><a class="dropdown-item" href="{% url 'posture:recommended_jaw' %}">안면 비대칭</a></li>
                     </ul>
                 </li>
             </ul>

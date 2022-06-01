@@ -9,6 +9,18 @@ def index(request):
 def program(request):
     return render(request, 'program.html')
 
+# 거북목 추천 영상
+def recommended_turtle(request):
+    return render(request, 'navbar/recommended/recommended_turtle.html')
+
+# 어꺠비대칭 추천 영상
+def recommended_shoulder(request):
+    return render(request, 'navbar/recommended/recommended_shoulder.html')
+
+# 턱괴기 추천 영상
+def recommended_jaw(request):
+    return render(request, 'navbar/recommended/recommended_jaw.html')
+
 # 마이페이지
 def mypage(request):
     return render(request, 'navbar/mypage/mypage.html')
