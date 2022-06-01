@@ -10,6 +10,9 @@ urlpatterns = [
     # 메인페이지 "{% url 'posture:main' %}"
     path('', views.index, name='main'), 
 
+    # 메인페이지 - 프로그램 시작 "{% url 'posture:program' %}"
+    path('program/', views.program, name='program'),
+
     # 마이페이지 "{% url 'posture:mypage' %}"
     path('mypage/', views.mypage, name='mypage'),
 
