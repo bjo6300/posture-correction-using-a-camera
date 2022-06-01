@@ -248,6 +248,68 @@ class HolisticDetector():
 
         return length, img
 
+    def drawEars(self, img, draw=True, r=5, t=1):
+        p = [7, 8, 3, 6, 2, 5, 1, 4]
+        xy = []
+        for i in range(len(p)):
+            xy.append(self.pose_lmList[p[i]][1:3])
+
+        if draw:
+            # cv2.line(img, (x1, y1), (x2, y2), (255, 0, 255), t)
+            for i in range(len(p)):
+                cv2.circle(img, (xy[i][0], xy[i][1]), r, (255, 0, 255), cv2.FILLED)
+
+            for i in range(int(len(p)/2-1)):
+                num = 2 * i
+                cv2.line(img, (xy[num][0], xy[num][1]), (xy[num+2][0], xy[num+2][1]), (255, 0, 255), t)
+                cv2.line(img, (xy[num+1][0], xy[num+1][1]), (xy[num+3][0], xy[num+3][1]), (255, 0, 255), t)
+
+        return img
+
+    def drawShoulder2(self, img, draw=True, r=5, t=1):
+        p = [11, 12, 13, 14, 19, 20]
+        xy = []
+        for i in range(len(p)):
+            xy.append(self.pose_lmList[p[i]][1:3])
+
+        if draw:
+            for i in range(len(p)):
+                cv2.circle(img, (xy[i][0], xy[i][1]), r, (255, 0, 255), cv2.FILLED)
+
+            # cv2.line(img, (x1, y1), (x2, y2), (255, 0, 255), t)
+            # cv2.line(img, (x1, y1), (x3, y3), (255, 0, 255), t)
+            # cv2.line(img, (x3, y3), (x5, y5), (255, 0, 255), t)
+            # cv2.line(img, (x2, y2), (x4, y4), (255, 0, 255), t)
+            # cv2.line(img, (x4, y4), (x6, y6), (255, 0, 255), t)
+            # cv2.circle(img, (x1, y1), r, (255, 0, 255), cv2.FILLED)
+            # cv2.circle(img, (x2, y2), r, (255, 0, 255), cv2.FILLED)
+            # cv2.circle(img, (x3, y3), r, (255, 0, 255), cv2.FILLED)
+            # cv2.circle(img, (x4, y4), r, (255, 0, 255), cv2.FILLED)
+            # cv2.circle(img, (x5, y5), r, (255, 0, 255), cv2.FILLED)
+            # cv2.circle(img, (x6, y6), r, (255, 0, 255), cv2.FILLED)
+
+        return img
+
+    def findPointDistance2(self, p1, p2):
+        x1, y1 = self.pose_lmList[p1][1:3]
+        x2, y2 = self.pose_lmList[p2][1:3]
+
+        length = math.hypot(x2 - x1, y2 - y1)
+
+        return length
+
+    # 관절점 사이 기울기 구하기
+    def findinclination(self, p1, p2):
+        x1, y1 = self.pose_lmList[p1][1:3]
+        x2, y2 = self.pose_lmList[p2][1:3]
+
+        if (x2 - x1) == 0:
+            print("기울기 오류")
+            return 0
+
+        inclination = (y2 - y1) / (x2 - x1)
+        return inclination
+
     # 추가된 함수
     # 얼굴 관절점과 포즈 관절점을 시각화하여 보여주고
     # 둘의 거리차만큼 선으로 연결하여 그것을 시각화하여 보여줌
@@ -358,9 +420,9 @@ class HolisticDetector():
     def findAngle(self, img, p1, p2, p3, draw=True):
         # 랜드마크 좌표 얻기
         # , x1, y1 = self.lmList[p1]
-        x1, y1 = self.pose_lmList[p1][1:3]
-        x2, y2 = self.pose_lmList[p2][1:3]
-        x3, y3 = self.pose_lmList[p3][1:3]
+        x1, y1 = self.face_lmList[p1][1:3]
+        x2, y2 = self.face_lmList[p2][1:3]
+        x3, y3 = self.face_lmList[p3][1:3]
 
         # 각도 계산
         radian = math.atan2(y3 - y2, x3 - x2) - math.atan2(y1 - y2, x1 - x2)
