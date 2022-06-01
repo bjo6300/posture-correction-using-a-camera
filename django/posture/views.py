@@ -5,6 +5,10 @@ def index(request):
     # 홈 화면
     return render(request, 'main.html')
 
+# 메인페이지 - 프로그램 시작
+def program(request):
+    return render(request, 'program.html')
+
 # 마이페이지
 def mypage(request):
     return render(request, 'navbar/mypage/mypage.html')

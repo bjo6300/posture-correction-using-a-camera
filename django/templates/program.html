@@ -1,21 +1,14 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block content %}
-
 <link rel="stylesheet" type="text/css" href="{% static 'css/mypage.css' %}">
-
 <body>
     <div align="center">
         {% if user.is_authenticated %}
-        <a href="{% url 'common:logout' %}">{{ user.username }} (로그아웃)</a>
-
-        <div>
-            <a href="{% url 'posture:program' %}"><button id="btn-fix">시작하기</button></a>
-        </div>
-
+        
         <img src="{% url 'stream2' %}" width="640" height="480">
         {% else %}
-        <a href="{% url 'common:login_main' %}">로그인</a>
+        
         {% endif %}
     </div>
 </body>
