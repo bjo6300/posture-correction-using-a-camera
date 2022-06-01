@@ -73,9 +73,14 @@ class SignUpView(View):
     def get(self, request):
         return render(request, 'navbar/signup.html')
 
+
+def signup_completed(request):
+    """ 회원가입 완료 페이지 """
+    return render(request, 'navbar/signup_completed.html')
+
 from .forms import CustomPasswordChangeForm, CustomEmailChangeForm
 
-
+# 비밀번호 수정
 def change_password(request):
     if request.method == 'POST':
         print('비밀번호 변경 POST')
@@ -93,45 +98,11 @@ def change_password(request):
         password_change_form = CustomPasswordChangeForm(request.user)
         return render(request, "navbar/mypage/change_password.html", {'form': password_change_form})
 
-
-def signup_completed(request):
-    """ 회원가입 완료 페이지 """
-    return render(request, 'navbar/signup_completed.html')
-
-# 비밀번호 수정 완료
-def modify_password_completed(request):
-    return render(request, 'navbar/mypage/modify_password_completed.html') 
-
-# 비밀번호 수정 완료
-def modify_email(request):
-    return render(request, 'navbar/mypage/modify_email.html') 
-
-# 비밀번호 수정 완료
-def modify_email_completed(request):
-    return render(request, 'navbar/mypage/modify_email_completed.html') 
-
 # 비밀번호 수정 완료
 def modify_password_completed(request):
     return render(request, 'navbar/mypage/modify_password_completed.html') 
 
 # 이메일 수정
-# def modify_email(request):
-#     if request.method == 'POST':
-#         print('이메일 변경 POST')
-#         email_change_form = CustomEmailChangeForm(request.user, request.POST)
-#         if email_change_form.is_valid():
-#             user = email_change_form.save()
-#             update_session_auth_hash(request, user)
-#             messages.success(request, " ")
-#             return render(request, 'navbar/mypage/modify_email_completed.html')
-#         else:
-#             # messages.error(request, "기존 비밀번호가 일치하지 않습니다.")
-#             return render(request, "navbar/mypage/modify_email.html",{'form': email_change_form})
-#     elif request.method == 'GET':
-#         print('이메일 변경 GET')
-#         email_change_form = CustomEmailChangeForm(request.user)
-#         return render(request, "navbar/mypage/modify_email.html", {'form': email_change_form})
-
 def modify_email(request):
     if request.method == 'POST':
         # print('이메일 변경 POST')
