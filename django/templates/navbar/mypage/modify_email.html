@@ -6,7 +6,9 @@
 
     <div class="register">
         <h3 style="font-size: 30px;">이메일 수정</h3>
+
          <form method="post" action="" autocomplete="off">
+
             {% csrf_token %}
             {% include "form_errors.html" %}
             <div class="flex">
@@ -40,7 +42,9 @@
                     </li>
                 </ul>
             </div>
+
          </form>
+
 
     </div>
 </body>

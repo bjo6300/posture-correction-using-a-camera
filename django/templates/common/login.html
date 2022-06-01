@@ -7,8 +7,7 @@
 <div id="div-login">
     <form method="post" action="{% url 'common:login_main' %}">
         {% csrf_token %}
-        {% include "form_errors.html" %}
-        {{error}}
+        
         <div class="form-group">
             <!-- 로그인 글자 -->
             <h1 style="text-align: left; margin-left: 50px; font-size: 30px; margin-bottom: 20px;">
@@ -25,7 +24,10 @@
             <!-- 비밀번호 -->
             <input type="password" name="password" placeholder="비밀번호" id="password"
                    >
+            
         </div>
+        {% include "form_errors.html" %}
+            {{error}}
         <!-- 로그인 버튼 -->
         <button type="submit" id="btn-login" onclick="location.href='{% url 'common:login_main' %}'">로그인</button>
         <br>

@@ -25,6 +25,18 @@ urlpatterns = [
     # 회원가입 페이지
     path('signup/', SignUpView.as_view(), name='signup'),
     
-    # 회원가입 완료 페이지
+    # 회원가입 완료 페이지 "{% url 'common:signup_completed' %}"
     path('signup/completed', views.signup_completed, name='signup_completed'),  
+
+    # 비밀번호 수정 "{% url 'common:change_password' %}"
+    path('change_password/', views.change_password, name='change_password'),
+
+    # 비밀번호 수정 완료 "{% url 'common:modify_password_completed' %}"
+    path('modify_password_completed/', views.modify_password_completed, name='modify_password_completed'),
+
+    # 이메일 수정 "{% url 'common:modify_email' %}"
+    path('modify_email/', views.modify_email, name='modify_email'),
+
+    # 이메일 수정 "{% url 'common:modify_email_completed' %}"
+    path('modify_email_completed/', views.modify_email_completed, name='modify_email_completed'),
 ]

@@ -3,7 +3,9 @@ from common import views
 from django.contrib import auth, messages
 from django.shortcuts import render, redirect
 from .models import User
-
+from django.contrib.auth.forms import PasswordChangeForm # 비밀번호 변경 폼
+from django.contrib.auth.hashers import check_password
+from django.contrib.auth import update_session_auth_hash # 비밀번호 변경 후 자동로그인
 import ctypes
 from django.views import View
 
@@ -17,7 +19,7 @@ def login_main(request):
         user = auth.authenticate(request, username=username, password=password) # 여기서 username, password는 고정 (django 특)
         
         if user is None:
-            return render(request, 'common/login.html', {'error': 'username or password가 틀렸습니다.'})
+            return render(request, 'common/login.html', {'error': '아이디 또는 비밀번호를 확인해주세요.'})
         else:
             auth.login(request, user)
             return redirect('/home/')
@@ -43,17 +45,17 @@ class SignUpView(View):
         # 아이디 중복 확인
         elif User.objects.filter(username=username).exists():  # 아이디 중복 체크
             messages.warning(request, '이미 존재하는 아이디입니다!')
-            return render(request, 'navbar/signup.html')
+            return redirect('/common/signup/')
 
         # 비밀번호 일치 여부 확인
         elif password1 != password2:
             messages.warning(request, '비밀번호가 일치하지 않습니다.')
             return render(request, 'navbar/signup.html')
 
-        # 이메일 형식 확인
-        elif email.find('@') | email.find('.') == -1:
-            messages.warning(request, '올바른 이메일 형식을 입력해주세요.')
-            return render(request, 'navbar/signup.html')
+        # # 이메일 형식 확인
+        # elif email.find('@') | email.find('.') == -1:
+        #     messages.warning(request, '올바른 이메일 형식을 입력해주세요.')
+        #     return render(request, 'navbar/signup.html')
 
         # 빈 칸 확인
         if not (username and gender and password1 and password2 and email and birth):
@@ -110,7 +112,9 @@ class SignUpView(View):
 #   else:
 #     return render(request, "{% url 'common:change_password' %}")
 
+
 from .forms import CustomPasswordChangeForm, CustomEmailChangeForm
+
 
 def change_password(request):
     if request.method == 'POST':
@@ -134,6 +138,17 @@ def signup_completed(request):
     """ 회원가입 완료 페이지 """
     return render(request, 'navbar/signup_completed.html')
 
+# 비밀번호 수정 완료
+def modify_password_completed(request):
+    return render(request, 'navbar/mypage/modify_password_completed.html') 
+
+# 비밀번호 수정 완료
+def modify_email(request):
+    return render(request, 'navbar/mypage/modify_email.html') 
+
+# 비밀번호 수정 완료
+def modify_email_completed(request):
+    return render(request, 'navbar/mypage/modify_email_completed.html') 
 
 # 비밀번호 수정 완료
 def modify_password_completed(request):
