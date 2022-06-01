@@ -31,7 +31,7 @@ pTime = 0
 cTime = 0
 
 # 모델 불러오기
-# model = tf.keras.models.load_model('common\\saved_model')
+model = tf.keras.models.load_model('common\\saved_model')
 
 # Holistic 객체(어떠한 행위를 하는 친구) 생성
 detector = hm.HolisticDetector()
@@ -63,6 +63,18 @@ real_turtleNeck_count = 0
 app_name = 'common'
 
 class VideoCamera(object):
+    # capture mode
+    mode = 2
+
+    # stretching value
+    isStretchingPose = False
+
+    # 방향 위치 : 0(오른쪽), 1(왼쪽)
+    currentDirection = 0
+
+    # 방향 위치 : 0(위), 1(아래)
+    upDown = 0
+
     def __init__(self):
         # Using OpenCV to capture from device 0. If you have trouble capturing
         # from a webcam, comment the line below out and use a video file
@@ -99,24 +111,24 @@ class VideoCamera(object):
         my_computer_fps = fps + 1
 
         # # 웹캠 이미지 저장
-        # turtleNeck_frame = cv2.imwrite('frame.jpg', frame)
+        turtleNeck_frame = cv2.imwrite('frame.jpg', frame)
         #
         # # 이미지 파일 경로
-        # file_link = "frame.jpg"
+        file_link = "frame.jpg"
 
         # 인체가 감지가 되었는지 확인하는 구문
         if len(pose_lmList) != 0 and len(face_lmList) != 0:
 
             # 이미지 RGB 변환 및 사이즈 조정
-            # img = Image.open(file_link)
-            # img = img.convert("RGB")
-            # img = img.resize((64, 64))
+            img = Image.open(file_link)
+            img = img.convert("RGB")
+            img = img.resize((64, 64))
 
             # 이미지 배열화 및 차원 확장
-            # turtleNeck_region = img_to_array(img)
-            # turtleNeck_region = np.expand_dims(turtleNeck_region, axis=0)
-            #
-            # single_test = model.predict(turtleNeck_region)
+            turtleNeck_region = img_to_array(img)
+            turtleNeck_region = np.expand_dims(turtleNeck_region, axis=0)
+
+            single_test = model.predict(turtleNeck_region)
 
             # Holistic_module에 있는 findDistance의 p2값을 수정하여 사용
             # 왼쪽 center_left_hand 좌표와 얼굴 152번(턱) 좌표를 사용하여 길이를 구하는 부분
@@ -159,10 +171,10 @@ class VideoCamera(object):
                 shoulder_count = 0
 
             # # 거북목이 감지되면 count가 1증가
-            # if single_test == 1:
-            #     turtleNeck_count += 1
-            # else:
-            #     turtleNeck_count = 0
+            if single_test == 1:
+                turtleNeck_count += 1
+            else:
+                turtleNeck_count = 0
 
             # 3초동안 턱 괴기 자세가 인식되면 알림을 제공한다.
             if jaw_bone_count > my_computer_fps * 3:
@@ -186,17 +198,137 @@ class VideoCamera(object):
 
                 real_shoulder_count += 1
 
-            # if turtleNeck_count > my_computer_fps * 3:
-            #     print("거북목 동작이 감지되었습니다!")
-            #     # win10toast 알림 제공
-            #     toaster.show_toast("거북목 발생!", f"바른 자세를 취해주세요!.\n\n", threaded=True)
-            #
-            #     # 알림 제공 후 카운트를 다시 0으로 만든다.
-            #     turtleNeck_count = 0
-            #
-            #     turtleNeck_count += 1
+            if turtleNeck_count > my_computer_fps * 3:
+                print("거북목 동작이 감지되었습니다!")
+                # win10toast 알림 제공
+                toaster.show_toast("거북목 발생!", f"바른 자세를 취해주세요!.\n\n", threaded=True)
+
+                # 알림 제공 후 카운트를 다시 0으로 만든다.
+                turtleNeck_count = 0
+
+                turtleNeck_count += 1
         ret, jpeg = cv2.imencode('.jpg', frame)
         return jpeg.tobytes()
+
+    def get_frame_stretching(self):
+        # default BGR img
+
+        # Holistic detector을 이용한 감지
+        frame = detector.findHolistic(self.frame, draw=True)
+
+        # output -> list ( id, x, y, z) 32 개 좌표인데 예를 들면, (11, x, y, z)
+        pose_lmList = detector.findPoseLandmark(frame, draw=True)
+        # 468개의 얼굴 점 리스트
+        face_lmList = detector.findFaceLandmark(frame, draw=True)
+
+        # fps 계산 로직
+        cTime = time.time()
+        global pTime
+        fps = 1 / (cTime - pTime)
+        pTime = cTime
+
+        # 사용자의 컴퓨터에 맞는 주사율
+        my_computer_fps = fps + 1
+
+        # 인체가 감지가 되었는지 확인하는 구문
+        if len(pose_lmList) != 0 and len(face_lmList) != 0:
+
+            # 양쪽 귀 관절점 사이의 거리를 이미지로 변경
+            ears_img = detector.drawEars(frame, draw=True)
+
+            # 양 어깨의 관절점 사이의 거리를 이미지로 변경
+            shoulder_img = detector.drawShoulder2(frame, draw=True)
+
+            # 양쪽 손과 눈썹 사이 거리 구하기
+            left_hand_position = detector.findPointDistance2(21, 6)
+            right_hand_position = detector.findPointDistance2(22, 3)
+            # print(left_hand_position, right_hand_position)
+
+            # 양쪽 귀의 기울기 값 계산
+            ears_inclination = detector.findinclination(7, 8)
+
+            if VideoCamera.isStretchingPose == True:  # 포즈가 취해졌는지 판단
+                if VideoCamera.currentDirection == 0:  # 오른쪽
+                    VideoCamera.currentDirection = 1  # 왼쪽
+                    VideoCamera.isStretchingPose = False
+                else:  # 왼쪽
+                    VideoCamera.mode = 0
+                    VideoCamera.isStretchingPose = False
+                    VideoCamera.currentDirection = 0
+            else:
+                if VideoCamera.currentDirection == 0:  # 오른쪽
+                    toaster.show_toast("스트레칭 시작합니다.", f"오른손으로 반대편 머리를 감싼 후, 지긋이 오른쪽으로 눌러주세요!.\n\n", threaded=True)
+                    # if ears_inclination <= -0.4:
+                    if (ears_inclination <= -0.4) and (right_hand_position >= 0) and (right_hand_position <= 145):
+                        VideoCamera.isStretchingPose = True
+                else:  # 왼쪽
+                    toaster.show_toast("스트레칭 시작합니다.", f"왼손으로 반대편 머리를 감싼 후, 지긋이 왼쪽으로 눌러주세요!.\n\n", threaded=True)
+                    # if ears_inclination >= 0.4:
+                    if (ears_inclination >= 0.4) and (left_hand_position >= 0) and (left_hand_position <= 145):
+                        VideoCamera.isStretchingPose = True
+
+        ret, jpeg = cv2.imencode('.jpg', frame)
+        return jpeg.tobytes()
+
+    def get_frame_stretching2(self):
+        # default BGR img
+
+        # Holistic detector을 이용한 감지
+        frame = detector.findHolistic(self.frame, draw=True)
+
+        # output -> list ( id, x, y, z) 32 개 좌표인데 예를 들면, (11, x, y, z)
+        pose_lmList = detector.findPoseLandmark(frame, draw=True)
+        # 468개의 얼굴 점 리스트
+        face_lmList = detector.findFaceLandmark(frame, draw=True)
+
+        # fps 계산 로직
+        cTime = time.time()
+        global pTime
+        fps = 1 / (cTime - pTime)
+        pTime = cTime
+
+        # 사용자의 컴퓨터에 맞는 주사율
+        my_computer_fps = fps + 1
+
+        # 인체가 감지가 되었는지 확인하는 구문
+        if len(pose_lmList) != 0 and len(face_lmList) != 0:
+            # 양쪽 귀 관절점 사이의 거리를 이미지로 변경
+            ears_img = detector.drawEars(frame, draw=True)
+
+            # 양 어깨의 관절점 사이의 거리를 이미지로 변경
+            shoulder_img = detector.drawShoulder2(frame, draw=True)
+
+            # 양쪽 손과 눈썹 사이 거리 구하기
+            left_hand_position = detector.findPointDistance(152, 19)
+            right_hand_position = detector.findPointDistance(152, 20)
+            # print(left_hand_position, right_hand_position)
+
+            # 턱 관절 각도 계산
+            jaw_angle = detector.findAngle(frame, 150, 152, 365, draw=True)
+
+            if VideoCamera.isStretchingPose == True:  # 포즈가 취해졌는지 판단
+                if VideoCamera.currentDirection == 0:  # 위쪽
+                    VideoCamera.currentDirection = 1  # 아래쪽
+                    VideoCamera.isStretchingPose = False
+                else:  # 왼쪽
+                    VideoCamera.mode = 0
+                    VideoCamera.isStretchingPose = False
+                    VideoCamera.currentDirection = 0
+            else:
+                if VideoCamera.currentDirection == 0:  # 위쪽
+                    toaster.show_toast("스트레칭 시작합니다.", f"양손 엄지손가락을 턱에 대고 턱을 위로 당겨주세요!\n\n", threaded=True)
+                    # if jaw_angle >= 160:
+                    if (jaw_angle >= 160) and (left_hand_position <= 70) and (right_hand_position <= 70):
+                        VideoCamera.isStretchingPose = True
+                else:  # 왼쪽
+                    toaster.show_toast("스트레칭 시작합니다.", f"양손에 깍지를 끼고 머리를 아래로 당겨주세요!\n\n", threaded=True)
+                    # if ears_inclination >= 0.4:
+                    if (jaw_angle <=105) and (left_hand_position >= 100 and left_hand_position <= 200) and (right_hand_position >= 100 and right_hand_position <= 200):
+                        VideoCamera.isStretchingPose = True
+
+        ret, jpeg = cv2.imencode('.jpg', frame)
+        return jpeg.tobytes()
+
     def update(self):
         while True:
             (self.grabbed, self.frame) = self.video.read()
@@ -205,7 +337,12 @@ cam = VideoCamera()
 
 def gen(camera):
     while True:
-        frame = cam.get_frame()
+        if VideoCamera.mode == 1: # 스트레칭
+            frame = cam.get_frame_stretching()
+        elif VideoCamera.mode == 2:
+            frame = cam.get_frame_stretching2()
+        else: # 인식
+            frame = cam.get_frame()
         yield (b'--frame\r\n'
                 b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n\r\n')
 
