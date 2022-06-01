@@ -72,36 +72,8 @@ class CustomPasswordChangeForm(PasswordChangeForm):
             'class': 'form-control',
         })
 
-# class CustomEmailChangeForm(UserChangeForm):
-#     def __init__(self, *args, **kwargs):
-#         super(CustomEmailChangeForm, self).__init__(*args, **kwargs)
-#         self.fields['modify_email'].label = '새 이메일'
-#         self.fields['modify_email'].widget.attrs.update({
-#             'class': 'form-control',
-#         })
-
-# class CustomEmailChangeForm(UserChangeForm):
-#     class Meta:
-#         model = User
-#         fields = ('email',)
-
-
-from django.contrib.auth.forms import PasswordChangeForm
-
-class CustomPasswordChangeForm(PasswordChangeForm):
-    def __init__(self, *args, **kwargs):
-        super(CustomPasswordChangeForm, self).__init__(*args, **kwargs)
-        self.fields['old_password'].label = '기존 비밀번호'
-        self.fields['old_password'].widget.attrs.update({
-            'class': 'form-control',
-            'autofocus': False,
-        })
-        self.fields['new_password1'].label = '새 비밀번호'
-        self.fields['new_password1'].widget.attrs.update({
-            'class': 'form-control',
-        })
-        self.fields['new_password2'].label = '새 비밀번호 확인'
-        self.fields['new_password2'].widget.attrs.update({
-            'class': 'form-control',
-        })
+class CustomEmailChangeForm(UserChangeForm):
+    class Meta:
+        model = User
+        fields = ('email',)
 
