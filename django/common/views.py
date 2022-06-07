@@ -124,10 +124,69 @@ def modify_email(request):
 def modify_email_completed(request):
     return render(request, 'navbar/mypage/modify_email_completed.html') 
 
+
+# from django.conf import settings
+from django.contrib import messages
+from django.core.mail import EmailMessage
+from django.template.loader import render_to_string
+
 # 아이디찾기
 def find_id(request):
+    if request.method == 'POST':
+        email = request.POST.get('email')
+        try:
+            user = User.Objects.get(email=email)
+            if user.exists():
+                template = render_to_string('common/send_email.html', {'name': user.username})
+                method_email = EmailMessage(
+                    'Your ID is in the email',
+                    template,
+                    to=[email]
+                )
+                method_email.send(fail_silently=False)
+                return render(request, 'common/find_id_checked.html')
+        except:
+            messages.info(request, "There is no username along with the email")
+
+    elif request.method == 'GET':
+        return render(request, 'common/find_id.html')
     return render(request, 'common/find_id.html')
 
-# 아이디찾기 체크완료
+
+    # if request.method == 'POST':
+    #     target_username = request.data.get('username', '')
+    #     target_email = request.data.get('email', '')
+    #
+    #     target_user = User.objects.filter(
+    #         username = target_username, email = target_email
+    #     )
+    #
+    #     if target_user.exists():
+    #         auth_string = email_auth_string()
+    #         target_user.first().profile.auth = auth_string
+    #         target_user.first().profile.save()
+    #
+    #         mail_title = '아이디 찾기 인증 메일입니다.'
+    #         message = render_to_string('send_email_id.html', {'name': 'User.username'}, {'auth_string'})
+    #         mail_to = 'User.email'
+    #         email = EmailMessage(mail_title, message, to=[mail_to])
+    #         email.send()
+    #         return render(request, 'common/find_id.html')
+            # try:
+            # mail_title = '아이디 찾기 인증 메일입니다.'
+            # message = render_to_string('send_email_id.html', {'name': 'User.username'}, {'auth_string'})
+            # mail_to = 'User.email'
+            # email = EmailMessage(mail_title, message, to=[mail_to])                email.send()
+            # return render(request, 'common/find_id.html')
+
+            # except:
+            #     return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    #     else:
+    #         return render(request, 'common/find_id.html')
+    # elif request.method == 'GET':
+    #     return render(request, 'common/find_id.html')
+    # return render(request, 'common/find_id.html')
+
+        # 아이디찾기 체크완료
 def find_id_checked(request):
     return render(request, 'common/find_id_checked.html')
