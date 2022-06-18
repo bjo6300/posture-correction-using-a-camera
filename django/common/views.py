@@ -42,11 +42,17 @@ toaster = ToastNotifier()
 # 턱 괴기 변수 초기 세팅
 jaw_bone_count = 0
 
+# 턱 괴기 교정 카운트 변수 초기 세팅
+p_jaw_bone_count = 0
+
 # 실제 턱 괴기 변수 초기 세팅
 real_jaw_bone_count = 0
 
 # 어깨 비대칭 변수 초기 세팅
 shoulder_count = 0
+
+# 어깨 비대칭 교정 카운트 변수 초기 세팅
+p_shoulder_count = 0
 
 # 실제 어깨 비대칭 변수 초기 세팅
 real_shoulder_count = 0
@@ -57,6 +63,9 @@ shoulder_hd = 0
 # 거북목 변수 초기 세팅
 turtleNeck_count = 0
 
+# 거북목 교정 카운트 변수 초기 세팅
+p_turtleNeck_count = 0
+
 # 실제 거북목 변수 초기 세팅
 real_turtleNeck_count = 0
 
@@ -64,7 +73,7 @@ app_name = 'common'
 
 class VideoCamera(object):
     # capture mode
-    mode = 2
+    mode = 0
 
     # stretching value
     isStretchingPose = False
@@ -148,11 +157,15 @@ class VideoCamera(object):
             right_hand_img = detector.drawPointDistance(152, 17, frame, draw=True)
 
             global jaw_bone_count
+            global p_jaw_bone_count
             global real_jaw_bone_count
             global shoulder_count
+            global p_shoulder_count
             global real_shoulder_count
             global turtleNeck_count
+            global p_turtleNeck_count
             global real_turtleNeck_count
+
 
             # 턱 괴기 자세가 감지되면 턱 괴기 count 1증가
             if left_hand_len < 130 or right_hand_len < 130:
@@ -185,7 +198,7 @@ class VideoCamera(object):
 
                 # 알림 제공 후 카운트를 다시 0으로 만든다.
                 jaw_bone_count = 0
-
+                p_jaw_bone_count += 1
                 real_jaw_bone_count += 1
 
             if shoulder_count > my_computer_fps * 3:
@@ -195,7 +208,7 @@ class VideoCamera(object):
 
                 # 알림 제공 후 카운트를 다시 0으로 만듬
                 shoulder_count = 0
-
+                p_shoulder_count += 1
                 real_shoulder_count += 1
 
             if turtleNeck_count > my_computer_fps * 3:
@@ -205,12 +218,22 @@ class VideoCamera(object):
 
                 # 알림 제공 후 카운트를 다시 0으로 만든다.
                 turtleNeck_count = 0
+                p_turtleNeck_count += 1
+                real_turtleNeck_count += 1
 
-                turtleNeck_count += 1
+            if p_shoulder_count != 0 and p_shoulder_count % 5 == 0:
+                VideoCamera.mode = 1
+            elif p_turtleNeck_count != 0 and p_turtleNeck_count % 5 == 0:
+                VideoCamera.mode = 2
+
         ret, jpeg = cv2.imencode('.jpg', frame)
         return jpeg.tobytes()
 
     def get_frame_stretching(self):
+
+        global p_jaw_bone_count
+        global p_shoulder_count
+        global p_turtleNeck_count
         # default BGR img
 
         # Holistic detector을 이용한 감지
@@ -266,11 +289,15 @@ class VideoCamera(object):
                     # if ears_inclination >= 0.4:
                     if (ears_inclination >= 0.4) and (left_hand_position >= 0) and (left_hand_position <= 145):
                         VideoCamera.isStretchingPose = True
+                        p_shoulder_count = 0
 
         ret, jpeg = cv2.imencode('.jpg', frame)
         return jpeg.tobytes()
 
     def get_frame_stretching2(self):
+        global p_jaw_bone_count
+        global p_shoulder_count
+        global p_turtleNeck_count
         # default BGR img
 
         # Holistic detector을 이용한 감지
@@ -307,24 +334,26 @@ class VideoCamera(object):
             jaw_angle = detector.findAngle(frame, 150, 152, 365, draw=True)
 
             if VideoCamera.isStretchingPose == True:  # 포즈가 취해졌는지 판단
-                if VideoCamera.currentDirection == 0:  # 위쪽
-                    VideoCamera.currentDirection = 1  # 아래쪽
+                if VideoCamera.upDown == 0:  # 위쪽
+                    VideoCamera.upDown = 1  # 아래쪽
                     VideoCamera.isStretchingPose = False
                 else:  # 왼쪽
                     VideoCamera.mode = 0
                     VideoCamera.isStretchingPose = False
-                    VideoCamera.currentDirection = 0
+                    VideoCamera.upDown = 0
             else:
-                if VideoCamera.currentDirection == 0:  # 위쪽
+                if VideoCamera.upDown == 0:  # 위쪽
                     toaster.show_toast("스트레칭 시작합니다.", f"양손 엄지손가락을 턱에 대고 턱을 위로 당겨주세요!\n\n", threaded=True)
                     # if jaw_angle >= 160:
                     if (jaw_angle >= 160) and (left_hand_position <= 70) and (right_hand_position <= 70):
                         VideoCamera.isStretchingPose = True
-                else:  # 왼쪽
+                else:  # 아래쪽
                     toaster.show_toast("스트레칭 시작합니다.", f"양손에 깍지를 끼고 머리를 아래로 당겨주세요!\n\n", threaded=True)
-                    # if ears_inclination >= 0.4:
-                    if (jaw_angle <=105) and (left_hand_position >= 100 and left_hand_position <= 200) and (right_hand_position >= 100 and right_hand_position <= 200):
+                    # if jaw_angle <= 105:
+                    if (jaw_angle <=110) and (left_hand_position >= 100 and left_hand_position <= 200) \
+                            and (right_hand_position >= 100 and right_hand_position <= 200):
                         VideoCamera.isStretchingPose = True
+                        p_shoulder_count = 0
 
         ret, jpeg = cv2.imencode('.jpg', frame)
         return jpeg.tobytes()
