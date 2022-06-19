@@ -17,7 +17,7 @@ from django.http import HttpResponse
 from common import views
 from django.contrib import auth, messages
 from django.shortcuts import render, redirect
-from .models import User
+from .models import User, PostureLog
 from django.contrib.auth.forms import PasswordChangeForm # 비밀번호 변경 폼
 from django.contrib.auth.hashers import check_password
 from django.contrib.auth import update_session_auth_hash # 비밀번호 변경 후 자동로그인
@@ -69,6 +69,9 @@ p_turtleNeck_count = 0
 # 실제 거북목 변수 초기 세팅
 real_turtleNeck_count = 0
 
+# postureLog 객체 생성
+postureLog = PostureLog()
+
 app_name = 'common'
 
 class VideoCamera(object):
@@ -84,11 +87,16 @@ class VideoCamera(object):
     # 방향 위치 : 0(위), 1(아래)
     upDown = 0
 
+
+    # username
+    usrname = ''
+
     # 입 동작 : 0(아), 1(이)
     mouth_mode = 0
 
     # 교정 횟수
     stretching_count = 0
+
 
     def __init__(self):
         # Using OpenCV to capture from device 0. If you have trouble capturing
@@ -184,7 +192,7 @@ class VideoCamera(object):
                 jaw_bone_count = 0
 
             # 어깨 비대칭 자세가 감지되면 어깨 비대칭 count 1증가
-            if shoulder_hd >= 20:
+            if shoulder_hd >= 25:
                 shoulder_count += 1
             else:
                 shoulder_count = 0
@@ -197,9 +205,12 @@ class VideoCamera(object):
 
             # 3초동안 턱 괴기 자세가 인식되면 알림을 제공한다.
             if jaw_bone_count > my_computer_fps * 3:
-                print("턱괴기 자세가 감지되었습니다!")
-                # win10toast 알림 제공
+                # 자세 인식 후, insert DB
+                self.insertLog(self.usrname, 0)
 
+                print("턱괴기 자세가 감지되었습니다!")
+
+                # win10toast 알림 제
                 toaster.show_toast("턱 괴기 발생!", f"바른 자세를 취해주세요!.\n\n", threaded=True)
 
                 # 알림 제공 후 카운트를 다시 0으로 만든다.
@@ -208,6 +219,9 @@ class VideoCamera(object):
                 real_jaw_bone_count += 1
 
             if shoulder_count > my_computer_fps * 3:
+                # 자세 인식 후, insert DB
+                self.insertLog(self.usrname, 1)
+
                 print("어깨 비대칭 동작이 감지되었습니다!")
 
                 toaster.show_toast("어깨 비대칭 발생!", f"바른 자세를 취해주세요!", threaded=True)
@@ -218,6 +232,9 @@ class VideoCamera(object):
                 real_shoulder_count += 1
 
             if turtleNeck_count > my_computer_fps * 3:
+                # 자세 인식 후, insert DB
+                self.insertLog(self.usrname, 2)
+
                 print("거북목 동작이 감지되었습니다!")
                 # win10toast 알림 제공
                 toaster.show_toast("거북목 발생!", f"바른 자세를 취해주세요!.\n\n", threaded=True)
@@ -229,6 +246,7 @@ class VideoCamera(object):
 
             if p_shoulder_count != 0 and p_shoulder_count % 5 == 0:
                 VideoCamera.mode = 1
+
             elif p_turtleNeck_count != 0 and p_turtleNeck_count % 5 == 0:
                 VideoCamera.mode = 2
             elif p_jaw_bone_count != 0 and p_jaw_bone_count % 5 == 0:
@@ -441,6 +459,12 @@ class VideoCamera(object):
         while True:
             (self.grabbed, self.frame) = self.video.read()
 
+    # SQL insert
+    def insertLog(self, username, postureType):
+        postureLog = PostureLog(username=username, posturename=postureType)
+        postureLog.save()
+        return
+
 cam = VideoCamera()
 
 def gen(camera):
@@ -472,6 +496,8 @@ def login_main(request):
         if user is None:
             return render(request, 'common/login.html', {'error': '아이디 또는 비밀번호를 확인해주세요.'})
         else:
+            cam.usrname = username      # DB에 필요한 username 저장
+            request.session['username'] = username  # session username 설정
             auth.login(request, user)
             return redirect('/home/')
     elif request.method == 'GET':
@@ -563,7 +589,8 @@ class SignUpView(View):
 #   else:
 #     return render(request, "{% url 'common:change_password' %}")
 
-from .forms import CustomPasswordChangeForm
+from .forms import CustomPasswordChangeForm, PostureLogForm
+
 
 def change_password(request):
     if request.method == 'POST':
