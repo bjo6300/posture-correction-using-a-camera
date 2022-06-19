@@ -165,3 +165,4 @@ settings.py
 *.xml
 
 # End of https://www.gitignore.io/api/macos,linux,django,python,pycharmq
+django/frame.jpg

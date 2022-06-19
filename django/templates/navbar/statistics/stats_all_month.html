@@ -9,6 +9,10 @@
 
 <head>
     <script>
+        // 자세별 count
+        var data = JSON.parse('{{datas | safe}}');
+        var data_sum = data[0] + data[1] + data[2];
+
         // 원형그래프 데이터
         window.onload = function () {
 
@@ -23,9 +27,9 @@
                     yValueFormatString: "##0.00\"%\"",
                     indexLabel: "{label} {y}",
                     dataPoints: [
-                        { y: 79.45, label: "거북목" },
-                        { y: 7.31, label: "어깨비대칭" },
-                        { y: 7.06, label: "턱 괴기" },
+                        { y: data[0]/data_sum * 100, label: "턱 괴기" },
+                        { y: data[1]/data_sum * 100, label: "어깨비대칭" },
+                        { y: data[2]/data_sum * 100, label: "거북목" },
 
                     ]
                 }]
@@ -64,7 +68,7 @@
                                 <td>
                                     <div class="btn-group" role="group" aria-label="Basic example" >
                                     <button type="button" id="btn-selected-month"
-                                        onclick="location.href='{% url 'posture:stats_all_month' %}'">월간통계</button>
+                                        onclick="location.href='{% url 'posture:stats_all_month' %}'">연간통계</button>
                                     <button type="button" id="btn-week"
                                         onclick="location.href='{% url 'posture:stats_all_week' %}'">주간통계</button>
                                     <button type="button" id="btn-day"
@@ -97,11 +101,6 @@
                         style="background-color: white; width: 100px; height: 20px; position: relative; top: -10px; left: 90%; z-index: 3;">
                     </div>
                     <hr>
-                    <!-- 통계 설명 div -->
-                    <div align="center">
-                        설명 작성
-                        
-                    </div>
                 </div>
             </div>
         </div>

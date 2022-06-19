@@ -15,11 +15,14 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from posture import views
+from common import views
+import posture
+from django.conf.urls import url
 
 urlpatterns = [
+    url(r'^stream2/$', views.stream2, name='stream2'),
     path('admin/', admin.site.urls),
     path('home/', include('posture.urls')), # main 페이지
     path('common/', include('common.urls')), # login 페이지
-    path('', views.index, name='index'),  # '/' 에 해당되는 path
+    path('', posture.views.index, name='index'),  # '/' 에 해당되는 path
 ]

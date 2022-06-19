@@ -11,24 +11,40 @@
 
 <head>
     
-    <script type="text/javascript"> var barChartData = {
-            labels: ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"],
+    <script type="text/javascript">
+        // 자세별 count
+        var data = JSON.parse('{{datas | safe}}');
+        var today = data[0];
+        var labels = [];
+        var step = 0;
+        var temp = today;
+
+        for(step = 1; step < 13; step++){
+            temp = today+step;
+            if (temp > 12) {
+                temp = temp - 12;
+            }
+            labels.push(temp+"월");
+        }
+
+        var barChartData = {
+            labels: labels,
             datasets: [{
                 label: '턱 괴기',
                 backgroundColor: "#1E90FF",
                 data: [
-                    Math.random() * 10,
-                    Math.random() * 10,
-                    Math.random() * 10,
-                    Math.random() * 10,
-                    Math.random() * 10,
-                    Math.random() * 10,
-                    Math.random() * 10,
-                    Math.random() * 10,
-                    Math.random() * 10,
-                    Math.random() * 10,
-                    Math.random() * 10,
-                    Math.random() * 10,
+                    data[today+1],
+                    data[today+2],
+                    data[today+3],
+                    data[today+4],
+                    data[today+5],
+                    data[today+6],
+                    data[today+7],
+                    data[today+8],
+                    data[today+9],
+                    data[today+10],
+                    data[today+11],
+                    data[today+12]
                 ]
             }
         ],
@@ -60,7 +76,7 @@
                         <table>
                             <tr>
                                 <td>
-                                    <h2 style="float: left;">턱 괴기 통계</h2>
+                                    <h3 style="float: left;">턱 괴기 통계</h3>
                                 </td>
                                 <td>
                                     &nbsp;&nbsp;&nbsp;&nbsp;
@@ -74,7 +90,7 @@
                                 <td>
                                     <div class="btn-group" role="group" aria-label="Basic example" >
                                         <button type="button" id="btn-selected-month"
-                                        onclick="location.href='{% url 'posture:stats_jaw_month' %}'">월간통계</button>
+                                        onclick="location.href='{% url 'posture:stats_jaw_month' %}'">연간통계</button>
                                     <button type="button" id="btn-week"
                                         onclick="location.href='{% url 'posture:stats_jaw_week' %}'">주간통계</button>
                                     <button type="button" id="btn-day"
@@ -99,11 +115,6 @@
                     </div>
                     
                     <hr>
-                    <!-- 통계 설명 div -->
-                    <div align="center">
-                        설명 작성
-
-                    </div>
                 </div>
             </div>
         </div>
