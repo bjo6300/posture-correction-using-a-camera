@@ -20,7 +20,7 @@
             "11시","12시","13시","14시","15시","16시","17시","18시","19시","20시",
             "21시","22시","23시"],
             datasets: [{
-                label: '거북목',
+                label: '어깨비대칭',
                 backgroundColor: "#1E90FF",
                 data: [
                     data[0],
@@ -78,7 +78,7 @@
                         <table>
                             <tr>
                                 <td style="width: 250px;">
-                                    <h2 style="float: left;">어깨비대칭 통계</h2>
+                                    <h3 style="float: left;">어깨비대칭 통계</h3>
                                 </td>
                                 <td>
                                     &nbsp;&nbsp;&nbsp;&nbsp;
@@ -91,7 +91,7 @@
                                 </td>
                                 <td>
                                     <div class="btn-group" role="group" aria-label="Basic example" >
-                                        <button type="button"  id="btn-month" onclick="location.href='{% url 'posture:stats_shoulder_month' %}'">월간통계</button>
+                                        <button type="button"  id="btn-month" onclick="location.href='{% url 'posture:stats_shoulder_month' %}'">연간통계</button>
                                         <button type="button" id="btn-week" onclick="location.href='{% url 'posture:stats_shoulder_week' %}'">주간통계</button>
                                         <button type="button" id="btn-selected-day" onclick="location.href='{% url 'posture:stats_shoulder_day' %}'">일별통계</button>
                           </div>
@@ -114,11 +114,6 @@
                     </div>
                     
                     <hr>
-                    <!-- 통계 설명 div -->
-                    <div align="center">
-                        설명 작성
-
-                    </div>
                 </div>
             </div>
         </div>
