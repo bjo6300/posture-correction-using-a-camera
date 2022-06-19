@@ -341,6 +341,7 @@ class VideoCamera(object):
             # 턱 관절 각도 계산
             jaw_angle = detector.findAngle(frame, 150, 152, 365, draw=True)
 
+
             if VideoCamera.isStretchingPose == True:  # 포즈가 취해졌는지 판단
                 if VideoCamera.upDown == 0:  # 위쪽
                     VideoCamera.upDown = 1  # 아래쪽
@@ -361,7 +362,7 @@ class VideoCamera(object):
                     if (jaw_angle <=110) and (left_hand_position >= 100 and left_hand_position <= 200) \
                             and (right_hand_position >= 100 and right_hand_position <= 200):
                         VideoCamera.isStretchingPose = True
-                        p_shoulder_count = 0
+                        p_turtleNeck_count = 0
 
         ret, jpeg = cv2.imencode('.jpg', frame)
         return jpeg.tobytes()
