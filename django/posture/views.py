@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse
+from .models import correction_video
 
 def index(request):
     # 홈 화면
@@ -11,7 +12,9 @@ def program(request):
 
 # 거북목 추천 영상
 def recommended_turtle(request):
-    return render(request, 'navbar/recommended/recommended_turtle.html')
+    video = correction_video.objects.filter(posture='거북목').order_by('video_index')
+
+    return render(request, 'navbar/recommended/recommended_turtle.html',{'correction_video' : video})
 
 # 어꺠비대칭 추천 영상
 def recommended_shoulder(request):
