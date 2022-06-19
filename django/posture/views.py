@@ -5,6 +5,7 @@ from django.db import connection
 from datetime import datetime
 from django.contrib.auth.models import User
 from django.http import HttpResponse
+from .models import correction_video
 
 def index(request):
     # 홈 화면
@@ -13,6 +14,24 @@ def index(request):
 # 메인페이지 - 프로그램 시작
 def program(request):
     return render(request, 'program.html')
+
+# 거북목 추천 영상
+def recommended_turtle(request):
+    video = correction_video.objects.filter(posture='거북목').order_by('video_index')
+
+    return render(request, 'navbar/recommended/recommended_turtle.html',{'correction_video' : video})
+
+# 거북목 추천 영상 보여주기
+def show_turtle_videos(request):
+    return render(request, 'navbar/recommended/show_turtle_videos.html')
+
+# 어꺠비대칭 추천 영상
+def recommended_shoulder(request):
+    return render(request, 'navbar/recommended/recommended_shoulder.html')
+
+# 턱괴기 추천 영상
+def recommended_jaw(request):
+    return render(request, 'navbar/recommended/recommended_jaw.html')
 
 # 마이페이지
 def mypage(request):
