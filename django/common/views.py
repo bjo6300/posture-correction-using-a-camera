@@ -87,8 +87,16 @@ class VideoCamera(object):
     # 방향 위치 : 0(위), 1(아래)
     upDown = 0
 
+
     # username
     usrname = ''
+
+    # 입 동작 : 0(아), 1(이)
+    mouth_mode = 0
+
+    # 교정 횟수
+    stretching_count = 0
+
 
     def __init__(self):
         # Using OpenCV to capture from device 0. If you have trouble capturing
@@ -241,6 +249,8 @@ class VideoCamera(object):
 
             elif p_turtleNeck_count != 0 and p_turtleNeck_count % 5 == 0:
                 VideoCamera.mode = 2
+            elif p_jaw_bone_count != 0 and p_jaw_bone_count % 5 == 0:
+                VideoCamera.mode = 3
 
         ret, jpeg = cv2.imencode('.jpg', frame)
         return jpeg.tobytes()
@@ -349,11 +359,12 @@ class VideoCamera(object):
             # 턱 관절 각도 계산
             jaw_angle = detector.findAngle(frame, 150, 152, 365, draw=True)
 
+
             if VideoCamera.isStretchingPose == True:  # 포즈가 취해졌는지 판단
                 if VideoCamera.upDown == 0:  # 위쪽
                     VideoCamera.upDown = 1  # 아래쪽
                     VideoCamera.isStretchingPose = False
-                else:  # 왼쪽
+                else:  # 아래쪽
                     VideoCamera.mode = 0
                     VideoCamera.isStretchingPose = False
                     VideoCamera.upDown = 0
@@ -369,11 +380,81 @@ class VideoCamera(object):
                     if (jaw_angle <=110) and (left_hand_position >= 100 and left_hand_position <= 200) \
                             and (right_hand_position >= 100 and right_hand_position <= 200):
                         VideoCamera.isStretchingPose = True
-                        p_shoulder_count = 0
+                        p_turtleNeck_count = 0
 
         ret, jpeg = cv2.imencode('.jpg', frame)
         return jpeg.tobytes()
 
+    def get_frame_stretching3(self):
+        global p_jaw_bone_count
+        global p_shoulder_count
+        global p_turtleNeck_count
+        # default BGR img
+
+        # Holistic detector을 이용한 감지
+        frame = detector.findHolistic(self.frame, draw=True)
+
+        # output -> list ( id, x, y, z) 32 개 좌표인데 예를 들면, (11, x, y, z)
+        pose_lmList = detector.findPoseLandmark(frame, draw=True)
+        # 468개의 얼굴 점 리스트
+        face_lmList = detector.findFaceLandmark(frame, draw=True)
+
+        # fps 계산 로직
+        cTime = time.time()
+        global pTime
+        fps = 1 / (cTime - pTime)
+        pTime = cTime
+
+        # 사용자의 컴퓨터에 맞는 주사율
+        my_computer_fps = fps + 1
+
+        # 인체가 감지가 되었는지 확인하는 구문
+        if len(pose_lmList) != 0 and len(face_lmList) != 0:
+            # 양쪽 귀 관절점 사이의 거리를 이미지로 변경
+            ears_img = detector.drawEars(frame, draw=True)
+
+            # 양 어깨의 관절점 사이의 거리를 이미지로 변경
+            shoulder_img = detector.drawShoulder2(frame, draw=True)
+
+            # 양쪽 손과 눈썹 사이 거리 구하기
+            left_hand_position = detector.findPointDistance(152, 19)
+            right_hand_position = detector.findPointDistance(152, 20)
+            # print(left_hand_position, right_hand_position)
+
+            # 입 각도 계산
+            mouth_distance1 = detector.findMouthDistance(frame, 0, 17)
+            mouth_distance2 = detector.findMouthDistance(frame,61,291)
+
+            mouth_angle = detector.findAngle(frame,61,17,291)
+
+            if VideoCamera.stretching_count == 3:
+                VideoCamera.stretching_count = 0
+                VideoCamera.mode = 0
+
+            if VideoCamera.isStretchingPose == True:  # 포즈가 취해졌는지 판단
+                if VideoCamera.mouth_mode == 0:
+                    VideoCamera.mouth_mode = 1
+                    VideoCamera.isStretchingPose = False
+                else:
+                    VideoCamera.isStretchingPose = False
+                    VideoCamera.mouth_mode = 0
+            else:
+                if VideoCamera.mouth_mode == 0:
+                    toaster.show_toast("스트레칭 시작합니다.", f"입을 아! 모양으로 크게 벌려주세요!\n\n", threaded=True)
+                    # if jaw_angle >= 160:
+                    if (mouth_angle >= 79 and mouth_angle <= 95) and mouth_distance1 >= 38:
+                        VideoCamera.isStretchingPose = True
+                else:
+                    toaster.show_toast("스트레칭 시작합니다.", f"입을 이! 모양으로 크게 벌려주세요!\n\n", threaded=True)
+                    # if jaw_angle >= 160:
+                    if mouth_angle >= 113 and mouth_distance2 >= 65:
+                        VideoCamera.isStretchingPose = True
+                        p_jaw_bone_count = 0
+                        VideoCamera.stretching_count += 1
+            cv2.putText(frame, str(int(VideoCamera.stretching_count)), (10, 70), cv2.FONT_HERSHEY_PLAIN, 3, (255, 0, 255), 3)
+
+        ret, jpeg = cv2.imencode('.jpg', frame)
+        return jpeg.tobytes()
     def update(self):
         while True:
             (self.grabbed, self.frame) = self.video.read()
@@ -392,6 +473,8 @@ def gen(camera):
             frame = cam.get_frame_stretching()
         elif VideoCamera.mode == 2:
             frame = cam.get_frame_stretching2()
+        elif VideoCamera.mode == 3:
+            frame = cam.get_frame_stretching3()
         else: # 인식
             frame = cam.get_frame()
         yield (b'--frame\r\n'
