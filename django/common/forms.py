@@ -5,7 +5,10 @@ common/forms.py
 from django import forms
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
 from django.contrib.auth.forms import UserCreationForm
-from .models import User
+from django.forms import ModelForm
+
+from .models import User, PostureLog
+
 
 # 사용자 생성 폼
 class UserCreationForm(forms.ModelForm):
@@ -64,3 +67,8 @@ class CustomPasswordChangeForm(PasswordChangeForm):
         self.fields['new_password2'].widget.attrs.update({
             'class': 'form-control',
         })
+
+class PostureLogForm(ModelForm):
+    class Meta:
+        model = PostureLog
+        fields = '__all__'

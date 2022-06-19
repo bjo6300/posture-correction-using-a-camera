@@ -1,6 +1,7 @@
 from django.db import models
+from datetime import datetime
+from django.utils import timezone
 from django.contrib.auth.models import (BaseUserManager, AbstractBaseUser)
-
 
 class UserManager(BaseUserManager):
     # 일반 user 생성
@@ -74,3 +75,9 @@ class User(AbstractBaseUser):
 
     class Meta:
         db_table = 'users'
+
+class PostureLog(models.Model):
+    username = models.CharField(max_length=100, null=False, blank=False)
+    date = models.DateTimeField(default=datetime.now())
+    posturename = models.IntegerField()     #0=턱괴기 1=어깨 2=거북목
+

@@ -19,6 +19,11 @@ def mypage_modify(request):
 
 # 전체 월간 통계
 def stats_all_month(request):
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+
+    elif request.method == 'GET':
     return render(request, 'navbar/statistics/stats_all_month.html')
 
 # 전체 주간 통계
