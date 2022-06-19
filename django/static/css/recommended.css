@@ -138,7 +138,7 @@ a:link, a:visited, a:active {
 /* 이미지 컨테이너 테이블 */
 #table-container {
     text-align: center;
-    border-spacing: 5px; /* 테이블 사이 간격  */
+    border-spacing: 30px 20px; /* 테이블 사이 간격  */
     border-collapse: separate;
 }
 

@@ -27,12 +27,12 @@
                     
                     <hr>
 
-                    
+                    {% if correction_video %}
                     <table id="table-container">
                         <tr>
                             {% for video in correction_video.all %}
                             <td style="width: 206px; height: 120px; " >
-                                <div class="div-images" style="width: 206; height : 120px">
+                                <div class="div-images" style="width: 206; height : 120px;">
                                     <a href="{% url 'posture:show_turtle_videos' %}">
                                     <img src={{ "https://img.youtube.com/vi/" | add:video.video_link | add:"/maxresdefault.jpg"}} width="206px" height="120px" style="cursor: pointer;">
                                     </a>
@@ -48,6 +48,9 @@
                         
                         
                     </table>
+                    {% else %}
+                    <div id="div-alert"> 포트폴리오를 준비 중입니다. </div>
+                    {% endif %}
                     
 
                 </div>
