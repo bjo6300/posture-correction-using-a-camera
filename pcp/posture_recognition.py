@@ -2,7 +2,7 @@ import cv2
 import time
 import numpy as np
 import pcp.modules.HolisticModule as hm
-from win10toast import ToastNotifier
+# from win10toast import ToastNotifier
 import tensorflow as tf
 from keras.preprocessing.image import img_to_array
 from PIL import Image
