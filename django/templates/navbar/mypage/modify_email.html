@@ -4,44 +4,62 @@
 
 <link rel="stylesheet" type="text/css" href="{% static 'css/signup.css' %}">
 
-    <div class="register">
-        <h3 style="font-size: 30px;">이메일 수정</h3>
-        <!-- <form method="post" action="" autocomplete="off"> -->
-            {% csrf_token %}
-            {% include "form_errors.html" %}
-            <div class="flex">
+<div class="register">
+    <h3 style="font-size: 30px;">이메일 수정</h3>
 
+    <form method="post"  autocomplete='off'>
+
+        {% csrf_token %}
+        
+        <div class="flex">
+
+
+            <ul class="container">
+                <li class="item center">
+                    변경할 이메일
+                </li>
+                <li class="item">
+                    <input type="email" id="email" name="email" placeholder="변경할 이메일을 입력하세요." 
+                        value="">
+                </li>
+                <li class="item">
+
+                </li>
+            </ul>
+
+
+            <ul class="container">
+                <li class="item center">
+
+                </li>
+
+                <li class="item">
+                    <button class="submit">수정하기</button>
+                </li>
+
+                <li class="item">
+
+                </li>
+            </ul>
             
-                <ul class="container">
-                    <li class="item center">
-                        이메일
-                    </li>
-                    <li class="item">
-                        <input type="email" id="modify_email" name="modify_email" placeholder="변경할 이메일을 입력하세요."
-                            value="{{ form.modify_email.value|default_if_none:'' }}">
-                    </li>
-                    <li class="item">
+            <ul class="container">
+                <li class="item center">
 
-                    </li>
-                </ul>
+                </li>
+
                 
+                <li class="item">
+                    {% include "form_errors.html" %}
+                </li>
+                <li class="item">
+                    
+                </li>
+            </ul>
+        </div>
 
-                <ul class="container">
-                    <li class="item center">
+    </form>
 
-                    </li>
 
-                    <li class="item">
-                        <a href="{% url 'common:modify_email_completed' %}"><button class="submit">수정하기</button></a>
-                    </li>
-
-                    <li class="item">
-
-                    </li>
-                </ul>
-            </div>
-        <!-- </form> -->
-
-    </div>
+</div>
 </body>
 {% endblock %}

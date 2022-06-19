@@ -525,46 +525,13 @@ class SignUpView(View):
         return render(request, 'navbar/signup.html')
 
 
-# def change_password(request):
-#     if request.method == 'POST':
-#         form = PasswordChangeForm(request.user, request.POST)
-#         if form.is_valid():
-#             user = form.save()
-#             update_session_auth_hash(request, user)  # 비밀번호 변경 후 자동로그인
-#             messages.success(request, '비밀번호가 변경되었습니다!')
-#             return redirect("{% url 'common:modify_password_completed' %}")
-#         else:
-#             messages.error(request, 'Please correct the error below.')
-#             return redirect("{% url 'common:modify_password' %}")
-#     else:
-#         form = PasswordChangeForm(request.user)
-#     return render(request, "{% url 'common:modify_password_completed' %}", {
-#         'form': form
-#     })
+def signup_completed(request):
+    """ 회원가입 완료 페이지 """
+    return render(request, 'navbar/signup_completed.html')
 
-# def change_password(request):
-#   if request.method == "POST":
-#     user = request.user
-#     origin_password = request.POST["origin_password"]
-#     if check_password(origin_password, user.password):
-#       new_password = request.POST["new_password"]
-#       confirm_password = request.POST["confirm_password"]
-#       if new_password == confirm_password:
-#         user.set_password(new_password)
-#         user.save()
-#         auth.login(request, user)
-#         messages.error(request, '성공')
-#         return redirect("{% url 'common:change_password' %}")
-#       else:
-#         messages.error(request, 'Password not same')
-#     else:
-#       messages.error(request, 'Password not correct')
-#     return render(request, "{% url 'common:change_password' %}")
-#   else:
-#     return render(request, "{% url 'common:change_password' %}")
+from .forms import CustomPasswordChangeForm, CustomEmailChangeForm
 
-from .forms import CustomPasswordChangeForm
-
+# 비밀번호 수정
 def change_password(request):
     if request.method == 'POST':
         print('비밀번호 변경 POST')
@@ -582,27 +549,62 @@ def change_password(request):
         password_change_form = CustomPasswordChangeForm(request.user)
         return render(request, "navbar/mypage/change_password.html", {'form': password_change_form})
 
-
-def signup_completed(request):
-    """ 회원가입 완료 페이지 """
-    return render(request, 'navbar/signup_completed.html')
-
 # 비밀번호 수정 완료
 def modify_password_completed(request):
     return render(request, 'navbar/mypage/modify_password_completed.html') 
 
-# 비밀번호 수정 완료
+# 이메일 수정
 def modify_email(request):
-    return render(request, 'navbar/mypage/modify_email.html') 
+    if request.method == 'POST':
+        # print('이메일 변경 POST')
+        form = CustomEmailChangeForm(request.POST, instance=request.user)
+        if form.is_valid():
+            form.save()
+            # messages.success(request, "success ")
+            return render(request, 'navbar/mypage/modify_email_completed.html')
+        else:
+            # messages.error(request, "fail")
+            return render(request, "navbar/mypage/modify_email.html",{'form': form})
+    elif request.method == 'GET':
+        # print('이메일 변경 GET')
+        form = CustomEmailChangeForm(instance=request.user)
+    
+    return render(request, "navbar/mypage/modify_email.html", {'form': form})
 
-# 비밀번호 수정 완료
+# 이메일 수정 완료
 def modify_email_completed(request):
     return render(request, 'navbar/mypage/modify_email_completed.html') 
 
+
+# from django.conf import settings
+from django.contrib import messages
+from django.core.mail import EmailMessage
+from django.template.loader import render_to_string
+
+
 # 아이디찾기
 def find_id(request):
+    if request.method == 'POST':
+        email = request.POST.get('email')
+        try:
+            user = User.objects.get(email=email)
+            # print(user.email)
+            template = render_to_string('common/send_email.html', {'name': user.username})
+            method_email = EmailMessage(
+                '[PCP] PCP 아이디는 다음과 같습니다.',
+                template,
+                to=[email]
+            )
+            method_email.send(fail_silently=False)
+            return render(request, 'common/find_id_checked.html')
+
+        except:
+            messages.info(request, "해당되는 이메일의 PCP 계정이 없습니다.")
+
+    elif request.method == 'GET':
+        return render(request, 'common/find_id.html')
     return render(request, 'common/find_id.html')
 
-# 아이디찾기 체크완료
+ # 아이디찾기 체크완료
 def find_id_checked(request):
     return render(request, 'common/find_id_checked.html')

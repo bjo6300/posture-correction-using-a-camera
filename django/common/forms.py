@@ -35,18 +35,25 @@ class UserCreationForm(forms.ModelForm):
         return user
 
 # 사용자 수정 Form
-class UserChangeForm(forms.ModelForm):
-    # 사용자의 패스워드를 read 권한으로 설정하여 수정하지 못하도록 함
-    password = ReadOnlyPasswordHashField()
+# class UserChangeForm(forms.ModelForm):
+#     # 사용자의 패스워드를 read 권한으로 설정하여 수정하지 못하도록 함
+#     password = ReadOnlyPasswordHashField()
+#
+#     class Meta:
+#         model = User
+#         fields = ('username', 'gender', 'email', 'birth', 'password')
+#
+#     def clean_password(self):
+#         return self.initial["password"]
 
-    class Meta:
-        model = User
-        fields = ('username', 'gender', 'email', 'birth', 'password')
+    # class Meta:
+    #     model = User
+    #     fields = ('username', 'gender', 'email', 'birth', 'password')
+    #
+    # def clean_password(self):
+    #     return self.initial["password"]
 
-    def clean_password(self):
-        return self.initial["password"]
-
-from django.contrib.auth.forms import PasswordChangeForm
+from django.contrib.auth.forms import PasswordChangeForm, UserChangeForm
 
 class CustomPasswordChangeForm(PasswordChangeForm):
     def __init__(self, *args, **kwargs):
@@ -64,3 +71,9 @@ class CustomPasswordChangeForm(PasswordChangeForm):
         self.fields['new_password2'].widget.attrs.update({
             'class': 'form-control',
         })
+
+class CustomEmailChangeForm(UserChangeForm):
+    class Meta:
+        model = User
+        fields = ('email',)
+
