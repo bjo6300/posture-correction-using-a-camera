@@ -4,12 +4,11 @@
 <link rel="stylesheet" type="text/css" href="{% static 'css/mypage.css' %}">
 <body>
     <div align="center">
-        {% if user.is_authenticated %}
-        프로그램 실행
-        master_cv2 브랜치에는 연결해놨어
-        <!-- <img src="{% url 'stream2' %}" width="640" height="480"> -->
-        {% else %}
 
+        {% if user.is_authenticated %}
+
+        <!-- <img src="{% url 'stream2' %}" width="640" height="480" style="margin: 150px"> -->
+        {% else %}
         {% endif %}
     </div>
 </body>

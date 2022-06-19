@@ -11,7 +11,11 @@
 
 <head>
     
-    <script type="text/javascript"> var barChartData = {
+    <script type="text/javascript">
+        // 자세별 count
+        var data = JSON.parse('{{datas | safe}}');
+
+        var barChartData = {
             labels: ["00시", "01시", "02시", "03시", "04시", "05시", "06시", "07시", "08시", "09시", "10시", 
             "11시","12시","13시","14시","15시","16시","17시","18시","19시","20시",
             "21시","22시","23시"],
@@ -19,30 +23,30 @@
                 label: '턱 괴기',
                 backgroundColor: "#1E90FF",
                 data: [
-                    Math.random() * 10,
-                    Math.random() * 10,
-                    Math.random() * 10,
-                    Math.random() * 10,
-                    Math.random() * 10,
-                    Math.random() * 10,
-                    Math.random() * 10,
-                    Math.random() * 10,
-                    Math.random() * 10,
-                    Math.random() * 10,
-                    Math.random() * 10,
-                    Math.random() * 10,
-                    Math.random() * 10,
-                    Math.random() * 10,
-                    Math.random() * 10,
-                    Math.random() * 10,
-                    Math.random() * 10,
-                    Math.random() * 10,
-                    Math.random() * 10,
-                    Math.random() * 10,
-                    Math.random() * 10,
-                    Math.random() * 10,
-                    Math.random() * 10,
-                    Math.random() * 10,
+                    data[0],
+                    data[1],
+                    data[2],
+                    data[3],
+                    data[4],
+                    data[5],
+                    data[6],
+                    data[7],
+                    data[8],
+                    data[9],
+                    data[10],
+                    data[11],
+                    data[12],
+                    data[13],
+                    data[14],
+                    data[15],
+                    data[16],
+                    data[17],
+                    data[18],
+                    data[19],
+                    data[20],
+                    data[21],
+                    data[22],
+                    data[23]
                 ]
             }
         ],
@@ -74,7 +78,7 @@
                         <table>
                             <tr>
                                 <td>
-                                    <h2 style="float: left;">턱 괴기 통계</h2>
+                                    <h3 style="float: left;">턱 괴기 통계</h3>
                                 </td>
                                 <td>
                                     &nbsp;&nbsp;&nbsp;&nbsp;
@@ -87,7 +91,7 @@
                                 </td>
                                 <td>
                                     <div class="btn-group" role="group" aria-label="Basic example" >
-                                        <button type="button"  id="btn-month" onclick="location.href='{% url 'posture:stats_jaw_month' %}'">월간통계</button>
+                                        <button type="button"  id="btn-month" onclick="location.href='{% url 'posture:stats_jaw_month' %}'">연간통계</button>
                                         <button type="button" id="btn-week" onclick="location.href='{% url 'posture:stats_jaw_week' %}'">주간통계</button>
                                         <button type="button" id="btn-selected-day" onclick="location.href='{% url 'posture:stats_jaw_day' %}'">일별통계</button>
                           </div>
@@ -110,11 +114,6 @@
                     </div>
                     
                     <hr>
-                    <!-- 통계 설명 div -->
-                    <div align="center">
-                        설명 작성
-
-                    </div>
                 </div>
             </div>
         </div>

@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import User
+from .models import User, PostureLog
 
 class UserAdmin(admin.ModelAdmin) :
     list_display = ('username','gender','email','birth')
@@ -18,3 +18,4 @@ class UserAdmin(admin.ModelAdmin) :
     
 
 admin.site.register(User, UserAdmin) #site에 등록
+admin.site.register(PostureLog)
