@@ -138,8 +138,8 @@ a:link, a:visited, a:active {
 /* 이미지 컨테이너 테이블 */
 #table-container {
     text-align: center;
-    margin: auto;
-    padding: 0 0 15px 0;
+    margin: 20px;
+    padding: 10;
 }
 
 /* 이미지 박스 */
