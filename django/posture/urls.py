@@ -22,6 +22,9 @@ urlpatterns = [
     # 거북목 추천 영상 "{% url 'posture:recommended_turtle' %}"
     path('recommended_turtle/', views.recommended_turtle, name='recommended_turtle'),
 
+    # 거북목 추천 영상 보여주기 "{% url 'posture:show_turtle_videos' %}"
+    path('show_turtle_videos/', views.show_turtle_videos, name='show_turtle_videos'),
+
     # 어깨비대칭 추천 영상 "{% url 'posture:recommended_shoulder' %}"
     path('recommended_shoulder/', views.recommended_shoulder, name='recommended_shoulder'),
 

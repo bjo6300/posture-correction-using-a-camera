@@ -16,6 +16,10 @@ def recommended_turtle(request):
 
     return render(request, 'navbar/recommended/recommended_turtle.html',{'correction_video' : video})
 
+# 거북목 추천 영상 보여주기
+def show_turtle_videos(request):
+    return render(request, 'navbar/recommended/show_turtle_videos.html')
+
 # 어꺠비대칭 추천 영상
 def recommended_shoulder(request):
     return render(request, 'navbar/recommended/recommended_shoulder.html')

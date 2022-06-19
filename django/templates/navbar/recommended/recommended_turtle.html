@@ -31,14 +31,16 @@
                     <table id="table-container">
                         <tr>
                             {% for video in correction_video.all %}
-                            <td style="width: 320px; height: 200px; " >
-                                <div class="div-images">
-                                    <img src={{ "https://img.youtube.com/vi/" | add:video.video_link | add:"/maxresdefault.jpg"}} width="320px" height="180px" style="cursor: pointer;">
+                            <td style="width: 206px; height: 120px; " >
+                                <div class="div-images" style="width: 206; height : 120px">
+                                    <a href="{% url 'posture:show_turtle_videos' %}">
+                                    <img src={{ "https://img.youtube.com/vi/" | add:video.video_link | add:"/maxresdefault.jpg"}} width="206px" height="120px" style="cursor: pointer;">
+                                    </a>
                                 </div>
-                                <h1 style="font-size: 13px; margin-top: 10px;">{{video.title}}</h1>
+                                <h1 style="font-size: 17px; margin-top: 10px;">{{video.title}}</h1>
                             </td>
 
-                            {% if not forloop.last and forloop.counter|divisibleby:3 %}
+                            {% if not forloop.last and forloop.counter|divisibleby:4 %}
 
                         </tr>
                         {% endif %}
