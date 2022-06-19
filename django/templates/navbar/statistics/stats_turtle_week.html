@@ -11,19 +11,59 @@
 
 <head>
     
-    <script type="text/javascript"> var barChartData = {
-            labels: ["월요일", "화요일", "수요일", "목요일", "금요일", "토요일", "일요일"],
+    <script type="text/javascript">
+        // 자세별 count
+        var data = JSON.parse('{{datas | safe}}');
+        var today = data[0];
+        var labels = [];
+        var step = 0;
+
+        for(step = 1; step < 8; step++){
+            switch (today+step) {
+            case 1:
+            case 8:
+                labels.push("일요일");
+                break;
+            case 2:
+            case 9:
+                labels.push("월요일");
+                break;
+            case 3:
+            case 10:
+                labels.push("화요일");
+                break;
+            case 4:
+            case 11:
+                labels.push("수요일");
+                break;
+            case 5:
+            case 12:
+                labels.push("목요일");
+                break;
+            case 6:
+            case 13:
+                labels.push("금요일");
+                break;
+            case 7:
+            case 14:
+                labels.push("토요일");
+                break;
+            }
+        }
+
+        var barChartData = {
+            labels: labels,
             datasets: [{
                 label: '거북목',
                 backgroundColor: "#1E90FF",
                 data: [
-                    Math.random() * 10,
-                    Math.random() * 10,
-                    Math.random() * 10,
-                    Math.random() * 10,
-                    Math.random() * 10,
-                    Math.random() * 10,
-                    Math.random() * 10
+                    data[today+1],
+                    data[today+2],
+                    data[today+3],
+                    data[today+4],
+                    data[today+5],
+                    data[today+6],
+                    data[today+7]
                 ]
             }
         ],

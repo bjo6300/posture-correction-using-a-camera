@@ -9,6 +9,10 @@
 
 <head>
     <script>
+        // 자세별 count
+        var data = JSON.parse('{{datas | safe}}');
+        var data_sum = data[0] + data[1] + data[2];
+
         // 원형그래프 데이터
         window.onload = function () {
 
@@ -23,9 +27,9 @@
                     yValueFormatString: "##0.00\"%\"",
                     indexLabel: "{label} {y}",
                     dataPoints: [
-                        { y: 79.45, label: "거북목" },
-                        { y: 7.31, label: "어깨비대칭" },
-                        { y: 7.06, label: "턱 괴기" },
+                        { y: data[0]/data_sum * 100, label: "턱 괴기" },
+                        { y: data[1]/data_sum * 100, label: "어깨비대칭" },
+                        { y: data[2]/data_sum * 100, label: "거북목" },
 
                     ]
                 }]
