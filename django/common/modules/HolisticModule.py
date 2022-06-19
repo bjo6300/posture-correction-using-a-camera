@@ -336,13 +336,24 @@ class HolisticDetector():
         return length
 
     # 추가된 함수
+    # 얼굴 관절점과 포즈 관절점의 거리 차 구하기
+    def findMouthDistance(self, img, p1, p2):
+        x1, y1 = self.face_lmList[p1][1:3]
+        x2, y2 = self.face_lmList[p2][1:3]
+
+        length = math.hypot(x2 - x1, y2 - y1)
+
+        # cv2.putText(img, str(int(length)), (x2 - 50, y2 + 50), cv2.FONT_HERSHEY_PLAIN, 2, (0, 0, 255), 2)
+        return length
+
+    # 추가된 함수
     # 어깨의 두 점 11, 12의 점과 사이 라인 표시
     def drawShoulder(self, p1, p2, img, draw=True, r=5, t=1):
         x1, y1 = self.pose_lmList[p1][1:3]
         x2, y2 = self.pose_lmList[p2][1:3]
 
         if draw:
-            # cv2.line(img, (x1, y1), (x2, y2), (255, 0, 255), t)
+            cv2.line(img, (x1, y1), (x2, y2), (255, 0, 255), t)
             cv2.circle(img, (x1, y1), r, (255, 0, 255), cv2.FILLED)
             cv2.circle(img, (x2, y2), r, (255, 0, 255), cv2.FILLED)
 
@@ -434,8 +445,8 @@ class HolisticDetector():
         # print(angle)
         # 점, 선 그리기
         if draw:
-            # cv2.line(img, (x1, y1), (x2, y2), (255, 255, 255), 3)
-            # cv2.line(img, (x2, y2), (x3, y3), (255, 255, 255), 3)
+            cv2.line(img, (x1, y1), (x2, y2), (255, 255, 255), 3)
+            cv2.line(img, (x2, y2), (x3, y3), (255, 255, 255), 3)
             cv2.circle(img, (x1, y1), 5, (0, 0, 255), cv2.FILLED)
             # cv2.circle(img, (x1, y1), 15, (0, 0, 255), 2)
             cv2.circle(img, (x2, y2), 5, (0, 0, 255), cv2.FILLED)
