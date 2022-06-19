@@ -124,10 +124,36 @@ def modify_email(request):
 def modify_email_completed(request):
     return render(request, 'navbar/mypage/modify_email_completed.html') 
 
+
+# from django.conf import settings
+from django.contrib import messages
+from django.core.mail import EmailMessage
+from django.template.loader import render_to_string
+
+
 # 아이디찾기
 def find_id(request):
+    if request.method == 'POST':
+        email = request.POST.get('email')
+        try:
+            user = User.objects.get(email=email)
+            # print(user.email)
+            template = render_to_string('common/send_email.html', {'name': user.username})
+            method_email = EmailMessage(
+                '[PCP] PCP 아이디는 다음과 같습니다.',
+                template,
+                to=[email]
+            )
+            method_email.send(fail_silently=False)
+            return render(request, 'common/find_id_checked.html')
+
+        except:
+            messages.info(request, "해당되는 이메일의 PCP 계정이 없습니다.")
+
+    elif request.method == 'GET':
+        return render(request, 'common/find_id.html')
     return render(request, 'common/find_id.html')
 
-# 아이디찾기 체크완료
+ # 아이디찾기 체크완료
 def find_id_checked(request):
     return render(request, 'common/find_id_checked.html')

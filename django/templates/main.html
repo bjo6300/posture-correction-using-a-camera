@@ -12,7 +12,9 @@
             <a href="{% url 'posture:program' %}"><button id="btn-fix">시작하기</button></a>
         </div>
         {% else %}
-        <a href="{% url 'common:login_main' %}">로그인</a>
+        <div class="bg">
+            <a href="{% url 'common:login_main' %}"><button id="btn-fix">로그인</button></a>
+        </div>
         {% endif %}
     </div>
 </body>
