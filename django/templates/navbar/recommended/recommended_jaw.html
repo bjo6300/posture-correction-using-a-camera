@@ -38,9 +38,8 @@
                             {% for video in correction_video.all %}
                             <td style="width: 206px; height: 120px; " >
                                 <div class="div-images" style="width: 206; height : 120px;">
-<!--                                    <a href="{% url 'posture:show_turtle_videos' %}">-->
-                                    <img src="{% url 'stream2' %}" width="640" height="480" style="margin: 150px">
-<!--                                    <img class = "trigger" src={{ "https://img.youtube.com/vi/" | add:video.video_link | add:"/maxresdefault.jpg"}} width="206px" height="120px" style="cursor: pointer;" data-img={{ "https://img.youtube.com/vi/" | add:video.video_link | add:"/maxresdefault.jpg"}}>-->
+                                    <a href="{% url 'posture:show_turtle_videos' %}">
+                                    <img class = "trigger" src={{ "https://img.youtube.com/vi/" | add:video.video_link | add:"/maxresdefault.jpg"}} width="206px" height="120px" style="cursor: pointer;" data-img={{ "https://img.youtube.com/vi/" | add:video.video_link | add:"/maxresdefault.jpg"}}>
                                 </a>
                                     
                                 </div>
@@ -58,6 +57,7 @@
                     </table>
 
                     {% else %}
+<!--                    <img src="{% url 'stream2' %}" width="480" height="360" style="margin: 150px">-->
                     <div id="div-alert"> 영상을 준비 중입니다. </div>
                     {% endif %}
                     

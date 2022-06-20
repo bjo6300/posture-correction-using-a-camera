@@ -277,11 +277,11 @@ class HolisticDetector():
             for i in range(len(p)):
                 cv2.circle(img, (xy[i][0], xy[i][1]), r, (255, 0, 255), cv2.FILLED)
 
-            # cv2.line(img, (x1, y1), (x2, y2), (255, 0, 255), t)
-            # cv2.line(img, (x1, y1), (x3, y3), (255, 0, 255), t)
-            # cv2.line(img, (x3, y3), (x5, y5), (255, 0, 255), t)
-            # cv2.line(img, (x2, y2), (x4, y4), (255, 0, 255), t)
-            # cv2.line(img, (x4, y4), (x6, y6), (255, 0, 255), t)
+            cv2.line(img, (xy[0][0], xy[0][1]), (xy[1][0], xy[1][1]), (255, 0, 255), t)
+            cv2.line(img, (xy[0][0], xy[0][1]), (xy[2][0], xy[2][1]), (255, 0, 255), t)
+            cv2.line(img, (xy[2][0], xy[2][1]), (xy[4][0], xy[4][1]), (255, 0, 255), t)
+            cv2.line(img, (xy[1][0], xy[1][1]), (xy[3][0], xy[3][1]), (255, 0, 255), t)
+            cv2.line(img, (xy[3][0], xy[3][1]), (xy[5][0], xy[5][1]), (255, 0, 255), t)
             # cv2.circle(img, (x1, y1), r, (255, 0, 255), cv2.FILLED)
             # cv2.circle(img, (x2, y2), r, (255, 0, 255), cv2.FILLED)
             # cv2.circle(img, (x3, y3), r, (255, 0, 255), cv2.FILLED)
@@ -343,7 +343,7 @@ class HolisticDetector():
 
     # 추가된 함수
     # 얼굴 관절점과 포즈 관절점의 거리 차 구하기
-    def findPointDistance(self, img, p1, p2):
+    def findPointDistance(self, p1, p2):
         x1, y1 = self.face_lmList[p1][1:3]
         x2, y2 = self.pose_lmList[p2][1:3]
 
@@ -361,7 +361,7 @@ class HolisticDetector():
 
         length = math.hypot(x2 - x1, y2 - y1)
 
-        # cv2.putText(img, str(int(length)), (x2 - 50, y2 + 50), cv2.FONT_HERSHEY_PLAIN, 2, (0, 0, 255), 2)
+        cv2.putText(img, str(int(length)), (x2 - 50, y2 + 50), cv2.FONT_HERSHEY_PLAIN, 2, (0, 0, 255), 2)
         return length
 
     # 추가된 함수
@@ -471,7 +471,7 @@ class HolisticDetector():
             # cv2.circle(img, (x2, y2), 15, (0, 0, 255), 2)
             cv2.circle(img, (x3, y3), 5, (0, 0, 255), cv2.FILLED)
             # cv2.circle(img, (x3, y3), 15, (0, 0, 255), 2)
-            # cv2.putText(img, str(int(angle)), (x2 - 50, y2 + 50), cv2.FONT_HERSHEY_PLAIN, 2, (0, 0, 255), 2)
+            cv2.putText(img, str(int(angle)), (x2 - 50, y2 + 50), cv2.FONT_HERSHEY_PLAIN, 2, (0, 0, 255), 2)
 
         return angle
 

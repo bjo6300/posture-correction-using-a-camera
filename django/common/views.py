@@ -76,7 +76,7 @@ app_name = 'common'
 
 class VideoCamera(object):
     # capture mode
-    mode = 2
+    mode = 0
 
     # stretching value
     isStretchingPose = False
@@ -197,7 +197,7 @@ class VideoCamera(object):
 
 
             # 어깨 비대칭 자세가 감지되면 어깨 비대칭 count 1증가
-            if shoulder_hd >= 35:
+            if shoulder_hd >= 30:
                 shoulder_count += 1
             else:
                 shoulder_count = 0
@@ -358,8 +358,8 @@ class VideoCamera(object):
             shoulder_img = detector.drawShoulder2(frame, draw=True)
 
             # 양쪽 손과 눈썹 사이 거리 구하기
-            left_hand_position = detector.findPointDistance(frame, 10, 19)
-            right_hand_position = detector.findPointDistance(frame, 10, 20)
+            left_hand_position = detector.findPointDistance(10, 19)
+            right_hand_position = detector.findPointDistance(10, 20)
             # print(left_hand_position, right_hand_position)
 
             # 턱 관절 각도 계산
@@ -378,14 +378,14 @@ class VideoCamera(object):
                 if VideoCamera.upDown == 0:  # 위쪽
                     toaster.show_toast("스트레칭 시작합니다.", f"양손 엄지손가락을 턱에 대고 턱을 위로 당겨주세요!\n\n", threaded=True)
                     # if jaw_angle >= 160:
-                    if (jaw_angle >= 160) and (left_hand_position <= 180 and left_hand_position <= 250) and (right_hand_position >= 180 and right_hand_position <= 250):
+                    if (jaw_angle >= 155) and (left_hand_position <= 120 and left_hand_position <= 250) and (right_hand_position >= 120 and right_hand_position <= 250):
                         VideoCamera.isStretchingPose = True
                 else:  # 아래쪽
                     toaster.show_toast("스트레칭 시작합니다.", f"양손에 깍지를 끼고 머리를 아래로 당겨주세요!\n\n", threaded=True)
                     print(left_hand_position)
                     # if jaw_angle <= 105:
-                    if (jaw_angle <=110) and (left_hand_position >= 60 and left_hand_position <= 100) \
-                            and (right_hand_position >= 60 and right_hand_position <= 100):
+                    if (jaw_angle <=115) and (left_hand_position >= 50 and left_hand_position <= 120) \
+                            and (right_hand_position >= 50 and right_hand_position <= 120):
 
                         VideoCamera.isStretchingPose = True
                         p_turtleNeck_count = 0
@@ -435,7 +435,7 @@ class VideoCamera(object):
 
             mouth_angle = detector.findAngle(frame,61,17,291)
 
-            if VideoCamera.stretching_count == 3:
+            if VideoCamera.stretching_count == 3 and VideoCamera.mouth_mode == 1:
                 VideoCamera.stretching_count = 0
                 VideoCamera.mode = 0
 
@@ -455,7 +455,7 @@ class VideoCamera(object):
                 else:
                     toaster.show_toast("스트레칭 시작합니다.", f"입을 이! 모양으로 크게 벌려주세요!\n\n", threaded=True)
                     # if jaw_angle >= 160:
-                    if mouth_angle >= 113 and mouth_distance2 >= 65:
+                    if mouth_angle >= 113 and mouth_distance2 >= 60:
                         VideoCamera.isStretchingPose = True
                         p_jaw_bone_count = 0
                         VideoCamera.stretching_count += 1
