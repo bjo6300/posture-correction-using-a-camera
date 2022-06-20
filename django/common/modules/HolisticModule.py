@@ -293,7 +293,7 @@ class HolisticDetector():
 
     def drawMouth(self, img, draw=True, r=3, t=1):
 
-        p = [172,136,150,140,176,148,152,377,400,378,379,365,397]
+        p = [135, 169, 170, 140, 171, 175, 396, 400, 378, 379, 365, 397]
         xy = []
         for i in range(len(p)):
             xy.append(self.face_lmList[p[i]][1:3])
@@ -343,11 +343,13 @@ class HolisticDetector():
 
     # 추가된 함수
     # 얼굴 관절점과 포즈 관절점의 거리 차 구하기
-    def findPointDistance(self, p1, p2):
+    def findPointDistance(self, img, p1, p2):
         x1, y1 = self.face_lmList[p1][1:3]
         x2, y2 = self.pose_lmList[p2][1:3]
 
         length = math.hypot(x2 - x1, y2 - y1)
+
+        # cv2.putText(img, str(int(length)), (x2 - 50, y2 + 50), cv2.FONT_HERSHEY_PLAIN, 2, (0, 0, 255), 2)
 
         return length
 
