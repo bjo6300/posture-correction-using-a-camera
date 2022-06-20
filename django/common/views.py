@@ -171,17 +171,17 @@ from django.views import View
 #             right_hand_img = detector.drawPointDistance(152, 17, frame, draw=True)
 
 
-            mouth_img = detector.drawMouth(frame, draw=True)
+            # mouth_img = detector.drawMouth(frame, draw=True)
 
-            global jaw_bone_count
-            global p_jaw_bone_count
-            global real_jaw_bone_count
-            global shoulder_count
-            global p_shoulder_count
-            global real_shoulder_count
-            global turtleNeck_count
-            global p_turtleNeck_count
-            global real_turtleNeck_count
+            # global jaw_bone_count
+            # global p_jaw_bone_count
+            # global real_jaw_bone_count
+            # global shoulder_count
+            # global p_shoulder_count
+            # global real_shoulder_count
+            # global turtleNeck_count
+            # global p_turtleNeck_count
+            # global real_turtleNeck_count
 
 
 
@@ -196,11 +196,11 @@ from django.views import View
 #                 jaw_bone_count = 0
 
 
-            # 어깨 비대칭 자세가 감지되면 어깨 비대칭 count 1증가
-            if shoulder_hd >= 35:
-                shoulder_count += 1
-            else:
-                shoulder_count = 0
+            # # 어깨 비대칭 자세가 감지되면 어깨 비대칭 count 1증가
+            # if shoulder_hd >= 35:
+            #     shoulder_count += 1
+            # else:
+            #     shoulder_count = 0
 
 
 #             # # 거북목이 감지되면 count가 1증가
