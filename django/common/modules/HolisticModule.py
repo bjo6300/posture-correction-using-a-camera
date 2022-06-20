@@ -1,3 +1,4 @@
+
 import cv2
 import mediapipe as mp
 import time
@@ -500,3 +501,4 @@ class HolisticDetector():
             cv2.putText(img, str(int(angle)), (x2 - 50, y2 + 50), cv2.FONT_HERSHEY_PLAIN, 2, (0, 0, 255), 2)
 
         return angle
+
