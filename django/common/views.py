@@ -87,7 +87,6 @@ class VideoCamera(object):
     # 방향 위치 : 0(위), 1(아래)
     upDown = 0
 
-
     # username
     usrname = ''
 
@@ -96,7 +95,6 @@ class VideoCamera(object):
 
     # 교정 횟수
     stretching_count = 0
-
 
     def __init__(self):
         # Using OpenCV to capture from device 0. If you have trouble capturing
@@ -133,25 +131,25 @@ class VideoCamera(object):
         # 사용자의 컴퓨터에 맞는 주사율
         my_computer_fps = fps + 1
 
-        # # 웹캠 이미지 저장
-        # turtleNeck_frame = cv2.imwrite('frame.jpg', frame)
-        #
-        # # 이미지 파일 경로
-        # file_link = "frame.jpg"
+        # 웹캠 이미지 저장
+        turtleNeck_frame = cv2.imwrite('frame.jpg', frame)
+
+        # 이미지 파일 경로
+        file_link = "frame.jpg"
 
         # 인체가 감지가 되었는지 확인하는 구문
         if len(pose_lmList) != 0 and len(face_lmList) != 0:
 
             # 이미지 RGB 변환 및 사이즈 조정
-            # img = Image.open(file_link)
-            # img = img.convert("RGB")
-            # img = img.resize((64, 64))
-            #
-            # # 이미지 배열화 및 차원 확장
-            # turtleNeck_region = img_to_array(img)
-            # turtleNeck_region = np.expand_dims(turtleNeck_region, axis=0)
-            #
-            # single_test = model.predict(turtleNeck_region)
+            img = Image.open(file_link)
+            img = img.convert("RGB")
+            img = img.resize((64, 64))
+
+            # 이미지 배열화 및 차원 확장
+            turtleNeck_region = img_to_array(img)
+            turtleNeck_region = np.expand_dims(turtleNeck_region, axis=0)
+
+            single_test = model.predict(turtleNeck_region)
 
             # Holistic_module에 있는 findDistance의 p2값을 수정하여 사용
             # 왼쪽 center_left_hand 좌표와 얼굴 152번(턱) 좌표를 사용하여 길이를 구하는 부분
@@ -170,20 +168,17 @@ class VideoCamera(object):
             left_hand_img = detector.drawPointDistance(152, 20, frame, draw=True)
             right_hand_img = detector.drawPointDistance(152, 17, frame, draw=True)
 
+            mouth_img = detector.drawMouth(frame, draw=True)
 
-            # mouth_img = detector.drawMouth(frame, draw=True)
-
-            # global jaw_bone_count
-            # global p_jaw_bone_count
-            # global real_jaw_bone_count
-            # global shoulder_count
-            # global p_shoulder_count
-            # global real_shoulder_count
-            # global turtleNeck_count
-            # global p_turtleNeck_count
-            # global real_turtleNeck_count
-
-
+            global jaw_bone_count
+            global p_jaw_bone_count
+            global real_jaw_bone_count
+            global shoulder_count
+            global p_shoulder_count
+            global real_shoulder_count
+            global turtleNeck_count
+            global p_turtleNeck_count
+            global real_turtleNeck_count
 
             # 턱 괴기 자세가 감지되면 턱 괴기 count 1증가
             if left_hand_len < 130 or right_hand_len < 130:
@@ -203,11 +198,12 @@ class VideoCamera(object):
                 shoulder_count = 0
 
 
-            # # 거북목이 감지되면 count가 1증가
-            # if single_test == 1:
-            #     turtleNeck_count += 1
-            # else:
-            #     turtleNeck_count = 0
+            # 거북목이 감지되면 count가 1증가
+            # print(turtleNeck_count)
+            if single_test == 1:
+                turtleNeck_count += 1
+            else:
+                turtleNeck_count = 0
 
             # 3초동안 턱 괴기 자세가 인식되면 알림을 제공한다.
             if jaw_bone_count > my_computer_fps * 3:
@@ -237,22 +233,21 @@ class VideoCamera(object):
                 p_shoulder_count += 1
                 real_shoulder_count += 1
 
-            # if turtleNeck_count > my_computer_fps * 3:
-            #     # 자세 인식 후, insert DB
-            #     self.insertLog(self.usrname, 2)
-            #
-            #     print("거북목 동작이 감지되었습니다!")
-            #     # win10toast 알림 제공
-            #     toaster.show_toast("거북목 발생!", f"바른 자세를 취해주세요!.\n\n", threaded=True)
-            #
-            #     # 알림 제공 후 카운트를 다시 0으로 만든다.
-            #     turtleNeck_count = 0
-            #     p_turtleNeck_count += 1
-            #     real_turtleNeck_count += 1
+            if turtleNeck_count > my_computer_fps * 3:
+                # 자세 인식 후, insert DB
+                self.insertLog(self.usrname, 2)
+
+                print("거북목 동작이 감지되었습니다!")
+                # win10toast 알림 제공
+                toaster.show_toast("거북목 발생!", f"바른 자세를 취해주세요!.\n\n", threaded=True)
+
+                # 알림 제공 후 카운트를 다시 0으로 만든다.
+                turtleNeck_count = 0
+                p_turtleNeck_count += 1
+                real_turtleNeck_count += 1
 
             if p_shoulder_count != 0 and p_shoulder_count % 3 == 0:
                 VideoCamera.mode = 1
-
             elif p_turtleNeck_count != 0 and p_turtleNeck_count % 3 == 0:
                 VideoCamera.mode = 2
             elif p_jaw_bone_count != 0 and p_jaw_bone_count % 3 == 0:

@@ -6,6 +6,12 @@
   ul,
   li {
     list-style: none;
+
+    display:flex;
+     align-content:flex-start;
+     flex-direction:column;
+     flex-wrap:wrap;
+     overflow:auto;
   }
   a {
     text-decoration: none;
