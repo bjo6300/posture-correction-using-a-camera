@@ -1,3 +1,7 @@
+from django.template.loader import render_to_string
+from django.core.mail import EmailMessage
+from django.contrib import messages
+from .forms import CustomPasswordChangeForm, CustomEmailChangeForm, PostureLogForm
 import cv2
 import threading
 from django.shortcuts import render
@@ -18,9 +22,9 @@ from common import views
 from django.contrib import auth, messages
 from django.shortcuts import render, redirect
 from .models import User, PostureLog
-from django.contrib.auth.forms import PasswordChangeForm # 비밀번호 변경 폼
+from django.contrib.auth.forms import PasswordChangeForm  # 비밀번호 변경 폼
 from django.contrib.auth.hashers import check_password
-from django.contrib.auth import update_session_auth_hash # 비밀번호 변경 후 자동로그인
+from django.contrib.auth import update_session_auth_hash  # 비밀번호 변경 후 자동로그인
 import ctypes
 from django.views import View
 
@@ -74,6 +78,7 @@ postureLog = PostureLog()
 
 app_name = 'common'
 
+
 class VideoCamera(object):
     # capture mode
     mode = 2
@@ -87,7 +92,6 @@ class VideoCamera(object):
     # 방향 위치 : 0(위), 1(아래)
     upDown = 0
 
-
     # username
     usrname = ''
 
@@ -96,7 +100,6 @@ class VideoCamera(object):
 
     # 교정 횟수
     stretching_count = 0
-
 
     def __init__(self):
         # Using OpenCV to capture from device 0. If you have trouble capturing
@@ -133,10 +136,11 @@ class VideoCamera(object):
         # 사용자의 컴퓨터에 맞는 주사율
         my_computer_fps = fps + 1
 
-        # # 웹캠 이미지 저장
+        # 웹캠 이미지 저장
         turtleNeck_frame = cv2.imwrite('frame.jpg', frame)
-        #
-        # # 이미지 파일 경로
+
+        # 이미지 파일 경로
+
         file_link = "frame.jpg"
 
         # 인체가 감지가 되었는지 확인하는 구문
@@ -167,9 +171,12 @@ class VideoCamera(object):
             shoulder_hd = detector.findShoulder(11, 12)
 
             # 양쪽 손 관절점 위치를 시각화 하는 함수
-            left_hand_img = detector.drawPointDistance(152, 20, frame, draw=True)
-            right_hand_img = detector.drawPointDistance(152, 17, frame, draw=True)
+            left_hand_img = detector.drawPointDistance(
+                152, 20, frame, draw=True)
+            right_hand_img = detector.drawPointDistance(
+                152, 17, frame, draw=True)
 
+            mouth_img = detector.drawMouth(frame, draw=True)
 
             mouth_img = detector.drawMouth(frame, draw=True)
 
@@ -183,8 +190,6 @@ class VideoCamera(object):
             global p_turtleNeck_count
             global real_turtleNeck_count
 
-
-
             # 턱 괴기 자세가 감지되면 턱 괴기 count 1증가
             if left_hand_len < 130 or right_hand_len < 130:
                 jaw_bone_count += 1
@@ -195,13 +200,11 @@ class VideoCamera(object):
             else:
                 jaw_bone_count = 0
 
-
             # 어깨 비대칭 자세가 감지되면 어깨 비대칭 count 1증가
             if shoulder_hd >= 30:
                 shoulder_count += 1
             else:
                 shoulder_count = 0
-
 
             # 거북목이 감지되면 count가 1증가
             if single_test == 1:
@@ -217,7 +220,8 @@ class VideoCamera(object):
                 print("턱괴기 자세가 감지되었습니다!")
 
                 # win10toast 알림 제
-                toaster.show_toast("턱 괴기 발생!", f"바른 자세를 취해주세요!.\n\n", threaded=True)
+                toaster.show_toast(
+                    "턱 괴기 발생!", f"바른 자세를 취해주세요!.\n\n", threaded=True)
 
                 # 알림 제공 후 카운트를 다시 0으로 만든다.
                 jaw_bone_count = 0
@@ -230,7 +234,8 @@ class VideoCamera(object):
 
                 print("어깨 비대칭 동작이 감지되었습니다!")
 
-                toaster.show_toast("어깨 비대칭 발생!", f"바른 자세를 취해주세요!", threaded=True)
+                toaster.show_toast(
+                    "어깨 비대칭 발생!", f"바른 자세를 취해주세요!", threaded=True)
 
                 # 알림 제공 후 카운트를 다시 0으로 만듬
                 shoulder_count = 0
@@ -243,7 +248,8 @@ class VideoCamera(object):
 
                 print("거북목 동작이 감지되었습니다!")
                 # win10toast 알림 제공
-                toaster.show_toast("거북목 발생!", f"바른 자세를 취해주세요!.\n\n", threaded=True)
+                toaster.show_toast(
+                    "거북목 발생!", f"바른 자세를 취해주세요!.\n\n", threaded=True)
 
                 # 알림 제공 후 카운트를 다시 0으로 만든다.
                 turtleNeck_count = 0
@@ -252,7 +258,6 @@ class VideoCamera(object):
 
             if p_shoulder_count != 0 and p_shoulder_count % 3 == 0:
                 VideoCamera.mode = 1
-
             elif p_turtleNeck_count != 0 and p_turtleNeck_count % 3 == 0:
                 VideoCamera.mode = 2
             elif p_jaw_bone_count != 0 and p_jaw_bone_count % 3 == 0:
@@ -312,12 +317,14 @@ class VideoCamera(object):
                     VideoCamera.currentDirection = 0
             else:
                 if VideoCamera.currentDirection == 0:  # 오른쪽
-                    toaster.show_toast("스트레칭 시작합니다.", f"오른손으로 반대편 머리를 감싼 후, 지긋이 오른쪽으로 눌러주세요!.\n\n", threaded=True)
+                    toaster.show_toast(
+                        "스트레칭 시작합니다.", f"오른손으로 반대편 머리를 감싼 후, 지긋이 오른쪽으로 눌러주세요!.\n\n", threaded=True)
                     # if ears_inclination <= -0.4:
                     if (ears_inclination <= -0.4) and (right_hand_position >= 0) and (right_hand_position <= 145):
                         VideoCamera.isStretchingPose = True
                 else:  # 왼쪽
-                    toaster.show_toast("스트레칭 시작합니다.", f"왼손으로 반대편 머리를 감싼 후, 지긋이 왼쪽으로 눌러주세요!.\n\n", threaded=True)
+                    toaster.show_toast(
+                        "스트레칭 시작합니다.", f"왼손으로 반대편 머리를 감싼 후, 지긋이 왼쪽으로 눌러주세요!.\n\n", threaded=True)
                     # if ears_inclination >= 0.4:
                     if (ears_inclination >= 0.4) and (left_hand_position >= 0) and (left_hand_position <= 145):
                         VideoCamera.isStretchingPose = True
@@ -365,7 +372,6 @@ class VideoCamera(object):
             # 턱 관절 각도 계산
             jaw_angle = detector.findAngle(frame, 150, 152, 365, draw=True)
 
-
             if VideoCamera.isStretchingPose == True:  # 포즈가 취해졌는지 판단
                 if VideoCamera.upDown == 0:  # 위쪽
                     VideoCamera.upDown = 1  # 아래쪽
@@ -376,15 +382,17 @@ class VideoCamera(object):
                     VideoCamera.upDown = 0
             else:
                 if VideoCamera.upDown == 0:  # 위쪽
-                    toaster.show_toast("스트레칭 시작합니다.", f"양손 엄지손가락을 턱에 대고 턱을 위로 당겨주세요!\n\n", threaded=True)
+                    toaster.show_toast(
+                        "스트레칭 시작합니다.", f"양손 엄지손가락을 턱에 대고 턱을 위로 당겨주세요!\n\n", threaded=True)
                     # if jaw_angle >= 160:
                     if (jaw_angle >= 150) and (left_hand_position >= 100 and left_hand_position <= 200) and (right_hand_position >= 100 and right_hand_position <= 200):
                         VideoCamera.isStretchingPose = True
                 else:  # 아래쪽
-                    toaster.show_toast("스트레칭 시작합니다.", f"양손에 깍지를 끼고 머리를 아래로 당겨주세요!\n\n", threaded=True)
+                    toaster.show_toast(
+                        "스트레칭 시작합니다.", f"양손에 깍지를 끼고 머리를 아래로 당겨주세요!\n\n", threaded=True)
                     # print(left_hand_position)
                     # if jaw_angle <= 105:
-                    if (jaw_angle <=115) and (left_hand_position >= 50 and left_hand_position <= 120) \
+                    if (jaw_angle <= 115) and (left_hand_position >= 50 and left_hand_position <= 120) \
                             and (right_hand_position >= 50 and right_hand_position <= 120):
 
                         VideoCamera.isStretchingPose = True
@@ -431,9 +439,9 @@ class VideoCamera(object):
 
             # 입 각도 계산
             mouth_distance1 = detector.findMouthDistance(frame, 0, 17)
-            mouth_distance2 = detector.findMouthDistance(frame,61,291)
+            mouth_distance2 = detector.findMouthDistance(frame, 61, 291)
 
-            mouth_angle = detector.findAngle(frame,61,17,291)
+            mouth_angle = detector.findAngle(frame, 61, 17, 291)
 
             if VideoCamera.stretching_count == 3 and VideoCamera.mouth_mode == 1:
                 VideoCamera.stretching_count = 0
@@ -448,21 +456,25 @@ class VideoCamera(object):
                     VideoCamera.mouth_mode = 0
             else:
                 if VideoCamera.mouth_mode == 0:
-                    toaster.show_toast("스트레칭 시작합니다.", f"입을 아! 모양으로 크게 벌려주세요!\n\n", threaded=True)
+                    toaster.show_toast(
+                        "스트레칭 시작합니다.", f"입을 아! 모양으로 크게 벌려주세요!\n\n", threaded=True)
                     # if jaw_angle >= 160:
                     if (mouth_angle >= 79 and mouth_angle <= 95) and mouth_distance1 >= 38:
                         VideoCamera.isStretchingPose = True
                 else:
-                    toaster.show_toast("스트레칭 시작합니다.", f"입을 이! 모양으로 크게 벌려주세요!\n\n", threaded=True)
+                    toaster.show_toast(
+                        "스트레칭 시작합니다.", f"입을 이! 모양으로 크게 벌려주세요!\n\n", threaded=True)
                     # if jaw_angle >= 160:
                     if mouth_angle >= 113 and mouth_distance2 >= 60:
                         VideoCamera.isStretchingPose = True
                         p_jaw_bone_count = 0
                         VideoCamera.stretching_count += 1
-            cv2.putText(frame, str(int(VideoCamera.stretching_count)), (10, 70), cv2.FONT_HERSHEY_PLAIN, 3, (255, 0, 255), 3)
+            cv2.putText(frame, str(int(VideoCamera.stretching_count)),
+                        (10, 70), cv2.FONT_HERSHEY_PLAIN, 3, (255, 0, 255), 3)
 
         ret, jpeg = cv2.imencode('.jpg', frame)
         return jpeg.tobytes()
+
     def update(self):
         while True:
             (self.grabbed, self.frame) = self.video.read()
@@ -473,20 +485,23 @@ class VideoCamera(object):
         postureLog.save()
         return
 
+
 cam = VideoCamera()
+
 
 def gen(camera):
     while True:
-        if VideoCamera.mode == 1: # 스트레칭
+        if VideoCamera.mode == 1:  # 스트레칭
             frame = cam.get_frame_stretching()
         elif VideoCamera.mode == 2:
             frame = cam.get_frame_stretching2()
         elif VideoCamera.mode == 3:
             frame = cam.get_frame_stretching3()
-        else: # 인식
+        else:  # 인식
             frame = cam.get_frame()
         yield (b'--frame\r\n'
-                b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n\r\n')
+               b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n\r\n')
+
 
 def stream2(request):
     try:
@@ -495,12 +510,15 @@ def stream2(request):
         pass
 
 # 로그인 함수
+
+
 def login_main(request):
     if request.method == 'POST':
         username = request.POST['username']
         password = request.POST['password']
-        user = auth.authenticate(request, username=username, password=password) # 여기서 username, password는 고정 (django 특)
-        
+        # 여기서 username, password는 고정 (django 특)
+        user = auth.authenticate(request, username=username, password=password)
+
         if user is None:
             return render(request, 'common/login.html', {'error': '아이디 또는 비밀번호를 확인해주세요.'})
         else:
@@ -512,6 +530,8 @@ def login_main(request):
         return render(request, 'common/login.html')
 
 # 회원가입 클래스
+
+
 class SignUpView(View):
     # POST 요청 시
     def post(self, request):
@@ -520,8 +540,8 @@ class SignUpView(View):
         password2 = request.POST.get('password2', None)  # 비밀번호(확인)
         email = request.POST.get('email', None)  # 이메일
         birth = request.POST.get('birth', None)  # 생일
-        gender = request.POST.get('gender', None) # 성별
-        
+        gender = request.POST.get('gender', None)  # 성별
+
         # 아이디가 5자 미만이면
         if len(username) < 5:
             messages.warning(request, '아이디를 5글자 이상 입력해주세요.')
@@ -564,32 +584,34 @@ def signup_completed(request):
     return render(request, 'navbar/signup_completed.html')
 
 
-from .forms import CustomPasswordChangeForm, CustomEmailChangeForm, PostureLogForm
-
-
 # 비밀번호 수정
 def change_password(request):
     if request.method == 'POST':
         print('비밀번호 변경 POST')
-        password_change_form = CustomPasswordChangeForm(request.user, request.POST)
+        password_change_form = CustomPasswordChangeForm(
+            request.user, request.POST)
         if password_change_form.is_valid():
             user = password_change_form.save()
             update_session_auth_hash(request, user)
             messages.success(request, " ")
             return render(request, 'navbar/mypage/modify_password_completed.html')
-        else: # 사용자가 기존비밀번호를 제대로 입력 안했을 때
+        else:  # 사용자가 기존비밀번호를 제대로 입력 안했을 때
             # messages.error(request, "기존 비밀번호가 일치하지 않습니다.")
-            return render(request, "navbar/mypage/change_password.html",{'form': password_change_form})
+            return render(request, "navbar/mypage/change_password.html", {'form': password_change_form})
     elif request.method == 'GET':
         print('비밀번호 변경 GET')
         password_change_form = CustomPasswordChangeForm(request.user)
         return render(request, "navbar/mypage/change_password.html", {'form': password_change_form})
 
 # 비밀번호 수정 완료
+
+
 def modify_password_completed(request):
-    return render(request, 'navbar/mypage/modify_password_completed.html') 
+    return render(request, 'navbar/mypage/modify_password_completed.html')
 
 # 이메일 수정
+
+
 def modify_email(request):
     if request.method == 'POST':
         # print('이메일 변경 POST')
@@ -600,22 +622,21 @@ def modify_email(request):
             return render(request, 'navbar/mypage/modify_email_completed.html')
         else:
             # messages.error(request, "fail")
-            return render(request, "navbar/mypage/modify_email.html",{'form': form})
+            return render(request, "navbar/mypage/modify_email.html", {'form': form})
     elif request.method == 'GET':
         # print('이메일 변경 GET')
         form = CustomEmailChangeForm(instance=request.user)
-    
+
     return render(request, "navbar/mypage/modify_email.html", {'form': form})
 
 # 이메일 수정 완료
+
+
 def modify_email_completed(request):
-    return render(request, 'navbar/mypage/modify_email_completed.html') 
+    return render(request, 'navbar/mypage/modify_email_completed.html')
 
 
 # from django.conf import settings
-from django.contrib import messages
-from django.core.mail import EmailMessage
-from django.template.loader import render_to_string
 
 
 # 아이디찾기
@@ -625,7 +646,8 @@ def find_id(request):
         try:
             user = User.objects.get(email=email)
             # print(user.email)
-            template = render_to_string('common/send_email.html', {'name': user.username})
+            template = render_to_string(
+                'common/send_email.html', {'name': user.username})
             method_email = EmailMessage(
                 '[PCP] PCP 아이디는 다음과 같습니다.',
                 template,
@@ -642,5 +664,7 @@ def find_id(request):
     return render(request, 'common/find_id.html')
 
  # 아이디찾기 체크완료
+
+
 def find_id_checked(request):
     return render(request, 'common/find_id_checked.html')
