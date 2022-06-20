@@ -7,10 +7,11 @@
 
         {% if user.is_authenticated %}
 
-         <img src="{% url 'stream2' %}" width="640" height="480" style="margin: 150px">
-        <div class="bg">
-            <a href="{% url 'posture:program' %}"><button id="btn-fix">종료하기</button></a>
-        </div>
+         <img src="{% url 'stream2' %}" width="800" height="600" style="margin: 150px">
+         <a href="{% url 'posture:main' %}"><button id="btn-fix">종료하기</button></a>
+<!--        <div class="bg">-->
+<!--            <a href="{% url 'posture:program' %}"><button id="btn-fix">종료하기</button></a>-->
+<!--        </div>-->
         {% else %}
         {% endif %}
     </div>

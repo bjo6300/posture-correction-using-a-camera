@@ -250,12 +250,12 @@ class VideoCamera(object):
                 p_turtleNeck_count += 1
                 real_turtleNeck_count += 1
 
-            if p_shoulder_count != 0 and p_shoulder_count % 5 == 0:
+            if p_shoulder_count != 0 and p_shoulder_count % 3 == 0:
                 VideoCamera.mode = 1
 
-            elif p_turtleNeck_count != 0 and p_turtleNeck_count % 5 == 0:
+            elif p_turtleNeck_count != 0 and p_turtleNeck_count % 3 == 0:
                 VideoCamera.mode = 2
-            elif p_jaw_bone_count != 0 and p_jaw_bone_count % 5 == 0:
+            elif p_jaw_bone_count != 0 and p_jaw_bone_count % 3 == 0:
                 VideoCamera.mode = 3
 
         ret, jpeg = cv2.imencode('.jpg', frame)
