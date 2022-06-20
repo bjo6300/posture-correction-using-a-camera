@@ -170,6 +170,8 @@ class VideoCamera(object):
             left_hand_img = detector.drawPointDistance(152, 20, frame, draw=True)
             right_hand_img = detector.drawPointDistance(152, 17, frame, draw=True)
 
+            mouth_img = detector.drawMouth(frame, draw=True)
+
             global jaw_bone_count
             global p_jaw_bone_count
             global real_jaw_bone_count
@@ -192,7 +194,7 @@ class VideoCamera(object):
                 jaw_bone_count = 0
 
             # 어깨 비대칭 자세가 감지되면 어깨 비대칭 count 1증가
-            if shoulder_hd >= 25:
+            if shoulder_hd >= 35:
                 shoulder_count += 1
             else:
                 shoulder_count = 0
