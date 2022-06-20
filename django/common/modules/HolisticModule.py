@@ -290,6 +290,21 @@ class HolisticDetector():
 
         return img
 
+    def drawMouth(self, img, draw=True, r=3, t=1):
+
+        p = [172,136,150,140,176,148,152,377,400,378,379,365,397]
+        xy = []
+        for i in range(len(p)):
+            xy.append(self.face_lmList[p[i]][1:3])
+
+        if draw:
+            for i in range(len(p)):
+                cv2.circle(img, (xy[i][0], xy[i][1]), r, (255, 0, 255), cv2.FILLED)
+        if draw:
+            for i in range(len(p)-1):
+                cv2.line(img, (xy[i][0], xy[i][1]), (xy[i + 1][0], xy[i + 1][1]), (255, 255, 255), 1)
+        return img
+
     def findPointDistance2(self, p1, p2):
         x1, y1 = self.pose_lmList[p1][1:3]
         x2, y2 = self.pose_lmList[p2][1:3]
