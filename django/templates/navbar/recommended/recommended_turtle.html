@@ -6,12 +6,7 @@
 
 <body>
     <script language = "javascript">
-        function sendFunc()
-        {
-            vlink = 'asdf'
-            vtitle = 'asdf'
-            location.href="receive.html?"+vlink+":"+vtitle;
-        }
+ 
       </script>
     
     <div style="width:100%; height:100%;">
@@ -36,19 +31,21 @@
                     
                     <hr>
 
+                    <!-- "{% url 'posture:show_turtle_videos' %}"  -->
+
                     {% if correction_video %}
                     <table id="table-container">
                         <tr>
                             {% for video in correction_video.all %}
                             <td style="width: 206px; height: 120px; " >
                                 <div class="div-images" style="width: 206; height : 120px;">
-                                    <a href="{% url 'posture:show_turtle_videos' %}">
-                                    <img class = "trigger" src={{ "https://img.youtube.com/vi/" | add:video.video_link | add:"/maxresdefault.jpg"}} width="206px" height="120px" style="cursor: pointer;" data-img={{ "https://img.youtube.com/vi/" | add:video.video_link | add:"/maxresdefault.jpg"}}>
+                                    <a href="exampleModal"  data-toggle="modal" data-target="#exampleModal">
+                                    <img src={{ "https://img.youtube.com/vi/" | add:video.video_link | add:"/maxresdefault.jpg"}} width="206px" height="120px" style="cursor: pointer;" data-img={{ "https://img.youtube.com/vi/" | add:video.video_link | add:"/maxresdefault.jpg"}}>
                                 </a>
                                     
                                 </div>
                                 <h1 id="vtitle" style="font-size: 17px; margin-top: 10px;">{{video.title}}</h1>
-                                <span id="vlink" hidden>{{video.video_link}}</span>
+                                
                             </td>
 
                             {% if not forloop.last and forloop.counter|divisibleby:4 %}
@@ -69,6 +66,25 @@
             </div>
         </div>
     </div>
+
+    <!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl" role="document">
+      <div class="modal-content" style="height: 700px;">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">이것만 따라해 보세요! 화제의 100만뷰! 거북목 일자목 교정</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <iframe width="100%" height="100%" src="https://www.youtube.com/embed/jD5EwJncYLw" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+        <div class="modal-footer">
+        </div>
+      </div>
+    </div>
+  </div>
 
     
 </body>

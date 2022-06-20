@@ -171,17 +171,17 @@ class VideoCamera(object):
             right_hand_img = detector.drawPointDistance(152, 17, frame, draw=True)
 
 
-            mouth_img = detector.drawMouth(frame, draw=True)
+            # mouth_img = detector.drawMouth(frame, draw=True)
 
-            global jaw_bone_count
-            global p_jaw_bone_count
-            global real_jaw_bone_count
-            global shoulder_count
-            global p_shoulder_count
-            global real_shoulder_count
-            global turtleNeck_count
-            global p_turtleNeck_count
-            global real_turtleNeck_count
+            # global jaw_bone_count
+            # global p_jaw_bone_count
+            # global real_jaw_bone_count
+            # global shoulder_count
+            # global p_shoulder_count
+            # global real_shoulder_count
+            # global turtleNeck_count
+            # global p_turtleNeck_count
+            # global real_turtleNeck_count
 
 
 
