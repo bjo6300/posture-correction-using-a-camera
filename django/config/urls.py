@@ -20,7 +20,7 @@ import posture
 from django.conf.urls import url
 
 urlpatterns = [
-    # url(r'^stream2/$', views.stream2, name='stream2'),
+    url(r'^stream2/$', views.stream2, name='stream2'),
     path('admin/', admin.site.urls),
     path('home/', include('posture.urls')), # main 페이지
     path('common/', include('common.urls')), # login 페이지
