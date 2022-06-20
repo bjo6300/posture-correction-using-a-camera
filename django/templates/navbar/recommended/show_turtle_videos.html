@@ -1,9 +1,18 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block content %}
-
+<link rel="stylesheet" type="text/css" href="{% static 'css/recommended.css' %}">
 
 <body>
+    <script language = "text/javascript">
+        temp = location.href.split("?");
+        data=temp[1].split(":");
+        vlink = data[0];
+        vtitle = data[1];
+        document.write(vlink + " " + vtitle);
+        console.log(vlink, vtitle)
+      </script>
+
     <div style="width:100%; height:100%;">
         <div style="width:80%; position:absolute; left:5%;">
             <div style="float:left; width: 200px; height:100%; text-align:right; line-height: 60px;">
@@ -13,6 +22,7 @@
                 <div style="left: 250px; width: 1000px; height: 100%; position: absolute;">
                     <!-- 타이틀 -->
                     <div style="margin-top:50px; text-align:left; ">
+                        <!-- 소제목 -->
                         <table>
                             <tr>
                                 <td>
@@ -28,18 +38,19 @@
                             </tr>
                         </table>
                         
-                        <table>
-
-
-                        </table>
-                        
                     </div>
                     <hr>
-  
+                    
+                    
+                    <iframe width="98%" height="75%" src="https://www.youtube.com/embed/jD5EwJncYLw" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                
+                
                 </div>
             </div>
         </div>
     </div>
+
+    
 </body>
 
 {% endblock %}

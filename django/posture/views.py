@@ -23,15 +23,18 @@ def recommended_turtle(request):
 
 # 거북목 추천 영상 보여주기
 def show_turtle_videos(request):
+
     return render(request, 'navbar/recommended/show_turtle_videos.html')
 
 # 어꺠비대칭 추천 영상
 def recommended_shoulder(request):
-    return render(request, 'navbar/recommended/recommended_shoulder.html')
+    video = correction_video.objects.filter(posture='어깨비대칭').order_by('video_index')
+    return render(request, 'navbar/recommended/recommended_shoulder.html',{'correction_video' : video})
 
 # 턱괴기 추천 영상
 def recommended_jaw(request):
-    return render(request, 'navbar/recommended/recommended_jaw.html')
+    video = correction_video.objects.filter(posture='턱 괴기').order_by('video_index')
+    return render(request, 'navbar/recommended/recommended_jaw.html',{'correction_video' : video})
 
 # 마이페이지
 def mypage(request):
