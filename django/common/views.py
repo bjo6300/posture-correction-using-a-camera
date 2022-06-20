@@ -496,7 +496,7 @@ def login_main(request):
         if user is None:
             return render(request, 'common/login.html', {'error': '아이디 또는 비밀번호를 확인해주세요.'})
         else:
-            cam.usrname = username      # DB에 필요한 username 저장
+            # cam.usrname = username      # DB에 필요한 username 저장
             request.session['username'] = username  # session username 설정
             auth.login(request, user)
             return redirect('/home/')
