@@ -76,7 +76,7 @@ app_name = 'common'
 
 class VideoCamera(object):
     # capture mode
-    mode = 0
+    mode = 2
 
     # stretching value
     isStretchingPose = False
@@ -134,24 +134,24 @@ class VideoCamera(object):
         my_computer_fps = fps + 1
 
         # # 웹캠 이미지 저장
-        turtleNeck_frame = cv2.imwrite('frame.jpg', frame)
+        # turtleNeck_frame = cv2.imwrite('frame.jpg', frame)
         #
         # # 이미지 파일 경로
-        file_link = "frame.jpg"
+        # file_link = "frame.jpg"
 
         # 인체가 감지가 되었는지 확인하는 구문
         if len(pose_lmList) != 0 and len(face_lmList) != 0:
 
             # 이미지 RGB 변환 및 사이즈 조정
-            img = Image.open(file_link)
-            img = img.convert("RGB")
-            img = img.resize((64, 64))
-
-            # 이미지 배열화 및 차원 확장
-            turtleNeck_region = img_to_array(img)
-            turtleNeck_region = np.expand_dims(turtleNeck_region, axis=0)
-
-            single_test = model.predict(turtleNeck_region)
+            # img = Image.open(file_link)
+            # img = img.convert("RGB")
+            # img = img.resize((64, 64))
+            #
+            # # 이미지 배열화 및 차원 확장
+            # turtleNeck_region = img_to_array(img)
+            # turtleNeck_region = np.expand_dims(turtleNeck_region, axis=0)
+            #
+            # single_test = model.predict(turtleNeck_region)
 
             # Holistic_module에 있는 findDistance의 p2값을 수정하여 사용
             # 왼쪽 center_left_hand 좌표와 얼굴 152번(턱) 좌표를 사용하여 길이를 구하는 부분
@@ -204,10 +204,10 @@ class VideoCamera(object):
 
 
             # # 거북목이 감지되면 count가 1증가
-            if single_test == 1:
-                turtleNeck_count += 1
-            else:
-                turtleNeck_count = 0
+            # if single_test == 1:
+            #     turtleNeck_count += 1
+            # else:
+            #     turtleNeck_count = 0
 
             # 3초동안 턱 괴기 자세가 인식되면 알림을 제공한다.
             if jaw_bone_count > my_computer_fps * 3:
@@ -237,18 +237,18 @@ class VideoCamera(object):
                 p_shoulder_count += 1
                 real_shoulder_count += 1
 
-            if turtleNeck_count > my_computer_fps * 3:
-                # 자세 인식 후, insert DB
-                self.insertLog(self.usrname, 2)
-
-                print("거북목 동작이 감지되었습니다!")
-                # win10toast 알림 제공
-                toaster.show_toast("거북목 발생!", f"바른 자세를 취해주세요!.\n\n", threaded=True)
-
-                # 알림 제공 후 카운트를 다시 0으로 만든다.
-                turtleNeck_count = 0
-                p_turtleNeck_count += 1
-                real_turtleNeck_count += 1
+            # if turtleNeck_count > my_computer_fps * 3:
+            #     # 자세 인식 후, insert DB
+            #     self.insertLog(self.usrname, 2)
+            #
+            #     print("거북목 동작이 감지되었습니다!")
+            #     # win10toast 알림 제공
+            #     toaster.show_toast("거북목 발생!", f"바른 자세를 취해주세요!.\n\n", threaded=True)
+            #
+            #     # 알림 제공 후 카운트를 다시 0으로 만든다.
+            #     turtleNeck_count = 0
+            #     p_turtleNeck_count += 1
+            #     real_turtleNeck_count += 1
 
             if p_shoulder_count != 0 and p_shoulder_count % 5 == 0:
                 VideoCamera.mode = 1
@@ -358,8 +358,8 @@ class VideoCamera(object):
             shoulder_img = detector.drawShoulder2(frame, draw=True)
 
             # 양쪽 손과 눈썹 사이 거리 구하기
-            left_hand_position = detector.findPointDistance(152, 19)
-            right_hand_position = detector.findPointDistance(152, 20)
+            left_hand_position = detector.findPointDistance(frame, 10, 19)
+            right_hand_position = detector.findPointDistance(frame, 10, 20)
             # print(left_hand_position, right_hand_position)
 
             # 턱 관절 각도 계산
@@ -378,13 +378,15 @@ class VideoCamera(object):
                 if VideoCamera.upDown == 0:  # 위쪽
                     toaster.show_toast("스트레칭 시작합니다.", f"양손 엄지손가락을 턱에 대고 턱을 위로 당겨주세요!\n\n", threaded=True)
                     # if jaw_angle >= 160:
-                    if (jaw_angle >= 160) and (left_hand_position <= 70) and (right_hand_position <= 70):
+                    if (jaw_angle >= 160) and (left_hand_position <= 180 and left_hand_position <= 250) and (right_hand_position >= 180 and right_hand_position <= 250):
                         VideoCamera.isStretchingPose = True
                 else:  # 아래쪽
                     toaster.show_toast("스트레칭 시작합니다.", f"양손에 깍지를 끼고 머리를 아래로 당겨주세요!\n\n", threaded=True)
+                    print(left_hand_position)
                     # if jaw_angle <= 105:
-                    if (jaw_angle <=110) and (left_hand_position >= 100 and left_hand_position <= 200) \
-                            and (right_hand_position >= 100 and right_hand_position <= 200):
+                    if (jaw_angle <=110) and (left_hand_position >= 60 and left_hand_position <= 100) \
+                            and (right_hand_position >= 60 and right_hand_position <= 100):
+
                         VideoCamera.isStretchingPose = True
                         p_turtleNeck_count = 0
 
