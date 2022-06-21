@@ -46,7 +46,7 @@
 
                     </a>
 
-                    <p class="videolink" id="videolink">{{video.video_link}}</p>
+                    
                   </div>
                   <h2 id="vtitle" style="font-size: 15px; margin-top: 10px;">{{video.title}}</h2>
                 </div>
@@ -71,19 +71,15 @@
             aria-hidden="true">
             <div class="modal-dialog modal-xl" role="document">
               <div class="modal-content" style="height: 700px;">
-                <div class="modal-header">
-                  <h5 class="modal-title" id="exampleModalLabel">
-                    <!-- 제목  -->
-                    제목제목
-                  </h5>
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                  </button>
+                <div class="modal-header" style="height: 10px;">
+                  <h6></h6>
+                  <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+                  
                 </div>
                 <div class="modal-body">
                   <!-- 유튜브 영상 -->
-                  <p class="vlink" id="vlink"> 변해라 변해라 </p>
-                  
+                  <iframe id="youtube_video" width="100%" height="100%" src="https://www.youtube.com/embed/" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
                 </div>
                 <div class="modal-footer">
                 </div>
@@ -105,23 +101,15 @@
 
 
   <script type="text/javascript">
-    var modal = document.getElementById("modal");
+    
     var videolink = document.getElementsByClassName("videolink");
     var trigger = document.getElementsByClassName("trigger");
 
-
-
     // 이전 페이지에 있던 글자 가져오기
     function toggleModal() {
-      
-      // var pid = $("#videolink").text();
-      // $("#vlink").text(pid);
-      var imgId = $(this).data("img").split("/");
-      
-			document.getElementById("vlink").textContent = imgId[4];
-      console.log(imgId[4])
+      var imgId = $(this).data("img").split("/"); // 이미지 주소에서 video_link만 분리
 
-      modal.classList.toggle("show-modal");
+			document.getElementById("youtube_video").src="https://www.youtube.com/embed/"+ imgId[4]; // 유튜브 영상에       
     }
 
     function windowOnClick(event) {
@@ -130,10 +118,9 @@
       }
     }
 
-    // 이미지 클릭시 팝업창에 이미지 가져오는 이벤트 모든 이미지에 적용
+    // 이미지 클릭시 모든 이미지에 이벤트 적용
     for (var i = 0; i < trigger.length; i++) {
       trigger[i].addEventListener("click", toggleModal);
-      // console.log(trigger)
     }
   </script>
 
