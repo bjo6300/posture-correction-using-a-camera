@@ -80,8 +80,9 @@ app_name = 'common'
 
 
 class VideoCamera(object):
+    once = 0
     # capture mode
-    mode = 2
+    mode = 1
 
     # stretching value
     isStretchingPose = False
@@ -325,11 +326,16 @@ class VideoCamera(object):
                     VideoCamera.currentDirection = 0
             else:
                 if VideoCamera.currentDirection == 0:  # 오른쪽
+
+                    # self.stretchWindow()
+                        # self.once = 1
                     toaster.show_toast(
                         "스트레칭 시작합니다.", f"오른손으로 반대편 머리를 감싼 후, 지긋이 오른쪽으로 눌러주세요!.\n\n", threaded=True)
                     # if ears_inclination <= -0.4:
                     if (ears_inclination <= -0.4) and (right_hand_position >= 0) and (right_hand_position <= 145):
                         VideoCamera.isStretchingPose = True
+                        # cv2.waitKey(0)
+                        cv2.destroyWindow("stretch")
                 else:  # 왼쪽
                     toaster.show_toast(
                         "스트레칭 시작합니다.", f"왼손으로 반대편 머리를 감싼 후, 지긋이 왼쪽으로 눌러주세요!.\n\n", threaded=True)
@@ -509,6 +515,20 @@ class VideoCamera(object):
 
         ret, jpeg = cv2.imencode('.jpg', frame)
         return jpeg.tobytes()
+
+    # 스트레칭 창 띄우기
+    def stretchWindow(self):
+        if self.once == 0:
+            file_path = 'common\\img\\test.png'
+            img = cv2.imread(file_path)  # 이미지를 기본 값으로 읽기
+            # img_gray = cv2.imread(file_path, cv2.IMREAD_GRAYSCALE)  # 이미지를 그레이 스케일로 읽기
+
+            cv2.namedWindow('stretch')  # origin 이름으로 창 생성
+            # cv2.namedWindow('gray', cv2.WINDOW_NORMAL)  # gray 이름으로 창 생성
+            cv2.imshow('stretch', img)  # origin 창에 이미지 표시
+
+            cv2.waitKey();
+            self.once = 1
 
     def update(self):
         while True:

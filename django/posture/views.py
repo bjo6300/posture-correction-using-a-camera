@@ -18,7 +18,6 @@ def program(request):
 # 거북목 추천 영상
 def recommended_turtle(request):
     video = correction_video.objects.filter(posture='거북목').order_by('video_index')
-
     return render(request, 'navbar/recommended/recommended_turtle.html',{'correction_video' : video})
 
 # 거북목 추천 영상 보여주기

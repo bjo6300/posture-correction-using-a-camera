@@ -27,9 +27,58 @@
               </tr>
             </table>
 
-                    {% else %}
-                    <div id="div-alert"> 영상을 준비 중입니다. </div>
-                    {% endif %}
+          </div>
+
+          <hr>
+
+          <!-- "{% url 'posture:show_turtle_videos' %}"  -->
+
+          {% if correction_video %}
+          <table id="table-container">
+            <tr>
+              {% for video in correction_video.all %}
+              <td style="width: 206px; height: 120px; ">
+                <div data-toggle="modal" data-target="#modal">
+                  <div class="div-images" style="width: 206px; height : 120px;">
+                    <a>
+                      <img class="trigger" src={{ "https://img.youtube.com/vi/" | add:video.video_link | add:"/maxresdefault.jpg"}}
+                        width="206px" height="120px" style="cursor: pointer;" data-img={{ "https://img.youtube.com/vi/" | add:video.video_link| add:"/maxresdefault.jpg"}}>
+
+                    </a>
+
+
+                  </div>
+                  <h2 id="vtitle" style="font-size: 15px; margin-top: 10px;">{{video.title}}</h2>
+                </div>
+
+
+
+
+              </td>
+
+              {% if not forloop.last and forloop.counter|divisibleby:4 %}
+
+            </tr>
+            {% endif %}
+            {% endfor %}
+
+
+          </table>
+
+
+          <!-- Modal -->
+          <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-xl" role="document">
+              <div class="modal-content" style="height: 700px;">
+                <div class="modal-header" style="height: 10px;">
+                  <h6></h6>
+                  <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+
+                </div>
+                <div class="modal-body">
+                  <!-- 유튜브 영상 -->
+                  <iframe id="youtube_video" width="100%" height="100%" src="https://www.youtube.com/embed/" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
                 </div>
                 <div class="modal-footer">
@@ -52,7 +101,7 @@
 
 
   <script type="text/javascript">
-    
+
     var videolink = document.getElementsByClassName("videolink");
     var trigger = document.getElementsByClassName("trigger");
 
@@ -60,7 +109,7 @@
     function toggleModal() {
       var imgId = $(this).data("img").split("/"); // 이미지 주소에서 video_link만 분리
 
-			document.getElementById("youtube_video").src="https://www.youtube.com/embed/"+ imgId[4]; // 유튜브 영상에       
+			document.getElementById("youtube_video").src="https://www.youtube.com/embed/"+ imgId[4]; // 유튜브 영상에
     }
 
     function windowOnClick(event) {
