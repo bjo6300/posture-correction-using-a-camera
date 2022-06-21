@@ -81,7 +81,7 @@ app_name = 'common'
 
 class VideoCamera(object):
     # capture mode
-    mode = 0
+    mode = 2
 
     # stretching value
     isStretchingPose = False
@@ -116,6 +116,7 @@ class VideoCamera(object):
     def __del__(self):
         self.video.release()
 
+    # 자세 인식
     def get_frame(self):
         # default BGR img
 
@@ -228,12 +229,12 @@ class VideoCamera(object):
                 p_jaw_bone_count += 1
                 real_jaw_bone_count += 1
 
-            cv2.putText(frame, str(int(real_jaw_bone_count)), (10, 70), cv2.FONT_HERSHEY_PLAIN, 3, (0, 0, 255), 3)
-            cv2.putText(frame, "jaw", (10, 100), cv2.FONT_HERSHEY_PLAIN, 1, (0, 0, 255), 1)
-            cv2.putText(frame, str(int(real_shoulder_count)), (70, 70), cv2.FONT_HERSHEY_PLAIN, 3, (0, 0, 255), 3)
-            cv2.putText(frame, "shol", (70, 100), cv2.FONT_HERSHEY_PLAIN, 1, (0, 0, 255), 1)
-            cv2.putText(frame, str(int(real_turtleNeck_count)), (130, 70), cv2.FONT_HERSHEY_PLAIN, 3, (0, 0, 255), 3)
-            cv2.putText(frame, "neck", (130, 100), cv2.FONT_HERSHEY_PLAIN, 1, (0, 0, 255), 1)
+            cv2.putText(frame, str(int(real_jaw_bone_count)), (20, 40), cv2.FONT_HERSHEY_TRIPLEX, 1, (0, 0, 255), 2)
+            cv2.putText(frame, "jaw", (20, 60), cv2.FONT_HERSHEY_TRIPLEX, 0.5, (0, 0, 255), 1)
+            cv2.putText(frame, str(int(real_shoulder_count)), (20, 100), cv2.FONT_HERSHEY_TRIPLEX, 1, (0, 0, 255), 2)
+            cv2.putText(frame, "sholder", (20, 120), cv2.FONT_HERSHEY_TRIPLEX, 0.5, (0, 0, 255), 1)
+            cv2.putText(frame, str(int(real_turtleNeck_count)), (20, 160), cv2.FONT_HERSHEY_TRIPLEX, 1, (0, 0, 255), 2)
+            cv2.putText(frame, "neck", (20, 180), cv2.FONT_HERSHEY_TRIPLEX, 0.5, (0, 0, 255), 1)
             if shoulder_count > my_computer_fps * 3:
                 # 자세 인식 후, insert DB
                 self.insertLog(self.usrname, 1)
@@ -271,7 +272,8 @@ class VideoCamera(object):
 
         ret, jpeg = cv2.imencode('.jpg', frame)
         return jpeg.tobytes()
-
+    
+    # 어깨 비대칭 스트레칭
     def get_frame_stretching(self):
 
         global p_jaw_bone_count
@@ -318,7 +320,7 @@ class VideoCamera(object):
                     VideoCamera.currentDirection = 1  # 왼쪽
                     VideoCamera.isStretchingPose = False
                 else:  # 왼쪽
-                    VideoCamera.mode = 0
+                    # VideoCamera.mode = 0
                     VideoCamera.isStretchingPose = False
                     VideoCamera.currentDirection = 0
             else:
@@ -335,10 +337,22 @@ class VideoCamera(object):
                     if (ears_inclination >= 0.4) and (left_hand_position >= 0) and (left_hand_position <= 145):
                         VideoCamera.isStretchingPose = True
                         p_shoulder_count = 0
+                        VideoCamera.stretching_count += 1
+
+            cv2.putText(frame, str(int(VideoCamera.stretching_count)),
+                        (20, 40), cv2.FONT_HERSHEY_TRIPLEX, 1, (255, 0, 255), 2)
+            cv2.putText(frame, 'set count', (20, 60), cv2.FONT_HERSHEY_TRIPLEX, 0.5, (255, 0, 255), 1)
+            
+            # 스트레칭 3번 수행 시 스트레칭 종료
+            if VideoCamera.stretching_count == 3 and VideoCamera.currentDirection == 1:
+                VideoCamera.stretching_count = 0
+                VideoCamera.currentDirection = 0
+                VideoCamera.mode = 0
 
         ret, jpeg = cv2.imencode('.jpg', frame)
         return jpeg.tobytes()
-
+    
+    # 거북목 스트레칭
     def get_frame_stretching2(self):
         global p_jaw_bone_count
         global p_shoulder_count
@@ -403,10 +417,21 @@ class VideoCamera(object):
 
                         VideoCamera.isStretchingPose = True
                         p_turtleNeck_count = 0
+                        VideoCamera.stretching_count += 1
+
+            cv2.putText(frame, str(int(VideoCamera.stretching_count)),
+                        (20, 100), cv2.FONT_HERSHEY_TRIPLEX, 1, (255, 0, 255), 2)
+            cv2.putText(frame, 'set count', (20, 120), cv2.FONT_HERSHEY_TRIPLEX, 0.5, (255, 0, 255), 1)
+
+            if VideoCamera.stretching_count == 3 and VideoCamera.currentDirection == 1:
+                VideoCamera.stretching_count = 0
+                VideoCamera.currentDirection = 0
+                VideoCamera.mode = 0
 
         ret, jpeg = cv2.imencode('.jpg', frame)
         return jpeg.tobytes()
-
+    
+    # 안면비대칭 스트레칭
     def get_frame_stretching3(self):
         global p_jaw_bone_count
         global p_shoulder_count
@@ -447,11 +472,7 @@ class VideoCamera(object):
             mouth_distance1 = detector.findMouthDistance(frame, 0, 17)
             mouth_distance2 = detector.findMouthDistance(frame, 61, 291)
 
-            mouth_angle = detector.findAngle(frame, 61, 17, 291)
-
-            if VideoCamera.stretching_count == 3 and VideoCamera.mouth_mode == 1:
-                VideoCamera.stretching_count = 0
-                VideoCamera.mode = 0
+            mouth_angle = detector.findMouthAngle(frame, 61, 17, 291)
 
             if VideoCamera.isStretchingPose == True:  # 포즈가 취해졌는지 판단
                 if VideoCamera.mouth_mode == 0:
@@ -475,8 +496,16 @@ class VideoCamera(object):
                         VideoCamera.isStretchingPose = True
                         p_jaw_bone_count = 0
                         VideoCamera.stretching_count += 1
+
             cv2.putText(frame, str(int(VideoCamera.stretching_count)),
-                        (10, 70), cv2.FONT_HERSHEY_PLAIN, 3, (255, 0, 255), 3)
+                        (20, 100), cv2.FONT_HERSHEY_TRIPLEX, 1, (255, 0, 255), 2)
+            cv2.putText(frame, 'set count', (20, 120), cv2.FONT_HERSHEY_TRIPLEX, 0.5, (255, 0, 255), 1)
+            # cv2.putText(frame, str(int(VideoCamera.stretching_count)),
+            #             (10, 70), cv2.FONT_HERSHEY_PLAIN, 3, (255, 0, 255), 3)
+
+            if VideoCamera.stretching_count == 3 and VideoCamera.mouth_mode == 1:
+                VideoCamera.stretching_count = 0
+                VideoCamera.mode = 0
 
         ret, jpeg = cv2.imencode('.jpg', frame)
         return jpeg.tobytes()
@@ -491,10 +520,10 @@ class VideoCamera(object):
         postureLog.save()
         return
 
-
+# opencv 객체 생성
 cam = VideoCamera()
 
-
+# 자세 인식 및 교정 mode change
 def gen(camera):
     while True:
         if VideoCamera.mode == 1:  # 스트레칭
@@ -508,16 +537,15 @@ def gen(camera):
         yield (b'--frame\r\n'
                b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n\r\n')
 
-
 def stream2(request):
     try:
         return StreamingHttpResponse(gen(()), content_type="multipart/x-mixed-replace;boundary=frame")
     except:  # This is bad! replace it with proper handling
         pass
 
+
+
 # 로그인 함수
-
-
 def login_main(request):
     if request.method == 'POST':
         username = request.POST['username']
@@ -536,8 +564,6 @@ def login_main(request):
         return render(request, 'common/login.html')
 
 # 회원가입 클래스
-
-
 class SignUpView(View):
     # POST 요청 시
     def post(self, request):
@@ -610,14 +636,10 @@ def change_password(request):
         return render(request, "navbar/mypage/change_password.html", {'form': password_change_form})
 
 # 비밀번호 수정 완료
-
-
 def modify_password_completed(request):
     return render(request, 'navbar/mypage/modify_password_completed.html')
 
 # 이메일 수정
-
-
 def modify_email(request):
     if request.method == 'POST':
         # print('이메일 변경 POST')
@@ -636,8 +658,6 @@ def modify_email(request):
     return render(request, "navbar/mypage/modify_email.html", {'form': form})
 
 # 이메일 수정 완료
-
-
 def modify_email_completed(request):
     return render(request, 'navbar/mypage/modify_email_completed.html')
 
@@ -670,7 +690,5 @@ def find_id(request):
     return render(request, 'common/find_id.html')
 
  # 아이디찾기 체크완료
-
-
 def find_id_checked(request):
     return render(request, 'common/find_id_checked.html')
