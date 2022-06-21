@@ -81,7 +81,7 @@ app_name = 'common'
 
 class VideoCamera(object):
     # capture mode
-    mode = 2
+    mode = 0
 
     # stretching value
     isStretchingPose = False
@@ -228,6 +228,12 @@ class VideoCamera(object):
                 p_jaw_bone_count += 1
                 real_jaw_bone_count += 1
 
+            cv2.putText(frame, str(int(real_jaw_bone_count)), (10, 70), cv2.FONT_HERSHEY_PLAIN, 3, (0, 0, 255), 3)
+            cv2.putText(frame, "jaw", (10, 100), cv2.FONT_HERSHEY_PLAIN, 1, (0, 0, 255), 1)
+            cv2.putText(frame, str(int(real_shoulder_count)), (70, 70), cv2.FONT_HERSHEY_PLAIN, 3, (0, 0, 255), 3)
+            cv2.putText(frame, "shol", (70, 100), cv2.FONT_HERSHEY_PLAIN, 1, (0, 0, 255), 1)
+            cv2.putText(frame, str(int(real_turtleNeck_count)), (130, 70), cv2.FONT_HERSHEY_PLAIN, 3, (0, 0, 255), 3)
+            cv2.putText(frame, "neck", (130, 100), cv2.FONT_HERSHEY_PLAIN, 1, (0, 0, 255), 1)
             if shoulder_count > my_computer_fps * 3:
                 # 자세 인식 후, insert DB
                 self.insertLog(self.usrname, 1)
