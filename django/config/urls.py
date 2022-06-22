@@ -26,6 +26,5 @@ urlpatterns = [
     path('common/', include('common.urls')), # login 페이지
     path('', posture.views.index, name='index'),  # '/' 에 해당되는 path
     path('password_reset/done/', views.PasswordResetDoneView.as_view(), name='password_reset_done'),
-    path('password_reset/done/', views.PasswordResetDoneView.as_view(), name='password_reset_done'),
     path('reset/<uidb64>/<token>/', views.PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
 ]
