@@ -40,4 +40,7 @@ urlpatterns = [
     # 이메일 수정 "{% url 'common:modify_email_completed' %}"
     path('modify_email_completed/', views.modify_email_completed, name='modify_email_completed'),
 
+    # 프로그램 종료 "{% url 'common:program_stop' %}"
+    path('program_stop/', views.program_stop, name='program_stop'),
+
 ]
