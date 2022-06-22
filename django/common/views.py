@@ -642,3 +642,49 @@ def find_id(request):
  # 아이디찾기 체크완료
 def find_id_checked(request):
     return render(request, 'common/find_id_checked.html')
+
+from django.contrib.auth import views as auth_views
+from django.urls import reverse_lazy
+from common.forms import PasswordResetForm
+
+# 비밀번호 초기화
+
+class PasswordResetView(auth_views.PasswordResetView):
+    """
+    비밀번호 초기화 - 사용자ID, email 입력
+    """
+    template_name = 'common/password_reset.html'
+    # success_url = reverse_lazy('password_reset_done')
+    form_class = PasswordResetForm
+    # email_template_name = 'common/password_reset_email.html'
+
+
+class PasswordResetDoneView(auth_views.PasswordResetDoneView):
+    """
+    비밀번호 초기화 - 메일 전송 완료
+    """
+    template_name = 'common/password_reset_done.html'
+
+
+class PasswordResetConfirmView(auth_views.PasswordResetConfirmView):
+    """
+    비밀번호 초기화 - 새로운 비밀번호 입력
+    """
+    template_name = 'common/password_reset_confirm.html'
+    success_url = reverse_lazy('common:login_main')
+
+
+# class UserPasswordResetView(PasswordResetView):
+#     template_name = 'common/password_reset.html'  # 템플릿을 변경하려면 이와같은 형식으로 입력
+#     # success_url = reverse_lazy('reset_password_done')
+#     form_class = PasswordResetForm
+#
+#     def form_valid(self, form):
+#         if User.objects.filter(email=self.request.POST.get("email")).exists():
+#             return super().form_valid(form)
+#         else:
+#             return render(self.request, 'common/password_reset.html')
+#
+#
+# class UserPasswordResetDoneView(PasswordResetDoneView):
+#     template_name = 'common/password_reset_done.html'  # 템플릿을 변경하려면 이와같은 형식으로 입력

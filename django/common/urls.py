@@ -1,5 +1,5 @@
 from django import views
-from django.urls import path
+from django.urls import path, reverse_lazy
 from unicodedata import name
 from django.contrib.auth import views as auth_views
 from . import views
@@ -21,6 +21,22 @@ urlpatterns = [
 
     # 아이디 찾기 체크완료 "{% url 'common:find_id_checked' %}"
     path('find_id/checked', views.find_id_checked, name='find_id_checked'),
+
+    # 비밀번호 초기화
+    path('password_reset/', views.PasswordResetView.as_view(), name='password_reset'),
+    path('password_reset/done/', views.PasswordResetDoneView.as_view(), name='password_reset_done'),
+    path('reset/<uidb64>/<token>/', views.PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
+
+# from django.urls import reverse_lazy
+
+    # path('password_reset/', auth_views.PasswordResetView.as_view(success_url=reverse_lazy('common:password_reset_done')), name='password_reset'),
+    # path('password_reset_done/', auth_views.PasswordResetDoneView.as_view(), name='password_reset_done'),
+    # # path('password_reset_confirm/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(success_url=reverse_lazy('common:password_reset_complete')), name='password_reset_confirm'),
+    # path('rest-auth/password/reset/confirm/<str:uidb64>/<str:token>', auth_views.PasswordResetConfirmView.as_view(),
+    #         name='password_reset_confirm'),
+    # path('password_reset_complete/', auth_views.PasswordResetCompleteView.as_view(), name='password_reset_complete'),
+
+
 
     # 회원가입 페이지
     path('signup/', SignUpView.as_view(), name='signup'),
