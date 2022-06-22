@@ -350,7 +350,7 @@ class VideoCamera(object):
             cv2.putText(frame, 'set count', (20, 60), cv2.FONT_HERSHEY_TRIPLEX, 0.5, (255, 0, 255), 1)
             
             # 스트레칭 3번 수행 시 스트레칭 종료
-            if VideoCamera.stretching_count == 3 and VideoCamera.currentDirection == 1:
+            if VideoCamera.stretching_count == 2 and VideoCamera.currentDirection == 1:
                 VideoCamera.stretching_count = 0
                 VideoCamera.currentDirection = 0
                 VideoCamera.mode = 0
@@ -429,7 +429,7 @@ class VideoCamera(object):
                         (20, 100), cv2.FONT_HERSHEY_TRIPLEX, 1, (255, 0, 255), 2)
             cv2.putText(frame, 'set count', (20, 120), cv2.FONT_HERSHEY_TRIPLEX, 0.5, (255, 0, 255), 1)
 
-            if VideoCamera.stretching_count == 3 and VideoCamera.currentDirection == 1:
+            if VideoCamera.stretching_count == 2 and VideoCamera.currentDirection == 1:
                 VideoCamera.stretching_count = 0
                 VideoCamera.currentDirection = 0
                 VideoCamera.mode = 0
@@ -509,7 +509,7 @@ class VideoCamera(object):
             # cv2.putText(frame, str(int(VideoCamera.stretching_count)),
             #             (10, 70), cv2.FONT_HERSHEY_PLAIN, 3, (255, 0, 255), 3)
 
-            if VideoCamera.stretching_count == 3 and VideoCamera.mouth_mode == 1:
+            if VideoCamera.stretching_count == 2 and VideoCamera.mouth_mode == 1:
                 VideoCamera.stretching_count = 0
                 VideoCamera.mode = 0
 
