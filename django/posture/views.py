@@ -6,9 +6,11 @@ from datetime import datetime
 from django.contrib.auth.models import User
 from django.http import HttpResponse
 from .models import correction_video
+# from ..common
 
 def index(request):
     # 홈 화면
+
     return render(request, 'main.html')
 
 # 메인페이지 - 프로그램 시작
@@ -45,7 +47,7 @@ def mypage_modify(request):
 
 # 전체 월간 통계
 def stats_all_month(request):
-    cursor = connection.cursor();
+    cursor = connection.cursor()
 
     strSql = "select posturename, count(posturename) from common_posturelog where username='" + request.session.get(
         'username') + "' and date between date_add(NOW(), interval - 30 day) and NOW() " \
@@ -64,7 +66,7 @@ def stats_all_month(request):
 
 # 전체 주간 통계
 def stats_all_week(request):
-    cursor = connection.cursor();
+    cursor = connection.cursor()
 
     strSql = "select posturename, count(posturename) from common_posturelog where username='" + request.session.get(
         'username') + "' and date between date_add(NOW(), interval - 7 day) and NOW() " \
@@ -83,7 +85,7 @@ def stats_all_week(request):
 
 # 전체 일별 통계
 def stats_all_day(request):
-    cursor = connection.cursor();
+    cursor = connection.cursor()
 
     strSql = "select posturename, count(posturename) from common_posturelog where username='" + request.session.get(
         'username') + "' and date between date_format(now(), '%Y-%m-%d 00:00:00') and date_format(now(), '%Y-%m-%d 23:59:59') " \
@@ -102,7 +104,7 @@ def stats_all_day(request):
 
 # 거북목 월간 통계
 def stats_turtle_month(request):
-    cursor = connection.cursor();
+    cursor = connection.cursor()
 
     strSql = "select month(date) AS mm, COUNT(date) as cnt from common_posturelog where date " \
              "between date_add(NOW(), interval - 365 day) and NOW() and username='" + request.session.get(
@@ -132,7 +134,7 @@ def stats_turtle_month(request):
 
 # 거북목 주간 통계
 def stats_turtle_week(request):
-    cursor = connection.cursor();
+    cursor = connection.cursor()
 
     strSql = "select dayofweek(date) AS dw, COUNT(date) as cnt from common_posturelog where date " \
              "between date_add(NOW(), interval - 30 day) and NOW() and username='" + request.session.get(
@@ -162,7 +164,7 @@ def stats_turtle_week(request):
 
 # 거북목 일간 통계
 def stats_turtle_day(request):
-    cursor = connection.cursor();
+    cursor = connection.cursor()
 
     strSql = "select HOUR(date) AS hh, COUNT(date) as cnt from common_posturelog where date " \
              "between date_format(now(), '%Y-%m-%d 00:00:00') and date_format(now(), '%Y-%m-%d 23:59:59') and username='" + request.session.get(
@@ -185,7 +187,7 @@ def stats_turtle_day(request):
 
 # 어깨비대칭 월간 통계
 def stats_shoulder_month(request):
-    cursor = connection.cursor();
+    cursor = connection.cursor()
 
     strSql = "select month(date) AS mm, COUNT(date) as cnt from common_posturelog where date " \
              "between date_add(NOW(), interval - 365 day) and NOW() and username='" + request.session.get(
@@ -215,7 +217,7 @@ def stats_shoulder_month(request):
 
 # 어깨비대칭 주간 통계
 def stats_shoulder_week(request):
-    cursor = connection.cursor();
+    cursor = connection.cursor()
 
     strSql = "select dayofweek(date) AS dw, COUNT(date) as cnt from common_posturelog where date " \
              "between date_add(NOW(), interval - 30 day) and NOW() and username='" + request.session.get(
@@ -245,7 +247,7 @@ def stats_shoulder_week(request):
 
 # 어깨비대칭 일별 통계
 def stats_shoulder_day(request):
-    cursor = connection.cursor();
+    cursor = connection.cursor()
 
     strSql = "select HOUR(date) AS hh, COUNT(date) as cnt from common_posturelog where date " \
              "between date_format(now(), '%Y-%m-%d 00:00:00') and date_format(now(), '%Y-%m-%d 23:59:59') and username='" + request.session.get(
@@ -268,7 +270,7 @@ def stats_shoulder_day(request):
 
 # 턱괴기 월간 통계
 def stats_jaw_month(request):
-    cursor = connection.cursor();
+    cursor = connection.cursor()
 
     strSql = "select month(date) AS mm, COUNT(date) as cnt from common_posturelog where date " \
              "between date_add(NOW(), interval - 365 day) and NOW() and username='" + request.session.get(
@@ -298,7 +300,7 @@ def stats_jaw_month(request):
 
 # 턱괴기 주간 통계
 def stats_jaw_week(request):
-    cursor = connection.cursor();
+    cursor = connection.cursor()
 
     strSql = "select dayofweek(date) AS dw, COUNT(date) as cnt from common_posturelog where date " \
              "between date_add(NOW(), interval - 30 day) and NOW() and username='" + request.session.get(
@@ -328,7 +330,7 @@ def stats_jaw_week(request):
 
 # 턱괴기 일별 통계
 def stats_jaw_day(request):
-    cursor = connection.cursor();
+    cursor = connection.cursor()
 
     strSql = "select HOUR(date) AS hh, COUNT(date) as cnt from common_posturelog where date " \
              "between date_format(now(), '%Y-%m-%d 00:00:00') and date_format(now(), '%Y-%m-%d 23:59:59') and username='" + request.session.get(

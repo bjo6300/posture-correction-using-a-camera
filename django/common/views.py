@@ -76,13 +76,16 @@ real_turtleNeck_count = 0
 # postureLog 객체 생성
 postureLog = PostureLog()
 
+# 활성화
+activated = True
+
 app_name = 'common'
 
 
 class VideoCamera(object):
-    once = 0
+    stretch_img_name = ''
     # capture mode
-    mode = 1
+    mode = 3
 
     # stretching value
     isStretchingPose = False
@@ -326,17 +329,14 @@ class VideoCamera(object):
                     VideoCamera.currentDirection = 0
             else:
                 if VideoCamera.currentDirection == 0:  # 오른쪽
-
-                    # self.stretchWindow()
-                        # self.once = 1
+                    self.stretch_img_name = 'shoulder_right.jpg'
                     toaster.show_toast(
                         "스트레칭 시작합니다.", f"오른손으로 반대편 머리를 감싼 후, 지긋이 오른쪽으로 눌러주세요!.\n\n", threaded=True)
                     # if ears_inclination <= -0.4:
                     if (ears_inclination <= -0.4) and (right_hand_position >= 0) and (right_hand_position <= 145):
                         VideoCamera.isStretchingPose = True
-                        # cv2.waitKey(0)
-                        cv2.destroyWindow("stretch")
                 else:  # 왼쪽
+                    self.stretch_img_name = 'shoulder_left.jpg'
                     toaster.show_toast(
                         "스트레칭 시작합니다.", f"왼손으로 반대편 머리를 감싼 후, 지긋이 왼쪽으로 눌러주세요!.\n\n", threaded=True)
                     # if ears_inclination >= 0.4:
@@ -355,7 +355,16 @@ class VideoCamera(object):
                 VideoCamera.currentDirection = 0
                 VideoCamera.mode = 0
 
-        ret, jpeg = cv2.imencode('.jpg', frame)
+        src = cv2.imread(self.stretch_img_name, cv2.IMREAD_COLOR)
+        padding = cv2.imread('padding.jpg', cv2.IMREAD_COLOR)
+        src = cv2.resize(src,(512, 384))
+        src2 = cv2.resize(frame,(512, 384))
+        padding = cv2.resize(padding, (1024,192))
+        addh = np.hstack((src, src2))
+        addh = np.vstack((addh, padding))
+        addh = np.vstack((padding, addh))
+        ret, jpeg = cv2.imencode('.jpg', addh)
+        # ret, jpeg = cv2.imencode('.jpg', frame)
         return jpeg.tobytes()
     
     # 거북목 스트레칭
@@ -408,12 +417,14 @@ class VideoCamera(object):
                     VideoCamera.upDown = 0
             else:
                 if VideoCamera.upDown == 0:  # 위쪽
+                    self.stretch_img_name = 'turtleneck_top.jpg'
                     toaster.show_toast(
                         "스트레칭 시작합니다.", f"양손 엄지손가락을 턱에 대고 턱을 위로 당겨주세요!\n\n", threaded=True)
                     # if jaw_angle >= 160:
                     if (jaw_angle >= 150) and (left_hand_position >= 100 and left_hand_position <= 200) and (right_hand_position >= 100 and right_hand_position <= 200):
                         VideoCamera.isStretchingPose = True
                 else:  # 아래쪽
+                    self.stretch_img_name = 'turtleneck_down.jpg'
                     toaster.show_toast(
                         "스트레칭 시작합니다.", f"양손에 깍지를 끼고 머리를 아래로 당겨주세요!\n\n", threaded=True)
                     # print(left_hand_position)
@@ -434,7 +445,16 @@ class VideoCamera(object):
                 VideoCamera.currentDirection = 0
                 VideoCamera.mode = 0
 
-        ret, jpeg = cv2.imencode('.jpg', frame)
+        src = cv2.imread(self.stretch_img_name, cv2.IMREAD_COLOR)
+        padding = cv2.imread('padding.jpg', cv2.IMREAD_COLOR)
+        src = cv2.resize(src, (512, 384))
+        src2 = cv2.resize(frame, (512, 384))
+        padding = cv2.resize(padding, (1024, 192))
+        addh = np.hstack((src, src2))
+        addh = np.vstack((addh, padding))
+        addh = np.vstack((padding, addh))
+        ret, jpeg = cv2.imencode('.jpg', addh)
+        # ret, jpeg = cv2.imencode('.jpg', frame)
         return jpeg.tobytes()
     
     # 안면비대칭 스트레칭
@@ -489,12 +509,14 @@ class VideoCamera(object):
                     VideoCamera.mouth_mode = 0
             else:
                 if VideoCamera.mouth_mode == 0:
+                    self.stretch_img_name = 'jaw_1.jpg'
                     toaster.show_toast(
                         "스트레칭 시작합니다.", f"입을 아! 모양으로 크게 벌려주세요!\n\n", threaded=True)
                     # if jaw_angle >= 160:
                     if (mouth_angle >= 79 and mouth_angle <= 95) and mouth_distance1 >= 38:
                         VideoCamera.isStretchingPose = True
                 else:
+                    self.stretch_img_name = 'jaw_2.jpg'
                     toaster.show_toast(
                         "스트레칭 시작합니다.", f"입을 이! 모양으로 크게 벌려주세요!\n\n", threaded=True)
                     # if jaw_angle >= 160:
@@ -513,22 +535,17 @@ class VideoCamera(object):
                 VideoCamera.stretching_count = 0
                 VideoCamera.mode = 0
 
-        ret, jpeg = cv2.imencode('.jpg', frame)
+        src = cv2.imread(self.stretch_img_name, cv2.IMREAD_COLOR)
+        padding = cv2.imread('padding.jpg', cv2.IMREAD_COLOR)
+        src = cv2.resize(src, (512, 384))
+        src2 = cv2.resize(frame, (512, 384))
+        padding = cv2.resize(padding, (1024, 192))
+        addh = np.hstack((src, src2))
+        addh = np.vstack((addh, padding))
+        addh = np.vstack((padding, addh))
+        ret, jpeg = cv2.imencode('.jpg', addh)
+        # ret, jpeg = cv2.imencode('.jpg', frame)
         return jpeg.tobytes()
-
-    # 스트레칭 창 띄우기
-    def stretchWindow(self):
-        if self.once == 0:
-            file_path = 'common\\img\\test.png'
-            img = cv2.imread(file_path)  # 이미지를 기본 값으로 읽기
-            # img_gray = cv2.imread(file_path, cv2.IMREAD_GRAYSCALE)  # 이미지를 그레이 스케일로 읽기
-
-            cv2.namedWindow('stretch')  # origin 이름으로 창 생성
-            # cv2.namedWindow('gray', cv2.WINDOW_NORMAL)  # gray 이름으로 창 생성
-            cv2.imshow('stretch', img)  # origin 창에 이미지 표시
-
-            cv2.waitKey();
-            self.once = 1
 
     def update(self):
         while True:
@@ -545,6 +562,7 @@ cam = VideoCamera()
 
 # 자세 인식 및 교정 mode change
 def gen(camera):
+    # if activated == True:
     while True:
         if VideoCamera.mode == 1:  # 스트레칭
             frame = cam.get_frame_stretching()
@@ -554,6 +572,7 @@ def gen(camera):
             frame = cam.get_frame_stretching3()
         else:  # 인식
             frame = cam.get_frame()
+
         yield (b'--frame\r\n'
                b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n\r\n')
 
