@@ -720,7 +720,31 @@ def find_id(request):
         return render(request, 'common/find_id.html')
     return render(request, 'common/find_id.html')
 
-
 # 아이디찾기 체크완료
 def find_id_checked(request):
     return render(request, 'common/find_id_checked.html')
+
+from django.contrib.auth import views as auth_views
+from django.urls import reverse_lazy
+from common.forms import PasswordResetForm
+
+# 비밀번호 초기화
+class PasswordResetView(auth_views.PasswordResetView):
+    template_name = 'common/password_reset.html'
+    # success_url = reverse_lazy('password_reset_done')
+    form_class = PasswordResetForm
+    email_template_name = 'common/password_reset_email.html'
+    subject_template_name = 'common/password_reset_subject.txt'
+
+# 비밀번호 초기화 완료
+class PasswordResetDoneView(auth_views.PasswordResetDoneView):
+    template_name = 'common/password_reset_done.html'
+
+# 비밀번호 초기화 새로운 비밀번호 입력
+class PasswordResetConfirmView(auth_views.PasswordResetConfirmView):
+    template_name = 'common/password_reset_confirm.html'
+    success_url = reverse_lazy('common:password_reset_finish')
+
+# 아이디찾기 체크완료
+def password_reset_finish(request):
+    return render(request, 'common/password_reset_finish.html')
