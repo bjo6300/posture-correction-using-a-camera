@@ -81,3 +81,4 @@ class PostureLog(models.Model):
     date = models.DateTimeField(default=datetime.now())
     posturename = models.IntegerField()     #0=턱괴기 1=어깨 2=거북목
 
+
