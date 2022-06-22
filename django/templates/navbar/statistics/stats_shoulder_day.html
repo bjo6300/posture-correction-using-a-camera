@@ -57,7 +57,16 @@
             window.theChart = new Chart(ctx, {
                 type: 'bar', 
                 data: barChartData, 
-                options: {}
+                options: {
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero: true,
+                                callback: function(value) {if (value % 1 === 0) {return value;}}
+                            }
+                        }]
+                    }
+                }
             });
         } 
     </script>
@@ -106,7 +115,7 @@
 
                         <!-- 막대그래프 -->
                         <div id="chartContainer" style="height: 300px; width: 100%; position: relative; margin-top: 50px;">
-                            <canvas id="chart" style="height: 300px; width: 100%; position: relative; margin-top: 50px;"></canvas> 
+                            <canvas id="chart" style="height: 300px; width: 100%; position: relative; margin-top: 50px;"></canvas>
                         </div>
                         
 

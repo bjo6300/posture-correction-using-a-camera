@@ -267,7 +267,7 @@ class HolisticDetector():
 
         return img
 
-    def drawShoulder2(self, img, draw=True, r=5, t=1):
+    def drawShoulder2(self, img, draw=True, r=5, t=2):
         p = [11, 12, 13, 14, 19, 20]
         xy = []
         for i in range(len(p)):
@@ -277,11 +277,11 @@ class HolisticDetector():
             for i in range(len(p)):
                 cv2.circle(img, (xy[i][0], xy[i][1]), r, (255, 0, 255), cv2.FILLED)
 
-            # cv2.line(img, (x1, y1), (x2, y2), (255, 0, 255), t)
-            # cv2.line(img, (x1, y1), (x3, y3), (255, 0, 255), t)
-            # cv2.line(img, (x3, y3), (x5, y5), (255, 0, 255), t)
-            # cv2.line(img, (x2, y2), (x4, y4), (255, 0, 255), t)
-            # cv2.line(img, (x4, y4), (x6, y6), (255, 0, 255), t)
+            cv2.line(img, (xy[0][0], xy[0][1]), (xy[1][0], xy[1][1]), (255, 0, 255), t)
+            cv2.line(img, (xy[0][0], xy[0][1]), (xy[2][0], xy[2][1]), (255, 0, 255), t)
+            cv2.line(img, (xy[2][0], xy[2][1]), (xy[4][0], xy[4][1]), (255, 0, 255), t)
+            cv2.line(img, (xy[1][0], xy[1][1]), (xy[3][0], xy[3][1]), (255, 0, 255), t)
+            cv2.line(img, (xy[3][0], xy[3][1]), (xy[5][0], xy[5][1]), (255, 0, 255), t)
             # cv2.circle(img, (x1, y1), r, (255, 0, 255), cv2.FILLED)
             # cv2.circle(img, (x2, y2), r, (255, 0, 255), cv2.FILLED)
             # cv2.circle(img, (x3, y3), r, (255, 0, 255), cv2.FILLED)
@@ -293,17 +293,19 @@ class HolisticDetector():
 
     def drawMouth(self, img, draw=True, r=3, t=1):
 
-        p = [172,136,150,140,176,148,152,377,400,378,379,365,397]
+        p = [135, 169, 170, 140, 171, 175, 396, 400, 378, 379, 365, 397]
         xy = []
         for i in range(len(p)):
             xy.append(self.face_lmList[p[i]][1:3])
 
         if draw:
             for i in range(len(p)):
-                cv2.circle(img, (xy[i][0], xy[i][1]), r, (255, 0, 255), cv2.FILLED)
+                # cv2.circle(img, (xy[i][0], xy[i][1]), r, (255, 0, 255), cv2.FILLED)
+                cv2.circle(img, (xy[i][0], xy[i][1]), r, (0, 255, 0), cv2.FILLED)
         if draw:
             for i in range(len(p)-1):
-                cv2.line(img, (xy[i][0], xy[i][1]), (xy[i + 1][0], xy[i + 1][1]), (255, 255, 255), 1)
+                # cv2.line(img, (xy[i][0], xy[i][1]), (xy[i + 1][0], xy[i + 1][1]), (255, 255, 255), 1)
+                cv2.line(img, (xy[i][0], xy[i][1]), (xy[i + 1][0], xy[i + 1][1]), (0, 255, 0), 1)
         return img
 
     def findPointDistance2(self, p1, p2):
@@ -336,8 +338,10 @@ class HolisticDetector():
 
         if draw:
             # cv2.line(img, (x1, y1), (x2, y2), (171, 242, 0), t)
-            cv2.circle(img, (x1, y1), r, (171, 242, 0), cv2.FILLED)
-            cv2.circle(img, (x2, y2), r, (171, 242, 0), cv2.FILLED)
+            # cv2.circle(img, (x1, y1), r, (171, 242, 0), cv2.FILLED)
+            # cv2.circle(img, (x2, y2), r, (171, 242, 0), cv2.FILLED)
+            cv2.circle(img, (x1, y1), r, (0, 255, 0), cv2.FILLED)
+            cv2.circle(img, (x2, y2), r, (0, 255, 0), cv2.FILLED)
 
         return img
 
@@ -348,6 +352,8 @@ class HolisticDetector():
         x2, y2 = self.pose_lmList[p2][1:3]
 
         length = math.hypot(x2 - x1, y2 - y1)
+
+        # cv2.putText(img, str(int(length)), (x2 - 50, y2 + 50), cv2.FONT_HERSHEY_PLAIN, 2, (0, 0, 255), 2)
 
         return length
 
@@ -360,18 +366,22 @@ class HolisticDetector():
         length = math.hypot(x2 - x1, y2 - y1)
 
         # cv2.putText(img, str(int(length)), (x2 - 50, y2 + 50), cv2.FONT_HERSHEY_PLAIN, 2, (0, 0, 255), 2)
+        # cv2.putText(img, str(int(length)), (x2 - 50, y2 + 50), cv2.FONT_HERSHEY_PLAIN, 2, (0, 0, 255), 2)
         return length
 
     # 추가된 함수
     # 어깨의 두 점 11, 12의 점과 사이 라인 표시
-    def drawShoulder(self, p1, p2, img, draw=True, r=5, t=1):
+    def drawShoulder(self, p1, p2, img, draw=True, r=5, t=2):
         x1, y1 = self.pose_lmList[p1][1:3]
         x2, y2 = self.pose_lmList[p2][1:3]
 
         if draw:
-            cv2.line(img, (x1, y1), (x2, y2), (255, 0, 255), t)
-            cv2.circle(img, (x1, y1), r, (255, 0, 255), cv2.FILLED)
-            cv2.circle(img, (x2, y2), r, (255, 0, 255), cv2.FILLED)
+            # cv2.line(img, (x1, y1), (x2, y2), (255, 0, 255), t)
+            # cv2.circle(img, (x1, y1), r, (255, 0, 255), cv2.FILLED)
+            # cv2.circle(img, (x2, y2), r, (255, 0, 255), cv2.FILLED)
+            cv2.line(img, (x1, y1), (x2, y2), (0, 255, 0), t)
+            cv2.circle(img, (x1, y1), r, (0, 255, 0), cv2.FILLED)
+            cv2.circle(img, (x2, y2), r, (0, 255, 0), cv2.FILLED)
 
         return img
 
@@ -470,6 +480,39 @@ class HolisticDetector():
             cv2.circle(img, (x3, y3), 5, (0, 0, 255), cv2.FILLED)
             # cv2.circle(img, (x3, y3), 15, (0, 0, 255), 2)
             # cv2.putText(img, str(int(angle)), (x2 - 50, y2 + 50), cv2.FONT_HERSHEY_PLAIN, 2, (0, 0, 255), 2)
+            cv2.putText(img, str(int(angle)), (20, 40), cv2.FONT_HERSHEY_TRIPLEX, 1, (0, 0, 255), 2)
+            cv2.putText(img, "jaw angle", (20, 60), cv2.FONT_HERSHEY_TRIPLEX, 0.5, (0, 0, 255), 1)
+
+        return angle
+
+    def findMouthAngle(self, img, p1, p2, p3, draw=True):
+        # 랜드마크 좌표 얻기
+        # , x1, y1 = self.lmList[p1]
+        x1, y1 = self.face_lmList[p1][1:3]
+        x2, y2 = self.face_lmList[p2][1:3]
+        x3, y3 = self.face_lmList[p3][1:3]
+
+        # 각도 계산
+        radian = math.atan2(y3 - y2, x3 - x2) - math.atan2(y1 - y2, x1 - x2)
+        angle = math.degrees(radian)
+
+        if angle < 0:
+            angle += 360
+
+        # print(angle)
+        # 점, 선 그리기
+        if draw:
+            cv2.line(img, (x1, y1), (x2, y2), (255, 255, 255), 3)
+            cv2.line(img, (x2, y2), (x3, y3), (255, 255, 255), 3)
+            cv2.circle(img, (x1, y1), 5, (0, 0, 255), cv2.FILLED)
+            # cv2.circle(img, (x1, y1), 15, (0, 0, 255), 2)
+            cv2.circle(img, (x2, y2), 5, (0, 0, 255), cv2.FILLED)
+            # cv2.circle(img, (x2, y2), 15, (0, 0, 255), 2)
+            cv2.circle(img, (x3, y3), 5, (0, 0, 255), cv2.FILLED)
+            # cv2.circle(img, (x3, y3), 15, (0, 0, 255), 2)
+            # cv2.putText(img, str(int(angle)), (x2 - 50, y2 + 50), cv2.FONT_HERSHEY_PLAIN, 2, (0, 0, 255), 2)
+            cv2.putText(img, str(int(angle)), (20, 40), cv2.FONT_HERSHEY_TRIPLEX, 1, (0, 0, 255), 2)
+            cv2.putText(img, "mouse angle", (20, 60), cv2.FONT_HERSHEY_TRIPLEX, 0.5, (0, 0, 255), 1)
 
         return angle
 
@@ -498,7 +541,7 @@ class HolisticDetector():
             cv2.circle(img, (x2, y2), 15, (0, 0, 255), 2)
             cv2.circle(img, (x3, y3), 10, (0, 0, 255), cv2.FILLED)
             cv2.circle(img, (x3, y3), 15, (0, 0, 255), 2)
-            cv2.putText(img, str(int(angle)), (x2 - 50, y2 + 50), cv2.FONT_HERSHEY_PLAIN, 2, (0, 0, 255), 2)
+            # cv2.putText(img, str(int(angle)), (x2 - 50, y2 + 50), cv2.FONT_HERSHEY_PLAIN, 2, (0, 0, 255), 2)
 
         return angle
 

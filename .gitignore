@@ -166,3 +166,6 @@ settings.py
 
 # End of https://www.gitignore.io/api/macos,linux,django,python,pycharmq
 django/frame.jpg
+django/common/migrations/0001_initial.py
+django/common/migrations/0002_auto_20220621_1511.py
+django/common/migrations/0003_auto_20220620_2311.py
