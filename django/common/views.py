@@ -662,4 +662,8 @@ class PasswordResetDoneView(auth_views.PasswordResetDoneView):
 # 비밀번호 초기화 새로운 비밀번호 입력
 class PasswordResetConfirmView(auth_views.PasswordResetConfirmView):
     template_name = 'common/password_reset_confirm.html'
-    success_url = reverse_lazy('common:login_main')
+    success_url = reverse_lazy('common:password_reset_finish')
+
+# 아이디찾기 체크완료
+def password_reset_finish(request):
+    return render(request, 'common/password_reset_finish.html')
