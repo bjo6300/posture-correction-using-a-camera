@@ -82,7 +82,7 @@ app_name = 'common'
 class VideoCamera(object):
     once = 0
     # capture mode
-    mode = 1
+    mode = 0
 
     # stretching value
     isStretchingPose = False
@@ -233,7 +233,7 @@ class VideoCamera(object):
             cv2.putText(frame, str(int(real_jaw_bone_count)), (20, 40), cv2.FONT_HERSHEY_TRIPLEX, 1, (0, 0, 255), 2)
             cv2.putText(frame, "jaw", (20, 60), cv2.FONT_HERSHEY_TRIPLEX, 0.5, (0, 0, 255), 1)
             cv2.putText(frame, str(int(real_shoulder_count)), (20, 100), cv2.FONT_HERSHEY_TRIPLEX, 1, (0, 0, 255), 2)
-            cv2.putText(frame, "sholder", (20, 120), cv2.FONT_HERSHEY_TRIPLEX, 0.5, (0, 0, 255), 1)
+            cv2.putText(frame, "shoulder", (20, 120), cv2.FONT_HERSHEY_TRIPLEX, 0.5, (0, 0, 255), 1)
             cv2.putText(frame, str(int(real_turtleNeck_count)), (20, 160), cv2.FONT_HERSHEY_TRIPLEX, 1, (0, 0, 255), 2)
             cv2.putText(frame, "neck", (20, 180), cv2.FONT_HERSHEY_TRIPLEX, 0.5, (0, 0, 255), 1)
             if shoulder_count > my_computer_fps * 3:
@@ -270,10 +270,9 @@ class VideoCamera(object):
                 VideoCamera.mode = 2
             elif p_jaw_bone_count != 0 and p_jaw_bone_count % 3 == 0:
                 VideoCamera.mode = 3
-
         ret, jpeg = cv2.imencode('.jpg', frame)
         return jpeg.tobytes()
-    
+
     # 어깨 비대칭 스트레칭
     def get_frame_stretching(self):
 
@@ -328,14 +327,14 @@ class VideoCamera(object):
                 if VideoCamera.currentDirection == 0:  # 오른쪽
 
                     # self.stretchWindow()
-                        # self.once = 1
+                    # self.once = 1
                     toaster.show_toast(
                         "스트레칭 시작합니다.", f"오른손으로 반대편 머리를 감싼 후, 지긋이 오른쪽으로 눌러주세요!.\n\n", threaded=True)
                     # if ears_inclination <= -0.4:
                     if (ears_inclination <= -0.4) and (right_hand_position >= 0) and (right_hand_position <= 145):
                         VideoCamera.isStretchingPose = True
                         # cv2.waitKey(0)
-                        cv2.destroyWindow("stretch")
+                        # cv2.destroyWindow("stretch")
                 else:  # 왼쪽
                     toaster.show_toast(
                         "스트레칭 시작합니다.", f"왼손으로 반대편 머리를 감싼 후, 지긋이 왼쪽으로 눌러주세요!.\n\n", threaded=True)
@@ -348,7 +347,7 @@ class VideoCamera(object):
             cv2.putText(frame, str(int(VideoCamera.stretching_count)),
                         (20, 40), cv2.FONT_HERSHEY_TRIPLEX, 1, (255, 0, 255), 2)
             cv2.putText(frame, 'set count', (20, 60), cv2.FONT_HERSHEY_TRIPLEX, 0.5, (255, 0, 255), 1)
-            
+
             # 스트레칭 3번 수행 시 스트레칭 종료
             if VideoCamera.stretching_count == 2 and VideoCamera.currentDirection == 1:
                 VideoCamera.stretching_count = 0
@@ -357,7 +356,7 @@ class VideoCamera(object):
 
         ret, jpeg = cv2.imencode('.jpg', frame)
         return jpeg.tobytes()
-    
+
     # 거북목 스트레칭
     def get_frame_stretching2(self):
         global p_jaw_bone_count
@@ -411,7 +410,8 @@ class VideoCamera(object):
                     toaster.show_toast(
                         "스트레칭 시작합니다.", f"양손 엄지손가락을 턱에 대고 턱을 위로 당겨주세요!\n\n", threaded=True)
                     # if jaw_angle >= 160:
-                    if (jaw_angle >= 150) and (left_hand_position >= 100 and left_hand_position <= 200) and (right_hand_position >= 100 and right_hand_position <= 200):
+                    if (jaw_angle >= 150) and (left_hand_position >= 100 and left_hand_position <= 200) and (
+                            right_hand_position >= 100 and right_hand_position <= 200):
                         VideoCamera.isStretchingPose = True
                 else:  # 아래쪽
                     toaster.show_toast(
@@ -420,7 +420,6 @@ class VideoCamera(object):
                     # if jaw_angle <= 105:
                     if (jaw_angle <= 115) and (left_hand_position >= 50 and left_hand_position <= 120) \
                             and (right_hand_position >= 50 and right_hand_position <= 120):
-
                         VideoCamera.isStretchingPose = True
                         p_turtleNeck_count = 0
                         VideoCamera.stretching_count += 1
@@ -436,7 +435,7 @@ class VideoCamera(object):
 
         ret, jpeg = cv2.imencode('.jpg', frame)
         return jpeg.tobytes()
-    
+
     # 안면비대칭 스트레칭
     def get_frame_stretching3(self):
         global p_jaw_bone_count
@@ -540,29 +539,37 @@ class VideoCamera(object):
         postureLog.save()
         return
 
-# opencv 객체 생성
+
 cam = VideoCamera()
 
+
+# opencv 객체 생성
 # 자세 인식 및 교정 mode change
 def gen(camera):
     while True:
-        if VideoCamera.mode == 1:  # 스트레칭
+        if cam.mode == 1:  # 스트레칭
             frame = cam.get_frame_stretching()
-        elif VideoCamera.mode == 2:
+        elif cam.mode == 2:
             frame = cam.get_frame_stretching2()
-        elif VideoCamera.mode == 3:
+        elif cam.mode == 3:
             frame = cam.get_frame_stretching3()
         else:  # 인식
             frame = cam.get_frame()
         yield (b'--frame\r\n'
                b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n\r\n')
 
+
+def program_stop(request):
+    frame = cam.video.release()
+    frame2 = cv2.destroyAllWindows()
+    return render(request, 'program_stop.html', {'frame': frame, 'frame2': frame2})
+
+
 def stream2(request):
     try:
         return StreamingHttpResponse(gen(()), content_type="multipart/x-mixed-replace;boundary=frame")
     except:  # This is bad! replace it with proper handling
         pass
-
 
 
 # 로그인 함수
@@ -576,12 +583,13 @@ def login_main(request):
         if user is None:
             return render(request, 'common/login.html', {'error': '아이디 또는 비밀번호를 확인해주세요.'})
         else:
-            cam.usrname = username      # DB에 필요한 username 저장
+            cam.usrname = username  # DB에 필요한 username 저장
             request.session['username'] = username  # session username 설정
             auth.login(request, user)
             return redirect('/home/')
     elif request.method == 'GET':
         return render(request, 'common/login.html')
+
 
 # 회원가입 클래스
 class SignUpView(View):
@@ -655,9 +663,11 @@ def change_password(request):
         password_change_form = CustomPasswordChangeForm(request.user)
         return render(request, "navbar/mypage/change_password.html", {'form': password_change_form})
 
+
 # 비밀번호 수정 완료
 def modify_password_completed(request):
     return render(request, 'navbar/mypage/modify_password_completed.html')
+
 
 # 이메일 수정
 def modify_email(request):
@@ -676,6 +686,7 @@ def modify_email(request):
         form = CustomEmailChangeForm(instance=request.user)
 
     return render(request, "navbar/mypage/modify_email.html", {'form': form})
+
 
 # 이메일 수정 완료
 def modify_email_completed(request):
@@ -709,6 +720,7 @@ def find_id(request):
         return render(request, 'common/find_id.html')
     return render(request, 'common/find_id.html')
 
- # 아이디찾기 체크완료
+
+# 아이디찾기 체크완료
 def find_id_checked(request):
     return render(request, 'common/find_id_checked.html')
