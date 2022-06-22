@@ -1,5 +1,5 @@
 from django import views
-from django.urls import path
+from django.urls import path, reverse_lazy
 from unicodedata import name
 from django.contrib.auth import views as auth_views
 from . import views
@@ -22,6 +22,18 @@ urlpatterns = [
     # 아이디 찾기 체크완료 "{% url 'common:find_id_checked' %}"
     path('find_id/checked', views.find_id_checked, name='find_id_checked'),
 
+    # 비밀번호 찾기
+    path('password_reset/', views.PasswordResetView.as_view(), name='password_reset'),
+
+    # 비밀번호 재설정 메일 전송 완료
+    path('password_reset/done/', views.PasswordResetDoneView.as_view(), name='password_reset_done'),
+
+    # 비밀번호 재설정
+    path('reset/<uidb64>/<token>/', views.PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
+
+    # 비밀번호 재설정 완료
+    path('password_reset_finish/', views.password_reset_finish, name='password_reset_finish'),
+
     # 회원가입 페이지
     path('signup/', SignUpView.as_view(), name='signup'),
     
@@ -39,5 +51,8 @@ urlpatterns = [
 
     # 이메일 수정 "{% url 'common:modify_email_completed' %}"
     path('modify_email_completed/', views.modify_email_completed, name='modify_email_completed'),
+
+    # 프로그램 종료 "{% url 'common:program_stop' %}"
+    path('program_stop/', views.program_stop, name='program_stop'),
 
 ]
