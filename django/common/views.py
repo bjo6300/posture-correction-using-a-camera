@@ -598,6 +598,20 @@ def init_all():
 # 자세 인식 및 교정 mode change
 def gen(camera):
     # if activated == True:
+    if not cam.video.isOpened():
+        camera = VideoCamera()
+        while True:
+            if camera.mode == 1:  # 스트레칭
+                frame = camera.get_frame_stretching()
+            elif camera.mode == 2:
+                frame = camera.get_frame_stretching2()
+            elif camera.mode == 3:
+                frame = camera.get_frame_stretching3()
+            else:  # 인식
+                frame = camera.get_frame()
+
+            yield (b'--frame\r\n'
+                   b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n\r\n')
     while True:
         if cam.mode == 1:  # 스트레칭
             frame = cam.get_frame_stretching()
