@@ -265,8 +265,8 @@ class VideoCamera(object):
                 p_turtleNeck_count += 1
                 real_turtleNeck_count += 1
 
-            print(p_jaw_bone_count)
-            print(VideoCamera.mode)
+            # print(p_jaw_bone_count)
+            # print(VideoCamera.mode)
             if p_shoulder_count != 0 and p_shoulder_count % 3 == 0:
                 VideoCamera.mode = 1
             elif p_turtleNeck_count != 0 and p_turtleNeck_count % 3 == 0:
@@ -328,16 +328,16 @@ class VideoCamera(object):
                     VideoCamera.currentDirection = 0
             else:
                 if VideoCamera.currentDirection == 0:  # 오른쪽
+                    self.stretch_img_name = 'shoulder_right.jpg'
                     toaster.show_toast(
                         "스트레칭 시작합니다.", f"오른손으로 반대편 머리를 감싼 후, 지긋이 오른쪽으로 눌러주세요!.\n\n", threaded=True)
-                    self.stretch_img_name = 'shoulder_right.jpg'
                     # if ears_inclination <= -0.4:
                     if (ears_inclination <= -0.4) and (right_hand_position >= 0) and (right_hand_position <= 145):
                         VideoCamera.isStretchingPose = True
                 else:  # 왼쪽
+                    self.stretch_img_name = 'shoulder_left.jpg'
                     toaster.show_toast(
                         "스트레칭 시작합니다.", f"왼손으로 반대편 머리를 감싼 후, 지긋이 왼쪽으로 눌러주세요!.\n\n", threaded=True)
-                    self.stretch_img_name = 'shoulder_left.jpg'
                     # if ears_inclination >= 0.4:
                     if (ears_inclination >= 0.4) and (left_hand_position >= 0) and (left_hand_position <= 145):
                         VideoCamera.isStretchingPose = True
@@ -416,17 +416,17 @@ class VideoCamera(object):
                     VideoCamera.upDown = 0
             else:
                 if VideoCamera.upDown == 0:  # 위쪽
+                    self.stretch_img_name = 'turtleneck_top.jpg'
                     toaster.show_toast(
                         "스트레칭 시작합니다.", f"양손 엄지손가락을 턱에 대고 턱을 위로 당겨주세요!\n\n", threaded=True)
-                    self.stretch_img_name = 'turtleneck_top.jpg'
                     # if jaw_angle >= 160:
                     if (jaw_angle >= 150) and (left_hand_position >= 100 and left_hand_position <= 200) and (
                             right_hand_position >= 100 and right_hand_position <= 200):
                         VideoCamera.isStretchingPose = True
                 else:  # 아래쪽
+                    self.stretch_img_name = 'turtleneck_down.jpg'
                     toaster.show_toast(
                         "스트레칭 시작합니다.", f"양손에 깍지를 끼고 머리를 아래로 당겨주세요!\n\n", threaded=True)
-                    self.stretch_img_name = 'turtleneck_down.jpg'
                     # print(left_hand_position)
                     # if jaw_angle <= 105:
                     if (jaw_angle <= 115) and (left_hand_position >= 50 and left_hand_position <= 120) \
@@ -508,16 +508,16 @@ class VideoCamera(object):
                     VideoCamera.mouth_mode = 0
             else:
                 if VideoCamera.mouth_mode == 0:
+                    self.stretch_img_name = 'jaw_1.jpg'
                     toaster.show_toast(
                         "스트레칭 시작합니다.", f"입을 아! 모양으로 크게 벌려주세요!\n\n", threaded=True)
-                    self.stretch_img_name = 'jaw_1.jpg'
                     # if jaw_angle >= 160:
                     if (mouth_angle >= 79 and mouth_angle <= 95) and mouth_distance1 >= 38:
                         VideoCamera.isStretchingPose = True
                 else:
+                    self.stretch_img_name = 'jaw_2.jpg'
                     toaster.show_toast(
                         "스트레칭 시작합니다.", f"입을 이! 모양으로 크게 벌려주세요!\n\n", threaded=True)
-                    self.stretch_img_name = 'jaw_2.jpg'
                     # if jaw_angle >= 160:
                     if mouth_angle >= 113 and mouth_distance2 >= 60:
                         VideoCamera.isStretchingPose = True
