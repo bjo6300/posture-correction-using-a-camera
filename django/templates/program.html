@@ -8,9 +8,7 @@
 
         {% if user.is_authenticated %}
 
-         <img src="{% url 'stream2' %}" width="1024" height="768" style="margin: 50px">
-         <a href="{% url 'posture:main' %}"><button id="btn-fix">종료하기</button></a>
-
+        <img src="{% url 'stream2' %}" width="1024" height="768" style="margin: 50px">
         <button type="button"  id="btn-fix" onclick="location.href='{% url 'common:program_stop' %}'">종료하기</button>
 
         {% else %}
