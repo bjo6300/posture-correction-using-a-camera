@@ -1,7 +1,7 @@
-import cv2
+# import cv2
 import threading
 from django.shortcuts import render
-import numpy as np
+# import numpy as np
 from django.http.response import JsonResponse, HttpResponse
 from django.http import StreamingHttpResponse
 import time
@@ -12,7 +12,7 @@ import time
 # from keras.utils import np_utils
 # from keras.models import Sequential
 # from keras.preprocessing.image import img_to_array
-from PIL import Image
+# from PIL import Image
 from django.http import HttpResponse
 from common import views
 from django.contrib import auth, messages
