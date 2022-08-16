@@ -76,9 +76,6 @@ real_turtleNeck_count = 0
 # postureLog 객체 생성
 postureLog = PostureLog()
 
-# 활성화
-activated = True
-
 app_name = 'common'
 
 
@@ -283,7 +280,7 @@ class VideoCamera(object):
         global p_jaw_bone_count
         global p_shoulder_count
         global p_turtleNeck_count
-        # default BGR img
+
 
         # Holistic detector을 이용한 감지
         frame = detector.findHolistic(self.frame, draw=True)
@@ -351,7 +348,7 @@ class VideoCamera(object):
             cv2.putText(frame, 'set count', (20, 60), cv2.FONT_HERSHEY_TRIPLEX, 0.5, (255, 0, 255), 1)
 
             # 스트레칭 3번 수행 시 스트레칭 종료
-            if VideoCamera.stretching_count == 2 and VideoCamera.currentDirection == 1:
+            if VideoCamera.stretching_count == 2 and VideoCamera.currentDirection == 0:
                 VideoCamera.stretching_count = 0
                 VideoCamera.currentDirection = 0
                 VideoCamera.mode = 0
@@ -413,7 +410,7 @@ class VideoCamera(object):
                     VideoCamera.upDown = 1  # 아래쪽
                     VideoCamera.isStretchingPose = False
                 else:  # 아래쪽
-                    VideoCamera.mode = 0
+                    # VideoCamera.mode = 0
                     VideoCamera.isStretchingPose = False
                     VideoCamera.upDown = 0
             else:
@@ -441,9 +438,9 @@ class VideoCamera(object):
                         (20, 100), cv2.FONT_HERSHEY_TRIPLEX, 1, (255, 0, 255), 2)
             cv2.putText(frame, 'set count', (20, 120), cv2.FONT_HERSHEY_TRIPLEX, 0.5, (255, 0, 255), 1)
 
-            if VideoCamera.stretching_count == 2 and VideoCamera.currentDirection == 1:
+            if VideoCamera.stretching_count == 2 and VideoCamera.upDown == 0:
                 VideoCamera.stretching_count = 0
-                VideoCamera.currentDirection = 0
+                VideoCamera.upDown = 0
                 VideoCamera.mode = 0
 
         src = cv2.imread(self.stretch_img_name, cv2.IMREAD_COLOR)
@@ -532,7 +529,8 @@ class VideoCamera(object):
             # cv2.putText(frame, str(int(VideoCamera.stretching_count)),
             #             (10, 70), cv2.FONT_HERSHEY_PLAIN, 3, (255, 0, 255), 3)
 
-            if VideoCamera.stretching_count == 2 and VideoCamera.mouth_mode == 1:
+            if VideoCamera.stretching_count == 2 and VideoCamera.mouth_mode == 0:
+                VideoCamera.mouth_mode = 0
                 VideoCamera.stretching_count = 0
                 VideoCamera.mode = 0
 
@@ -565,7 +563,6 @@ cam = VideoCamera()
 # opencv 객체 생성
 # 자세 인식 및 교정 mode change
 def gen(camera):
-    # if activated == True:
     while True:
         if cam.mode == 1:  # 스트레칭
             frame = cam.get_frame_stretching()
