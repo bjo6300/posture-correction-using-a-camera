@@ -120,7 +120,8 @@ class VideoCamera(object):
 
     # 자세 인식
     def get_frame(self):
-        # default BGR img
+        def draw_circle(image, center, radius, color=(255, 0, 0), thickness=3, lineType=cv2.LINE_AA):
+            return cv2.circle(frame, center, radius, color, thickness, lineType)
 
         # Holistic detector을 이용한 감지
         frame = detector.findHolistic(self.frame, draw=True)
@@ -231,6 +232,7 @@ class VideoCamera(object):
                 p_jaw_bone_count += 1
                 real_jaw_bone_count += 1
 
+            draw_circle(frame,(330,280),100,(255,0,0),3,cv2.LINE_AA)
             cv2.putText(frame, str(int(real_jaw_bone_count)), (20, 40), cv2.FONT_HERSHEY_TRIPLEX, 1, (0, 0, 255), 2)
             cv2.putText(frame, "jaw", (20, 60), cv2.FONT_HERSHEY_TRIPLEX, 0.5, (0, 0, 255), 1)
             cv2.putText(frame, str(int(real_shoulder_count)), (20, 100), cv2.FONT_HERSHEY_TRIPLEX, 1, (0, 0, 255), 2)
@@ -271,6 +273,7 @@ class VideoCamera(object):
                 VideoCamera.mode = 2
             elif p_jaw_bone_count != 0 and p_jaw_bone_count % 3 == 0:
                 VideoCamera.mode = 3
+
         ret, jpeg = cv2.imencode('.jpg', frame)
         return jpeg.tobytes()
 
